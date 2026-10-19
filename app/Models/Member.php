@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Member extends Model
 {
@@ -26,5 +27,10 @@ class Member extends Model
     ];
     protected $table = 'members';
     protected $primaryKey = 'member_id';
+
+
+    public function savingAccounts():HasMany{
+        return $this->hasMany(RegularSavingAccount::class,"member_id","member_id");
+    }
 
 }

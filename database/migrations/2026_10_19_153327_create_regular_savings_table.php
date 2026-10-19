@@ -9,12 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regular_savings', function (Blueprint $table) {
-            $table->id();
+            $table->id('regular_saving_id');
             $table->foreignId('member_id')->constrained('members','member_id')->restrictOnDelete();
-            $table->unsignedBigInteger('balance_paisa')->default(0);
+            $table->decimal('balance')->default(0);
             $table->enum('status', ['active', 'frozen', 'closed'])->default('active');
             $table->timestamps();
-
             $table->unique('member_id');
         });
     }
