@@ -31,7 +31,8 @@
             "Member\\": "core/Member",
             "DayBook\\": "core/DayBook",
             "Saving\\": "core/Saving",
-            "AccountTypes\\": "core/AccountTypes"
+            "AccountTypes\\": "core/AccountTypes",
+            "Common\\": "core/Common"
         }
     },
     "autoload-dev": {
