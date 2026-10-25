@@ -58,7 +58,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{dayBook}/close','close')->name('daybook.close');
     });
 
-    Route::controller(AccountSetupController::class)->prefix('/accounts')->group(function () {
+    Route::controller(AccountSetupController::class)->prefix('/account-setup')->group(function () {
+        Route::get('/','index')->name('account-types.index');
+        Route::get('/create','create')->name('account-types.create');
+        Route::post('/store','store')->name('account-types.store');
+        Route::patch('{accountTypeId}/activate','activate')->name('account-types.activate');
+        Route::patch('/{accountTypeId}/deactivate','deactivate')->name('account-types.deactivate');
+        Route::get('/{accountType}/edit','edit')->name('account-types.edit');
+        Route::post('/{accountType}/update','update')->name('account-types.update');
 
     });
 
