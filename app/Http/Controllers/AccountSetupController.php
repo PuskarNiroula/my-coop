@@ -37,7 +37,7 @@ class AccountSetupController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required|string|max:255|unique:account_types,name',
-            'interest_calculation_frequency' => 'required|in:monthly,semi_annually,annually,maturity',
+            'interest_calculation_frequency' => ["required",Rule::in(InterestFrequencyEnum::getAsOneDArray())],
             'interest_rate' => 'required|numeric|between:0,100',
         ]);
 
@@ -102,7 +102,6 @@ class AccountSetupController extends Controller
         }catch (Exception $exception){
             return redirect()->back()->with('error',$exception->getMessage());
         }
-
     }
 
 }

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fiscal_years', function (Blueprint $table) {
-            $table->id();
+            $table->id('fiscal_year_id');
             $table->string('name')->unique();
             $table->string('status')->default('ACTIVE');
             $table->timestamps();
