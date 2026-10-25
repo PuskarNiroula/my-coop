@@ -102,7 +102,6 @@ class AccountSetupController extends Controller
         }catch (Exception $exception){
             return redirect()->back()->with('error',$exception->getMessage());
         }
-
     }
 
 }

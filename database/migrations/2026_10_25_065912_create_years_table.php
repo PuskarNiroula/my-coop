@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('years', function (Blueprint $table) {
-            $table->id();
+            $table->id('year_id');
             $table->string('name')->unique();
             $table->string('status')->default('ACTIVE');
             $table->timestamps();
