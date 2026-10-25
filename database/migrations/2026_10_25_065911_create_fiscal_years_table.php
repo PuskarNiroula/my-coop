@@ -11,7 +11,9 @@ return new class extends Migration
         Schema::create('fiscal_years', function (Blueprint $table) {
             $table->id('fiscal_year_id');
             $table->string('name')->unique();
-            $table->string('status')->default('ACTIVE');
+            $table->string('status')->default('active');
+            $table->boolean("is_current")->default(false);
+            $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
     }
