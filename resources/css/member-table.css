@@ -410,3 +410,54 @@
         overflow-x: auto;
     }
 }
+   .members-search-form {
+       flex: 1;
+       min-width: 0;
+   }
+
+.members-search-submit {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 33px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.members-search-submit:hover {
+    background: #1d4ed8;
+}
+
+.members-search input {
+    padding-right: 100px;
+}
+
+.members-search .search-clear {
+    right: 74px;
+    text-decoration: none;
+}
+
+.members-toolbar .members-search {
+    max-width: 440px;
+}
+
+.members-actions form,
+.member-actions form {
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .members-search-form {
+        width: 100%;
+    }
+
+    .members-toolbar .members-search {
+        max-width: none;
+    }
+}
