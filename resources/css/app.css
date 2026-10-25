@@ -596,11 +596,11 @@ svg {
     min-height: 41px;
     gap: 9px;
     padding: 0 17px;
-    color: #fff;
-    border: 1px solid var(--forest);
+    color: #fff !important;
+    border: 1px solid var(--forest) !important;
     border-radius: 8px;
-    background: linear-gradient(115deg, #20583b, #153d2c);
-    box-shadow: 0 5px 12px rgba(21, 61, 44, .1);
+    background: linear-gradient(115deg, #20583b, #153d2c) !important;
+    box-shadow: 0 5px 12px rgba(21, 61, 44, .1) !important;
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;

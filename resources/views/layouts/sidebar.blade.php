@@ -11,6 +11,14 @@
             ],
         ],
         [
+            'label' => 'Day Book',
+            'icon' => 'receipt',
+            'key' => 'day-book',
+            'items' => [
+                ['label' => 'Manage Day Books', 'url' => '/day-books'],
+            ],
+        ],
+        [
             'label' => 'Savings',
             'icon' => 'wallet',
             'key' => 'savings',
@@ -21,8 +29,7 @@
                     'url' => '/savings/accounts',
                     'key' => 'saving-accounts',
                     'children' => [
-
-                        ['label' => 'View Accounts', 'url' => '/savings/accounts/'],
+                        ['label' => 'View Accounts', 'url' => '/savings/accounts'],
                         ['label' => 'Create Account', 'url' => '/savings/accounts/create'],
                         ['label' => 'Import Accounts', 'url' => '/savings/accounts/import'],
                     ],
@@ -79,26 +86,46 @@
         ],
     ];
 
+    $setupItems = [
+        [
+            'label' => 'Account Setup',
+            'url' => '/account-setup',
+        ],
+        [
+            'label' => 'Fiscal Year Setup',
+            'url' => '/fiscal-year-setup',
+        ],
+        [
+            'label' => 'Year Setup',
+            'url' => '/year-setup',
+        ],
+    ];
+
     $currentPath = '/' . trim(request()->path(), '/');
 
     $normalizePath = fn ($url) => rtrim($url, '/') ?: '/';
 
-    $isItemActive = fn ($url) => $currentPath === $normalizePath($url);
+    $isItemActive = function ($url) use ($currentPath, $normalizePath) {
+        $normalizedUrl = $normalizePath($url);
 
-    $isMenuExpanded = function ($menu) use ($currentPath, $normalizePath) {
+        return $currentPath === $normalizedUrl;
+    };
+
+    $isPathActive = function ($url) use ($currentPath, $normalizePath) {
+        $normalizedUrl = $normalizePath($url);
+
+        return $currentPath === $normalizedUrl
+            || str_starts_with($currentPath, $normalizedUrl . '/');
+    };
+
+    $isMenuExpanded = function ($menu) use ($isPathActive) {
         foreach ($menu['items'] as $item) {
-            if (
-                $currentPath === $normalizePath($item['url']) ||
-                str_starts_with($currentPath, $normalizePath($item['url']) . '/')
-            ) {
+            if ($isPathActive($item['url'])) {
                 return true;
             }
 
             foreach ($item['children'] ?? [] as $child) {
-                if (
-                    $currentPath === $normalizePath($child['url']) ||
-                    str_starts_with($currentPath, $normalizePath($child['url']) . '/')
-                ) {
+                if ($isPathActive($child['url'])) {
                     return true;
                 }
             }
@@ -106,6 +133,10 @@
 
         return false;
     };
+
+    $setupActive = collect($setupItems)->contains(
+        fn ($item) => $isPathActive($item['url'])
+    );
 
     $iconPaths = [
         'dashboard' => '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>',
@@ -119,7 +150,7 @@
         'settings' => '<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/>',
     ];
 
-    $dashboardActive = $currentPath === '/dashboard';
+    $dashboardActive = $isItemActive('/dashboard');
 @endphp
 
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -141,6 +172,7 @@
     </a>
 
     <div class="sidebar-divider"></div>
+
     <div class="nav-section-label">WORKSPACE</div>
 
     <nav class="sidebar-nav" aria-label="Main navigation">
@@ -182,12 +214,12 @@
                                 $hasChildren = !empty($item['children']);
 
                                 $childActive = $hasChildren && collect($item['children'])->contains(
-                                    fn ($child) => $isItemActive($child['url'])
+                                    fn ($child) => $isPathActive($child['url'])
                                 );
 
                                 $itemExpanded = $childActive;
 
-                                $itemActive = $isItemActive($item['url']) || $childActive;
+                                $itemActive = $isPathActive($item['url']) || $childActive;
                             @endphp
 
                             @if ($hasChildren)
@@ -211,7 +243,7 @@
                                         @foreach ($item['children'] as $child)
                                             <a
                                                 href="{{ url($child['url']) }}"
-                                                class="nested-submenu-link {{ $isItemActive($child['url']) ? 'active' : '' }}"
+                                                class="nested-submenu-link {{ $isPathActive($child['url']) ? 'active' : '' }}"
                                             >
                                                 <span class="submenu-dot"></span>
                                                 <span>{{ $child['label'] }}</span>
@@ -222,7 +254,7 @@
                             @else
                                 <a
                                     href="{{ url($item['url']) }}"
-                                    class="submenu-link {{ $isItemActive($item['url']) ? 'active' : '' }}"
+                                    class="submenu-link {{ $isPathActive($item['url']) ? 'active' : '' }}"
                                 >
                                     <span class="submenu-dot"></span>
                                     <span>{{ $item['label'] }}</span>
@@ -235,10 +267,59 @@
         @endforeach
     </nav>
 
+    <div class="nav-group {{ $setupActive ? 'is-open' : '' }}">
+        <button
+            type="button"
+            class="nav-link nav-toggle {{ $setupActive ? 'active' : '' }}"
+            aria-expanded="{{ $setupActive ? 'true' : 'false' }}"
+            aria-controls="submenu-setup"
+            data-menu-toggle
+        >
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                {!! $iconPaths['settings'] !!}
+            </svg>
+
+            <span>Setup</span>
+
+            <svg
+                class="nav-chevron"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                {!! $iconPaths['chevron'] !!}
+            </svg>
+        </button>
+
+        <div class="submenu" id="submenu-setup">
+            <div class="submenu-inner">
+                @foreach ($setupItems as $item)
+                    <a
+                        href="{{ url($item['url']) }}"
+                        class="submenu-link {{ $isPathActive($item['url']) ? 'active' : '' }}"
+                    >
+                        <span class="submenu-dot"></span>
+                        <span>{{ $item['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="sidebar-bottom">
         <div class="sidebar-divider"></div>
 
-        <a href="{{ url('/settings') }}" class="nav-link {{ $currentPath === '/settings' ? 'active' : '' }}">
+        <a href="{{ url('/settings') }}" class="nav-link {{ $isPathActive('/settings') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 {!! $iconPaths['settings'] !!}
             </svg>
@@ -253,7 +334,13 @@
                 <span>Administrator</span>
             </div>
 
-            <button type="button" class="profile-menu-toggle" id="profileMenuToggle" aria-label="Open profile menu" aria-expanded="false">
+            <button
+                type="button"
+                class="profile-menu-toggle"
+                id="profileMenuToggle"
+                aria-label="Open profile menu"
+                aria-expanded="false"
+            >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="5" cy="12" r="1"/>
                     <circle cx="12" cy="12" r="1"/>
@@ -272,4 +359,3 @@
         </div>
     </div>
 </aside>
-

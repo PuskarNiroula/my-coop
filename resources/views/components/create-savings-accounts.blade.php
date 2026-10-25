@@ -30,153 +30,169 @@
             </div>
         </div>
 
-        <div class="savings-table-responsive">
-            <table class="savings-create-table">
-                <thead>
-                <tr>
-                    <th class="savings-col-number">#</th>
-                    <th>Member</th>
-                    <th>Opening Balance</th>
-                    <th class="savings-col-action">Action</th>
-                </tr>
-                </thead>
+        <form
+            method="POST"
+            action="{{ url('/savings/accounts/store') }}"
+            id="savingsAccountsForm"
+        >
+            @csrf
 
-                <tbody>
-                @foreach ($rows as $index => $row)
-                    <tr wire:key="saving-row-{{ $index }}">
-                        <td class="savings-row-number">
-                            {{ $index + 1 }}
-                        </td>
-
-                        <td>
-
-                            <select
-                                class="savings-form-control"
-                                wire:model.live="rows.{{ $index }}.member_id"
-                            >
-                                <option value="">Select a member</option>
-
-                                @foreach ($eligibleMembers as $member)
-                                    @if (!collect($rows)->contains(
-                                        fn ($otherRow, $otherIndex) =>
-                                            $otherIndex !== $index &&
-                                            (string) ($otherRow['member_id'] ?? '') === (string) $member->member_id
-                                    ))
-                                        <option value="{{ $member->member_id }}">
-                                            {{ $member->name }}{{ $member->phone ? ' — ' . $member->phone : '' }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-
-
-                            @error("rows.$index.member_id")
-                            <span class="savings-field-error">{{ $message }}</span>
-                            @enderror
-                        </td>
-
-                        <td>
-                            <div class="savings-amount-input">
-                                <span>Rs.</span>
-                                <input
-                                    type="number"
-                                    class="savings-form-control"
-                                    wire:model="rows.{{ $index }}.balance"
-                                    min="0"
-                                    max="999999999999.99"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                >
-                            </div>
-
-                            @error("rows.$index.balance")
-                            <span class="savings-field-error">{{ $message }}</span>
-                            @enderror
-                        </td>
-
-                        <td class="savings-row-actions">
-                            @if (count($rows) > 1)
-                                <button
-                                    type="button"
-                                    class="savings-remove-btn"
-                                    wire:click="removeRow({{ $index }})"
-                                    title="Remove row"
-                                >
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            @else
-                                <span class="savings-action-placeholder">—</span>
-                            @endif
-                        </td>
+            <div class="savings-table-responsive">
+                <table class="savings-create-table">
+                    <thead>
+                    <tr>
+                        <th class="savings-col-number">#</th>
+                        <th>Member</th>
+                        <th>Opening Balance</th>
+                        <th class="savings-col-action">Action</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
 
-        @error('rows')
-        <div class="savings-form-error">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            {{ $message }}
-        </div>
-        @enderror
+                    <tbody>
+                    @foreach ($rows as $index => $row)
+                        <tr wire:key="saving-row-{{ $index }}">
+                            <td class="savings-row-number">
+                                {{ $index + 1 }}
+                            </td>
 
-        @if ($eligibleMembers->isEmpty())
-            <div class="savings-no-members">
-                <i class="fa-solid fa-users"></i>
-                <strong>No eligible members found</strong>
-                <span>All active members may already have a savings account.</span>
+                            <td>
+                                <select
+                                    name="rows[{{ $index }}][member_id]"
+                                    class="savings-form-control"
+                                    wire:model.live="rows.{{ $index }}.member_id"
+                                    required
+                                >
+                                    <option value="">Select a member</option>
+
+                                    @foreach ($eligibleMembers as $member)
+                                        @if (!collect($rows)->contains(
+                                            fn ($otherRow, $otherIndex) =>
+                                                $otherIndex !== $index &&
+                                                (string) ($otherRow['member_id'] ?? '') === (string) $member->member_id
+                                        ))
+                                            <option
+                                                value="{{ $member->member_id }}"
+                                                @selected((string) ($row['member_id'] ?? '') === (string) $member->member_id)
+                                            >
+                                                {{ $member->name }}{{ $member->phone ? ' — ' . $member->phone : '' }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                @error("rows.$index.member_id")
+                                <span class="savings-field-error">{{ $message }}</span>
+                                @enderror
+                            </td>
+
+                            <td>
+                                <div class="savings-amount-input">
+                                    <span>Rs.</span>
+                                    <input
+                                        type="number"
+                                        name="rows[{{ $index }}][balance]"
+                                        class="savings-form-control"
+                                        wire:model="rows.{{ $index }}.balance"
+                                        min="0"
+                                        max="999999999999.99"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        required
+                                    >
+                                </div>
+
+                                @error("rows.$index.balance")
+                                <span class="savings-field-error">{{ $message }}</span>
+                                @enderror
+                            </td>
+
+                            <td class="savings-row-actions">
+                                @if (count($rows) > 1)
+                                    <button
+                                        type="button"
+                                        class="savings-remove-btn"
+                                        wire:click="removeRow({{ $index }})"
+                                        title="Remove row"
+                                    >
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                @else
+                                    <span class="savings-action-placeholder">—</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
-        @endif
 
-        <div class="savings-add-row-section">
-            <button
-                type="button"
-                class="savings-add-row-btn"
-                wire:click="addRow"
-                wire:loading.attr="disabled"
-                wire:target="addRow"
-            >
-                <i class="fa-solid fa-plus"></i>
-                Add More
-            </button>
-            <span class="savings-row-count">
-                {{ count($rows) }} {{ count($rows) === 1 ? 'row' : 'rows' }}
-            </span>
-        </div>
+            @error('rows')
+            <div class="savings-form-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ $message }}
+            </div>
+            @enderror
 
-        <div class="savings-create-footer">
-            <div class="savings-total">
-                <span>Total Opening Balance</span>
-                <strong>
-                    Rs. {{ number_format(collect($rows)->sum(fn ($row) => is_numeric($row['balance'] ?? null) ? (float) $row['balance'] : 0), 2) }}
-                </strong>
+            @if ($eligibleMembers->isEmpty())
+                <div class="savings-no-members">
+                    <i class="fa-solid fa-users"></i>
+                    <strong>No eligible members found</strong>
+                    <span>All active members may already have a savings account.</span>
+                </div>
+            @endif
+
+            <div class="savings-add-row-section">
+                <button
+                    type="button"
+                    class="savings-add-row-btn"
+                    wire:click="addRow"
+                    wire:loading.attr="disabled"
+                    wire:target="addRow"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Add More
+                </button>
+
+                <span class="savings-row-count">
+                    {{ count($rows) }} {{ count($rows) === 1 ? 'row' : 'rows' }}
+                </span>
             </div>
 
-            <button
-                type="button"
-                class="savings-submit-btn"
-                wire:click="$dispatch('confirm-create-savings-accounts')"
-                wire:loading.attr="disabled"
-                wire:target="createAccounts"
-                @disabled($eligibleMembers->isEmpty())
-            >
-                <span wire:loading.remove wire:target="createAccounts">
+            <div class="savings-create-footer">
+                <div class="savings-total">
+                    <span>Total Opening Balance</span>
+                    <strong>
+                        Rs. {{ number_format(collect($rows)->sum(fn ($row) => is_numeric($row['balance'] ?? null) ? (float) $row['balance'] : 0), 2) }}
+                    </strong>
+                </div>
+
+                <button
+                    type="submit"
+                    class="savings-submit-btn"
+                    id="createSavingsAccountsBtn"
+                    @disabled($eligibleMembers->isEmpty())
+                >
                     <i class="fa-solid fa-check"></i>
                     Create Accounts
-                </span>
-                <span wire:loading wire:target="createAccounts">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    Creating...
-                </span>
-            </button>
-        </div>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 @script
 <script>
-    window.addEventListener('confirm-create-savings-accounts', async () => {
+    const form = document.getElementById('savingsAccountsForm');
+    const submitButton = document.getElementById('createSavingsAccountsBtn');
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
         const result = await Swal.fire({
             title: 'Create savings accounts?',
             text: 'Please verify the selected members and opening balances before continuing.',
@@ -194,21 +210,11 @@
         });
 
         if (result.isConfirmed) {
-            await $wire.createAccounts();
-        }
-    });
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating...';
 
-    $wire.on('savings-accounts-created', () => {
-        Swal.fire({
-            title: 'Accounts Created',
-            text: 'The savings accounts were created successfully.',
-            icon: 'success',
-            confirmButtonText: 'Done',
-            customClass: {
-                confirmButton: 'savings-swal-confirm'
-            },
-            buttonsStyling: false
-        });
+            HTMLFormElement.prototype.submit.call(form);
+        }
     });
 </script>
 @endscript

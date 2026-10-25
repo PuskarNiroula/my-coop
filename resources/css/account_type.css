@@ -1,0 +1,22 @@
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    color: #246344;
+    background: #e7f3e9;
+}
+
+.status-inactive {
+    color: #8b5e3c;
+    background: #f8eee5;
+}
+
+.pagination-wrapper {
+    margin-top: 20px;
+}

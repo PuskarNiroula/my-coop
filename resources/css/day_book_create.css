@@ -1,0 +1,235 @@
+.daybook-create-page {
+    width: 100%;
+    padding: 24px;
+    color: #174d35;
+}
+.fw-bold .mb-1{
+    color: #174d35;
+}
+
+.daybook-create-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+    color: #174d35;
+}
+
+.daybook-create-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.daybook-create-subtitle {
+    margin: 7px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.daybook-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #dbe3ee;
+    border-radius: 9px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.daybook-back-btn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.daybook-create-card {
+    max-width: 780px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+}
+
+.daybook-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 26px;
+    border-bottom: 1px solid #edf2f7;
+    background: #fcfdff;
+}
+
+.daybook-card-icon {
+    display: flex;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.daybook-card-header h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.daybook-card-header p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.daybook-create-form {
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+    padding: 26px;
+}
+
+.daybook-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.daybook-form-group label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.daybook-required {
+    color: #dc2626;
+}
+
+.daybook-form-group input {
+    width: 100%;
+    min-height: 45px;
+    padding: 11px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.daybook-form-group input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 12%);
+}
+
+.daybook-form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.daybook-form-group input.daybook-readonly-input {
+    border-color: #e2e8f0;
+    background: #f8fafc;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.daybook-form-group input.daybook-input-error {
+    border-color: #ef4444;
+}
+
+.daybook-field-hint {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.daybook-error-message {
+    color: #dc2626;
+    font-size: 12px;
+}
+
+.fas{
+    color:green;
+}
+
+
+.daybook-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #edf2f7;
+}
+
+
+.daybook-cancel-btn:hover {
+    background: #f8fafc;
+}
+
+.daybook-save-btn {
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #fff;
+}
+
+.daybook-save-btn:hover {
+    border-color: #1d4ed8;
+    background: #1d4ed8;
+}
+
+.daybook-save-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+@media (max-width: 640px) {
+    .daybook-create-page {
+        padding: 16px;
+    }
+
+    .daybook-create-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .daybook-create-title {
+        font-size: 22px;
+    }
+
+    .daybook-create-card {
+        border-radius: 11px;
+    }
+
+    .daybook-card-header {
+        padding: 18px;
+    }
+
+    .daybook-create-form {
+        padding: 18px;
+    }
+
+    .daybook-form-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .daybook-cancel-btn,
+    .daybook-save-btn {
+        width: 100%;
+    }
+}

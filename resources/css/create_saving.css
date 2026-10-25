@@ -1,14 +1,14 @@
-
 .savings-create-page {
-    --sc-primary: #6d4aff;
-    --sc-primary-dark: #5635dc;
-    --sc-primary-light: #f2efff;
-    --sc-text: #20243a;
-    --sc-muted: #777e91;
-    --sc-border: #e6e8f0;
+    --sc-primary: var(--forest, #153d2c);
+    --sc-primary-dark: var(--forest-dark, #0d2b1e);
+    --sc-primary-light: #edf3ed;
+    --sc-text: var(--text, #202c24);
+    --sc-muted: var(--muted, #818980);
+    --sc-border: var(--border, #e6e9e2);
     --sc-surface: #ffffff;
-    --sc-background: #f7f8fc;
-    --sc-danger: #dc3545;
+    --sc-background: var(--ivory, #fbfaf6);
+    --sc-danger: #b93838;
+    --sc-gold: var(--gold, #c9a86a);
     max-width: 1450px;
     margin: 0 auto;
     padding: 28px;
@@ -31,7 +31,7 @@
 .savings-create-eyebrow {
     display: inline-block;
     margin-bottom: 8px;
-    color: var(--sc-primary);
+    color: var(--sc-gold);
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.6px;
@@ -39,7 +39,7 @@
 
 .savings-create-header h1 {
     margin: 0;
-    color: var(--sc-text);
+    color: var(--forest, #153d2c);
     font-size: clamp(24px, 3vw, 32px);
     font-weight: 750;
     letter-spacing: -0.8px;
@@ -49,6 +49,7 @@
     margin: 8px 0 0;
     color: var(--sc-muted);
     font-size: 14px;
+    line-height: 1.6;
 }
 
 .savings-back-btn,
@@ -65,28 +66,29 @@
     font-weight: 650;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .savings-back-btn {
     min-height: 42px;
     padding: 0 15px;
-    color: #4b5266;
-    background: var(--sc-surface);
+    color: var(--forest, #153d2c);
+    background: #fff;
     border: 1px solid var(--sc-border);
 }
 
 .savings-back-btn:hover {
-    color: var(--sc-primary);
-    border-color: var(--sc-primary);
+    color: #fff;
+    background: var(--forest, #153d2c);
+    border-color: var(--forest, #153d2c);
 }
 
 .savings-create-card {
     overflow: hidden;
     background: var(--sc-surface);
     border: 1px solid var(--sc-border);
-    border-radius: 18px;
-    box-shadow: 0 12px 35px rgba(32, 36, 58, 0.045);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(21, 61, 44, 0.06);
 }
 
 .savings-card-heading {
@@ -94,6 +96,7 @@
     align-items: center;
     gap: 14px;
     padding: 25px 28px;
+    background: linear-gradient(110deg, #ffffff, #fbfaf6);
     border-bottom: 1px solid var(--sc-border);
 }
 
@@ -104,14 +107,16 @@
     justify-content: center;
     width: 48px;
     height: 48px;
-    color: var(--sc-primary);
-    background: var(--sc-primary-light);
-    border-radius: 14px;
+    color: var(--forest, #153d2c);
+    background: #edf3ed;
+    border: 1px solid #dce7d8;
+    border-radius: 13px;
     font-size: 21px;
 }
 
 .savings-card-heading h2 {
     margin: 0;
+    color: var(--forest, #153d2c);
     font-size: 17px;
     font-weight: 750;
 }
@@ -120,6 +125,7 @@
     margin: 6px 0 0;
     color: var(--sc-muted);
     font-size: 13px;
+    line-height: 1.6;
 }
 
 .savings-table-responsive {
@@ -134,12 +140,12 @@
 }
 
 .savings-create-table thead {
-    background: #f8f8fd;
+    background: #f5f7f1;
 }
 
 .savings-create-table th {
     padding: 16px 20px;
-    color: #686e83;
+    color: var(--forest, #153d2c);
     font-size: 11px;
     font-weight: 750;
     letter-spacing: 0.7px;
@@ -151,15 +157,19 @@
 .savings-create-table td {
     padding: 17px 20px;
     vertical-align: top;
-    border-bottom: 1px solid #eff0f5;
+    border-bottom: 1px solid #edf0e9;
 }
 
 .savings-create-table tbody tr:last-child td {
     border-bottom: 0;
 }
 
+.savings-create-table tbody tr {
+    transition: background 0.2s ease;
+}
+
 .savings-create-table tbody tr:hover {
-    background: #fcfbff;
+    background: #fbfcf8;
 }
 
 .savings-col-number {
@@ -173,7 +183,7 @@
 
 .savings-row-number {
     padding-top: 27px !important;
-    color: #888da0;
+    color: var(--sc-muted);
     font-size: 13px;
     font-weight: 700;
 }
@@ -185,7 +195,7 @@
     padding: 10px 12px;
     color: var(--sc-text);
     background: #fff;
-    border: 1px solid #dfe2ed;
+    border: 1px solid #dfe5dc;
     border-radius: 9px;
     outline: none;
     font: inherit;
@@ -194,12 +204,12 @@
 }
 
 .savings-form-control:focus {
-    border-color: var(--sc-primary);
-    box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.12);
+    border-color: var(--forest, #153d2c);
+    box-shadow: 0 0 0 3px rgba(36, 99, 68, 0.12);
 }
 
 .savings-form-control::placeholder {
-    color: #a1a5b5;
+    color: #a0a79d;
 }
 
 .savings-amount-input {
@@ -211,7 +221,7 @@
     top: 50%;
     left: 12px;
     z-index: 1;
-    color: #85899b;
+    color: var(--sc-muted);
     font-size: 12px;
     transform: translateY(-50%);
 }
@@ -228,20 +238,21 @@
     width: 38px;
     height: 38px;
     color: var(--sc-danger);
-    background: #fff0f1;
-    border: 1px solid #ffdcdf;
+    background: #fff3f1;
+    border: 1px solid #f1d9d3;
 }
 
 .savings-remove-btn:hover {
     color: #fff;
     background: var(--sc-danger);
+    border-color: var(--sc-danger);
     transform: translateY(-1px);
 }
 
 .savings-action-placeholder {
     display: inline-block;
     padding-top: 8px;
-    color: #b5b8c5;
+    color: #b5bcb2;
 }
 
 .savings-field-error {
@@ -258,11 +269,12 @@
     gap: 9px;
     margin: 18px 24px 0;
     padding: 12px 14px;
-    color: #a52936;
-    background: #fff0f1;
-    border: 1px solid #ffd9dd;
+    color: #a12c2c;
+    background: #fff3f1;
+    border: 1px solid #f1d9d3;
     border-radius: 9px;
     font-size: 13px;
+    line-height: 1.6;
 }
 
 .savings-add-row-section {
@@ -276,20 +288,22 @@
 .savings-add-row-btn {
     min-height: 40px;
     padding: 0 15px;
-    color: var(--sc-primary);
-    background: var(--sc-primary-light);
-    border: 1px solid #e2d9ff;
+    color: var(--forest, #153d2c);
+    background: #edf3ed;
+    border: 1px solid #dce7d8;
 }
 
 .savings-add-row-btn:hover {
     color: #fff;
-    background: var(--sc-primary);
+    background: var(--forest, #153d2c);
+    border-color: var(--forest, #153d2c);
 }
 
 .savings-add-row-btn:disabled,
 .savings-submit-btn:disabled {
     opacity: 0.55;
     cursor: not-allowed;
+    transform: none;
 }
 
 .savings-row-count {
@@ -303,7 +317,7 @@
     justify-content: space-between;
     gap: 20px;
     padding: 23px 28px;
-    background: #fafaff;
+    background: #f7f8f3;
     border-top: 1px solid var(--sc-border);
 }
 
@@ -319,7 +333,7 @@
 }
 
 .savings-total strong {
-    color: var(--sc-text);
+    color: var(--forest, #153d2c);
     font-size: 23px;
     font-weight: 800;
     letter-spacing: -0.5px;
@@ -329,13 +343,14 @@
     min-height: 46px;
     padding: 0 22px;
     color: #fff;
-    background: var(--sc-primary);
-    box-shadow: 0 5px 14px rgba(109, 74, 255, 0.2);
+    background: var(--forest, #153d2c);
+    box-shadow: 0 5px 14px rgba(21, 61, 44, 0.16);
 }
 
 .savings-submit-btn:hover {
-    background: var(--sc-primary-dark);
-    box-shadow: 0 7px 18px rgba(109, 74, 255, 0.26);
+    color: #fff;
+    background: var(--forest-dark, #0d2b1e);
+    box-shadow: 0 7px 18px rgba(21, 61, 44, 0.22);
     transform: translateY(-1px);
 }
 
@@ -346,10 +361,11 @@
     margin-bottom: 20px;
     padding: 14px 16px;
     color: #176b43;
-    background: #eaf9f0;
-    border: 1px solid #c9efd9;
+    background: #edf6ed;
+    border: 1px solid #d0e6cf;
     border-radius: 10px;
     font-size: 13px;
+    line-height: 1.6;
 }
 
 .savings-no-members {
@@ -364,17 +380,18 @@
 
 .savings-no-members i {
     margin-bottom: 5px;
-    color: var(--sc-primary);
+    color: var(--forest, #153d2c);
     font-size: 26px;
 }
 
 .savings-no-members strong {
-    color: var(--sc-text);
+    color: var(--forest, #153d2c);
     font-size: 14px;
 }
 
 .savings-no-members span {
     font-size: 12px;
+    line-height: 1.6;
 }
 
 .savings-swal-confirm,
@@ -387,24 +404,25 @@
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .savings-swal-confirm {
     color: #fff;
-    background: var(--sc-primary);
+    background: var(--forest, #153d2c);
 }
 
 .savings-swal-confirm:hover {
-    background: var(--sc-primary-dark);
+    background: var(--forest-dark, #0d2b1e);
 }
 
 .savings-swal-cancel {
-    color: #555c70;
-    background: #eff0f6;
+    color: var(--forest, #153d2c);
+    background: #edf0e9;
 }
 
 .savings-swal-cancel:hover {
-    background: #e1e3ed;
+    background: #e1e7dd;
 }
 
 @media (max-width: 768px) {
@@ -442,5 +460,36 @@
 
     .savings-total strong {
         font-size: 21px;
+    }
+}
+
+@media (max-width: 480px) {
+    .savings-create-page {
+        padding: 12px;
+    }
+
+    .savings-create-header h1 {
+        font-size: 25px;
+    }
+
+    .savings-card-heading {
+        align-items: flex-start;
+        gap: 12px;
+        padding: 17px;
+    }
+
+    .savings-heading-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+
+    .savings-add-row-section {
+        flex-wrap: wrap;
+        padding: 15px 17px;
+    }
+
+    .savings-create-footer {
+        padding: 17px;
     }
 }
