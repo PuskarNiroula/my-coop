@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('months', function (Blueprint $table) {
-            $table->id();
+            $table->id('month_id');
             $table->string('name')->unique();
         });
     }
