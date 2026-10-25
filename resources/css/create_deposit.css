@@ -1,0 +1,472 @@
+.member-page {
+    padding: 10px 0 30px;
+    color: var(--text, #202c24);
+}
+
+.page-heading {
+    align-items: flex-start;
+    margin-bottom: 28px;
+}
+
+.page-eyebrow {
+    color: #a98236;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.page-heading h1 {
+    margin: 8px 0;
+    color: var(--forest, #153d2c);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(27px, 3vw, 35px);
+    font-weight: 500;
+    letter-spacing: -.5px;
+}
+
+.page-heading p,
+.form-card-heading p {
+    margin: 0;
+    color: var(--muted, #818980);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.member-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    align-items: start;
+    gap: 22px;
+}
+
+.member-main-column,
+.member-side-column {
+    display: grid;
+    gap: 22px;
+    min-width: 0;
+}
+
+.form-card {
+    padding: 25px;
+    border: 1px solid var(--border, #e6e9e2);
+    border-radius: 13px;
+    background: #fffefa;
+    box-shadow: 0 5px 20px rgba(21, 61, 44, .035);
+}
+
+.form-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 21px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #efeee6;
+}
+
+.section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border: 1px solid #e0eadd;
+    border-radius: 11px;
+    background: #edf4ea;
+    color: var(--green, #246344);
+    font-size: 19px;
+}
+
+.form-card-heading h2 {
+    margin: 0 0 5px;
+    color: var(--forest, #153d2c);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 8px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #34483a;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.form-group label span {
+    color: #b98a35;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #e2e5dc;
+    border-radius: 8px;
+    outline: none;
+    background-color: #fff;
+    color: #26382d;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    background-image: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #64845d;
+    box-shadow: 0 0 0 3px rgba(100, 132, 93, .12);
+}
+
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-group select {
+    padding-right: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364785d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+.form-group select option {
+    color: #26382d;
+    background: #fff;
+}
+
+.deposit-amount-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.deposit-currency {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 57px;
+    padding: 0 13px;
+    color: var(--green, #246344);
+    border: 1px solid #e2e5dc;
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+    background: #f4f7f0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.deposit-amount-wrapper input {
+    min-width: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.form-group input.is-invalid,
+.form-group textarea.is-invalid,
+.form-group select.is-invalid,
+.deposit-amount-wrapper input.is-invalid {
+    border-color: #d46a61;
+}
+
+.field-error {
+    color: #c0392b;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.flash-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 17px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.flash-message > i {
+    margin-top: 2px;
+    font-size: 16px;
+}
+
+.flash-message > span,
+.flash-message > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.flash-message ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+}
+
+.flash-success {
+    color: #155b3b;
+    border-color: #c7e8d0;
+    background: #edf8f0;
+}
+
+.flash-error {
+    color: #9f2929;
+    border-color: #f2cccc;
+    background: #fff1f0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 22px;
+    margin-top: 25px;
+    border-top: 1px solid #efeee6;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.btn-primary {
+    color: #fff !important;
+    border: 1px solid var(--forest, #153d2c) !important;
+    background: linear-gradient(115deg, #20583b, #153d2c) !important;
+    box-shadow: 0 5px 12px rgba(21, 61, 44, .1);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 17px rgba(21, 61, 44, .17);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    color: #435449;
+    border: 1px solid #dfe4da;
+    background: #fffefa;
+}
+
+.btn-secondary:hover {
+    color: var(--forest, #153d2c);
+    border-color: #cbd9cb;
+    background: #f0f4ed;
+}
+
+.btn-primary i,
+.btn-secondary i {
+    font-size: 14px;
+}
+
+.tips-card {
+    background: #f5f7ef;
+}
+
+.tips-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #28563a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.tips-title i {
+    color: #b28a3c;
+    font-size: 16px;
+}
+
+.tips-card ul {
+    display: grid;
+    gap: 13px;
+    padding-left: 18px;
+    margin: 18px 0 0;
+    color: #657269;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.deposit-note-card {
+    text-align: center;
+}
+
+.deposit-note-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 15px;
+    border: 1px solid #e0eadd;
+    border-radius: 50%;
+    background: #edf4ea;
+    color: var(--green, #246344);
+    font-size: 21px;
+}
+
+.deposit-note-card h3 {
+    margin: 0 0 9px;
+    color: var(--forest, #153d2c);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.deposit-note-card p {
+    margin: 0;
+    color: #788579;
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+@media (max-width: 1050px) {
+    .member-form-layout {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 800px) {
+    .member-form-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .member-side-column {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+}
+
+@media (max-width: 560px) {
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .member-side-column,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-card {
+        padding: 17px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn-primary,
+    .form-actions .btn-secondary {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+   .withdrawal-balance-wrapper {
+       display: flex;
+       align-items: center;
+       gap: 14px;
+       min-height: 78px;
+       padding: 15px 17px;
+       border: 1px solid #dce7d8;
+       border-radius: 10px;
+       background: linear-gradient(115deg, #f3f7ef, #fbfaf6);
+   }
+
+.withdrawal-balance-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border: 1px solid #dce7d8;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--green, #246344);
+    font-size: 20px;
+}
+
+.withdrawal-balance-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.withdrawal-balance-details > span {
+    color: #788579;
+    font-size: 11px;
+}
+
+.withdrawal-balance-details strong {
+    overflow-wrap: anywhere;
+    color: var(--forest, #153d2c);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.4px;
+}
+
+#withdrawal-warning {
+    line-height: 1.6;
+}
+
+#withdrawal-warning[hidden] {
+    display: none;
+}
+
+@media (max-width: 560px) {
+    .withdrawal-balance-details strong {
+        font-size: 18px;
+    }
+}
+.deposit-amount-wrapper input[type="number"]::-webkit-inner-spin-button,
+.deposit-amount-wrapper input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.deposit-amount-wrapper input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

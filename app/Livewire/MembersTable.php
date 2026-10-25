@@ -39,7 +39,7 @@ class MembersTable extends Component
             ->latest('member_id')
             ->paginate(10);
 
-        return view('components.⚡members_table', [
+        return view('components.members_table', [
             'members' => $members,
         ]);
     }

@@ -596,11 +596,11 @@ svg {
     min-height: 41px;
     gap: 9px;
     padding: 0 17px;
-    color: #fff;
-    border: 1px solid var(--forest);
+    color: #fff !important;
+    border: 1px solid var(--forest) !important;
     border-radius: 8px;
-    background: linear-gradient(115deg, #20583b, #153d2c);
-    box-shadow: 0 5px 12px rgba(21, 61, 44, .1);
+    background: linear-gradient(115deg, #20583b, #153d2c) !important;
+    box-shadow: 0 5px 12px rgba(21, 61, 44, .1) !important;
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
@@ -1612,3 +1612,59 @@ svg {
     color: #26382d;
     background-color: #fff;
 }
+   .submenu-group {
+       display: flex;
+       flex-direction: column;
+   }
+
+.submenu-toggle {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nested-chevron {
+    width: 15px;
+    height: 15px;
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.submenu-group.is-open > .submenu-toggle .nested-chevron {
+    transform: rotate(90deg);
+}
+
+.nested-submenu {
+    display: none;
+    flex-direction: column;
+    padding-left: 22px;
+}
+
+.submenu-group.is-open > .nested-submenu {
+    display: flex;
+}
+
+.nested-submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    text-decoration: none;
+    color: var(--text-secondary, #64748b);
+    border-radius: 6px;
+}
+
+.nested-submenu-link:hover {
+    color: var(--text-primary, #1e293b);
+    background: var(--hover-bg, #f1f5f9);
+}
+
+.nested-submenu-link.active {
+    color: var(--primary, #16a34a);
+    background: var(--active-bg, #f0fdf4);
+}
+

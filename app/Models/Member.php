@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method static find(int $memberId)
+ */
 class Member extends Model
 {
     protected $fillable = [
@@ -26,5 +30,10 @@ class Member extends Model
     ];
     protected $table = 'members';
     protected $primaryKey = 'member_id';
+
+
+    public function savingAccount():hasOne{
+        return $this->hasOne(RegularSavingAccount::class,"member_id","member_id");
+    }
 
 }

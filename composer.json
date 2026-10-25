@@ -6,7 +6,8 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
+        "anuzpandey/laravel-nepali-date": "^3.3",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.4",
@@ -27,7 +28,10 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Authentication\\": "core/Authentication",
-            "Member\\": "core/Member"
+            "Member\\": "core/Member",
+            "DayBook\\": "core/DayBook",
+            "Saving\\": "core/Saving",
+            "AccountTypes\\": "core/AccountTypes"
         }
     },
     "autoload-dev": {

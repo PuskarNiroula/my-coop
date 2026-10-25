@@ -11,13 +11,31 @@
             ],
         ],
         [
+            'label' => 'Day Book',
+            'icon' => 'receipt',
+            'key' => 'day-book',
+            'items' => [
+                ['label' => 'Manage Day Books', 'url' => '/day-books'],
+            ],
+        ],
+        [
             'label' => 'Savings',
             'icon' => 'wallet',
             'key' => 'savings',
             'items' => [
-                ['label' => 'Savings Overview', 'url' => '/savings'],
-                ['label' => 'New Deposit', 'url' => '/savings/deposits/create'],
-                ['label' => 'Withdrawals', 'url' => '/savings/withdrawals'],
+                ['label' => 'Savings Dashboard', 'url' => '/savings'],
+                [
+                    'label' => 'Saving Accounts',
+                    'url' => '/savings/accounts',
+                    'key' => 'saving-accounts',
+                    'children' => [
+                        ['label' => 'View Accounts', 'url' => '/savings/accounts'],
+                        ['label' => 'Create Account', 'url' => '/savings/accounts/create'],
+                        ['label' => 'Import Accounts', 'url' => '/savings/accounts/import'],
+                    ],
+                ],
+                ['label' => 'New Deposit', 'url' => '/savings/deposit/create'],
+                ['label' => 'Withdrawals', 'url' => '/savings/withdrawals/create'],
                 ['label' => 'Savings Reports', 'url' => '/savings/reports'],
             ],
         ],
@@ -68,14 +86,56 @@
         ],
     ];
 
+    $setupItems = [
+        [
+            'label' => 'Account Setup',
+            'url' => '/account-setup',
+        ],
+        [
+            'label' => 'Fiscal Year Setup',
+            'url' => '/fiscal-year-setup',
+        ],
+        [
+            'label' => 'Year Setup',
+            'url' => '/year-setup',
+        ],
+    ];
+
     $currentPath = '/' . trim(request()->path(), '/');
-    $isActive = fn ($url) => $currentPath === rtrim($url, '/') ?: $currentPath === '/';
 
-    $isItemActive = fn ($url) => $currentPath === rtrim($url, '/');
+    $normalizePath = fn ($url) => rtrim($url, '/') ?: '/';
 
-    $isMenuExpanded = fn ($menu) => collect($menu['items'])->contains(
-        fn ($item) => $currentPath === rtrim($item['url'], '/')
-            || str_starts_with($currentPath, rtrim($item['url'], '/') . '/')
+    $isItemActive = function ($url) use ($currentPath, $normalizePath) {
+        $normalizedUrl = $normalizePath($url);
+
+        return $currentPath === $normalizedUrl;
+    };
+
+    $isPathActive = function ($url) use ($currentPath, $normalizePath) {
+        $normalizedUrl = $normalizePath($url);
+
+        return $currentPath === $normalizedUrl
+            || str_starts_with($currentPath, $normalizedUrl . '/');
+    };
+
+    $isMenuExpanded = function ($menu) use ($isPathActive) {
+        foreach ($menu['items'] as $item) {
+            if ($isPathActive($item['url'])) {
+                return true;
+            }
+
+            foreach ($item['children'] ?? [] as $child) {
+                if ($isPathActive($child['url'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
+
+    $setupActive = collect($setupItems)->contains(
+        fn ($item) => $isPathActive($item['url'])
     );
 
     $iconPaths = [
@@ -87,11 +147,10 @@
         'package' => '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/>',
         'receipt' => '<path d="M4 3h16v18l-4-2-4 2-4-2-4 2V3Z"/><path d="M8 8h8M8 12h8M8 16h4"/>',
         'chevron' => '<path d="m9 18 6-6-6-6"/>',
-        'menu' => '<path d="M4 6h16M4 12h16M4 18h16"/>',
         'settings' => '<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/>',
     ];
 
-    $dashboardActive = $currentPath === '/dashboard';
+    $dashboardActive = $isItemActive('/dashboard');
 @endphp
 
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -105,6 +164,7 @@
                 <path d="M15 36H33" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
         </span>
+
         <span class="brand-name">
             <strong>JAY DURGA</strong>
             <small>KRISHI SAHAKARI SANSTHA</small>
@@ -112,6 +172,7 @@
     </a>
 
     <div class="sidebar-divider"></div>
+
     <div class="nav-section-label">WORKSPACE</div>
 
     <nav class="sidebar-nav" aria-label="Main navigation">
@@ -138,7 +199,9 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                         {!! $iconPaths[$menu['icon']] !!}
                     </svg>
+
                     <span>{{ $menu['label'] }}</span>
+
                     <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         {!! $iconPaths['chevron'] !!}
                     </svg>
@@ -147,13 +210,56 @@
                 <div class="submenu" id="submenu-{{ $menu['key'] }}">
                     <div class="submenu-inner">
                         @foreach ($menu['items'] as $item)
-                            <a
-                                href="{{ url($item['url']) }}"
-                                class="submenu-link {{ $isItemActive($item['url']) ? 'active' : '' }}"
-                            >
-                                <span class="submenu-dot"></span>
-                                <span>{{ $item['label'] }}</span>
-                            </a>
+                            @php
+                                $hasChildren = !empty($item['children']);
+
+                                $childActive = $hasChildren && collect($item['children'])->contains(
+                                    fn ($child) => $isPathActive($child['url'])
+                                );
+
+                                $itemExpanded = $childActive;
+
+                                $itemActive = $isPathActive($item['url']) || $childActive;
+                            @endphp
+
+                            @if ($hasChildren)
+                                <div class="submenu-group {{ $itemExpanded ? 'is-open' : '' }}">
+                                    <button
+                                        type="button"
+                                        class="submenu-link submenu-toggle {{ $itemActive ? 'active' : '' }}"
+                                        data-submenu-toggle
+                                        aria-expanded="{{ $itemExpanded ? 'true' : 'false' }}"
+                                        aria-controls="nested-{{ $item['key'] }}"
+                                    >
+                                        <span class="submenu-dot"></span>
+                                        <span>{{ $item['label'] }}</span>
+
+                                        <svg class="nested-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            {!! $iconPaths['chevron'] !!}
+                                        </svg>
+                                    </button>
+
+                                    <div class="nested-submenu" id="nested-{{ $item['key'] }}">
+                                        @foreach ($item['children'] as $child)
+                                            <a
+                                                href="{{ url($child['url']) }}"
+                                                class="nested-submenu-link {{ $isPathActive($child['url']) ? 'active' : '' }}"
+                                            >
+                                                <span class="submenu-dot"></span>
+                                                <span>{{ $child['label'] }}</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <a
+                                    href="{{ url($item['url']) }}"
+                                    class="submenu-link {{ $isPathActive($item['url']) ? 'active' : '' }}"
+                                >
+                                    <span class="submenu-dot"></span>
+                                    <span>{{ $item['label'] }}</span>
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
@@ -161,10 +267,59 @@
         @endforeach
     </nav>
 
+    <div class="nav-group {{ $setupActive ? 'is-open' : '' }}">
+        <button
+            type="button"
+            class="nav-link nav-toggle {{ $setupActive ? 'active' : '' }}"
+            aria-expanded="{{ $setupActive ? 'true' : 'false' }}"
+            aria-controls="submenu-setup"
+            data-menu-toggle
+        >
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                {!! $iconPaths['settings'] !!}
+            </svg>
+
+            <span>Setup</span>
+
+            <svg
+                class="nav-chevron"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                {!! $iconPaths['chevron'] !!}
+            </svg>
+        </button>
+
+        <div class="submenu" id="submenu-setup">
+            <div class="submenu-inner">
+                @foreach ($setupItems as $item)
+                    <a
+                        href="{{ url($item['url']) }}"
+                        class="submenu-link {{ $isPathActive($item['url']) ? 'active' : '' }}"
+                    >
+                        <span class="submenu-dot"></span>
+                        <span>{{ $item['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="sidebar-bottom">
         <div class="sidebar-divider"></div>
 
-        <a href="{{ url('/settings') }}" class="nav-link {{ $currentPath === '/settings' ? 'active' : '' }}">
+        <a href="{{ url('/settings') }}" class="nav-link {{ $isPathActive('/settings') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 {!! $iconPaths['settings'] !!}
             </svg>
@@ -173,17 +328,29 @@
 
         <div class="user-profile">
             <div class="avatar">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
+
             <div class="user-details">
                 <strong>{{ auth()->user()->name ?? 'Administrator' }}</strong>
                 <span>Administrator</span>
             </div>
-            <button type="button" class="profile-menu-toggle" id="profileMenuToggle" aria-label="Open profile menu" aria-expanded="false">
+
+            <button
+                type="button"
+                class="profile-menu-toggle"
+                id="profileMenuToggle"
+                aria-label="Open profile menu"
+                aria-expanded="false"
+            >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
+                    <circle cx="5" cy="12" r="1"/>
+                    <circle cx="12" cy="12" r="1"/>
+                    <circle cx="19" cy="12" r="1"/>
                 </svg>
             </button>
+
             <div class="profile-menu" id="profileMenu">
                 <a href="{{ url('/profile') }}">My Profile</a>
+
                 <form method="POST" action="{{ url('/logout') }}">
                     @csrf
                     <button type="submit">Sign Out</button>
