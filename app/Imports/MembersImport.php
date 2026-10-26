@@ -15,6 +15,9 @@ readonly class MembersImport implements ToCollection
         private MemberService $memberService
     ) {}
 
+    /**
+     * @throws \Throwable
+     */
     public function collection(Collection $collection): void
     {
         $seenPhones = [];
@@ -48,6 +51,8 @@ readonly class MembersImport implements ToCollection
                 'legal_aid_name' => trim((string) ($values[8] ?? '')),
                 'legal_aid_relation' => trim((string) ($values[9] ?? '')),
                 'legal_aid_citizenship_number' => trim((string) ($values[10] ?? '')),
+                'account_type' => trim((string) ($values[11] ?? '')),
+                'opening_balance' => trim((string) ($values[12] ?? '')),
             ];
 
             $relation = strtolower($data['legal_aid_relation']);

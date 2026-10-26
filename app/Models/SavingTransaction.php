@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class SavingTransaction extends Model
 {
-    protected $table = "saving_transactions";
-    protected $primaryKey = "saving_transaction_id";
+    protected $table = "savings_transactions";
+    protected $primaryKey = "id";
 
     public $guarded=[];
     public function savingAccount():hasOne{

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\MemberAccount;
 use App\Models\RegularSavingAccount;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -33,7 +34,7 @@ class SavingAccountsTable extends Component
 
     public function render()
     {
-        $savings = RegularSavingAccount::query()
+        $savings = MemberAccount::query()
             ->with('member')
             ->when(trim($this->search) !== '', function ($query) {
                 $search = trim($this->search);
@@ -45,7 +46,7 @@ class SavingAccountsTable extends Component
                         });
                 });
             })
-            ->latest('regular_saving_id')
+            ->latest('member_id')
             ->paginate(10);
 
         return view('components.saving-accounts-table', [

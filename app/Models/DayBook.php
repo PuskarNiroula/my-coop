@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static create(array $array)
+ * @method static orderByDesc(string $string)
  * @property mixed $date_english
  * @property mixed $date_nepali
  * @property mixed $status

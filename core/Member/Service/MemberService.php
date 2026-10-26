@@ -2,6 +2,11 @@
 
 namespace Member\Service;
 
+use App\Models\AccountType;
+use App\Models\MemberAccount;
+use App\Models\SavingTransaction;
+use DayBook\Exception\NoOpenDayBookException;
+use DayBook\Helper\DayBookHelper;
 use Member\Dto\ImportMemberDto;
 use Member\Enum\GenderEnum;
 use Member\Dto\MemberCreateDto;
@@ -9,6 +14,7 @@ use App\Models\Member;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Member\Exception\GenderNotAllowedException;
+use Saving\Enum\SavingTransactionsTypeEnum;
 use Throwable;
 
 class MemberService
@@ -84,10 +90,15 @@ class MemberService
     }
 
 
-        public function createFromImport(ImportMemberDto $dto): Member
+    /**
+     * @throws Throwable
+     */
+    public function createFromImport(ImportMemberDto $dto)
         {
             return DB::transaction(function () use ($dto) {
-                return Member::create([
+               $dayBook= DayBookHelper::getCurrentDaybook();
+               if(!$dayBook) throw new NoOpenDayBookException();
+                $member= Member::create([
                     'name' => $dto->name,
                     'gender' => $dto->gender,
                     'phone' => $dto->phone,
@@ -100,7 +111,29 @@ class MemberService
                     'legal_aid_name' => $dto->legal_aid_name,
                     'legal_aid_relation' => $dto->legal_aid_relation,
                     'legal_aid_citizenship_number' => $dto->legal_aid_citizenship_number,
+                    'status'=>"active",
                 ]);
+
+                $account_type_id = AccountType::where('name', $dto->account_type)->firstOrFail()->account_type_id;
+
+               $account = MemberAccount::create([
+                    'member_id' => $member->member_id,
+                    "account_type_id"=>$account_type_id,
+                    'opened_at' => now(),
+                    "closed_at" => null,
+                    'status'=>"active",
+                ]);
+
+                SavingTransaction::create([
+                    'account_id' => $account->member_account_id,
+                    'transaction_type'=>SavingTransactionsTypeEnum::INITIAL_DEPOSIT->value,
+                    'amount'=>$dto->opening_balance,
+                    'transaction_date'=>$dayBook->date_english,
+                    'transaction_date_nepali'=>$dayBook->date_nepali,
+                    'status'=>"active",
+                    'created_by'=>auth()->id(),
+                ]);
+
             });
 
         }

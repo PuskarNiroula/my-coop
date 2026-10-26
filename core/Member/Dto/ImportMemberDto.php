@@ -17,6 +17,8 @@ class ImportMemberDto
         public string $legal_aid_name,
         public string $legal_aid_relation,
         public string $legal_aid_citizenship_number,
+        public string $account_type,
+        public float $opening_balance,
     ) {}
 
     public static function fromArray(array $data): self
@@ -40,6 +42,8 @@ class ImportMemberDto
             legal_aid_name: (string) $data['legal_aid_name'],
             legal_aid_relation: (string) $data['legal_aid_relation'],
             legal_aid_citizenship_number: (string) $data['legal_aid_citizenship_number'],
+            account_type: (string) $data['account_type'],
+            opening_balance: (float) $data['opening_balance'],
         );
     }
 }

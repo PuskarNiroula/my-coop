@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static find(int $memberId)
+ * @method static create(array $array)
  */
 class Member extends Model
 {

@@ -19,21 +19,6 @@
     </section>
 
     <section class="dashboard-content">
-        <div class="dashboard-welcome">
-            <div>
-                <span class="dashboard-eyebrow">JAY DURGA KRISHI SAHAKARI SANSTHA</span>
-                <h2>Building savings together.</h2>
-                <p>Monitor total savings, deposits, withdrawals and member balances from one place.</p>
-            </div>
-            <div class="welcome-icon">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="6" y="13" width="36" height="25" rx="4"/>
-                    <path d="M6 20h36M30 29h5"/>
-                    <circle cx="24" cy="29" r="5"/>
-                    <path d="M15 7h18"/>
-                </svg>
-            </div>
-        </div>
 
         <div class="dashboard-grid">
             <article class="dashboard-card">
