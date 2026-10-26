@@ -7,6 +7,7 @@ use App\Http\Controllers\FiscalYearSetupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SavingController;
+use App\Http\Controllers\YearSetupController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -79,6 +80,14 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{yearId}/deactivate}','deactivate')->name('fiscal-year.deactivate');
         Route::patch('/{yearId}/mark-as-current','markCurrent')->name('fiscal-year.mark-current');
         Route::patch('/{yearId}/close','close')->name('fiscal-year.close');
+    });
+
+    Route::controller(YearSetupController::class)->prefix('/year-setup')->group(function () {
+        Route::get('/','index')->name('year.index');
+        Route::get('/create','create')->name('year.create');
+        Route::post('/store','store')->name('year.store');
+        Route::patch('{yearId}/activate','activate')->name('year.activate');
+        Route::patch('{yearId}/deactivate','deactivate')->name('year.deactivate');;
     });
 
 });
