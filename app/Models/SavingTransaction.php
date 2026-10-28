@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static create(array $array)
+ * @method static where(string $string, string $value)
  */
 class SavingTransaction extends Model
 {
@@ -21,6 +22,9 @@ class SavingTransaction extends Model
 
     public function dayBook():belongsTo{
         return $this->belongsTo(DayBook::class,"day_book_id","day_book_id");
+    }
+    public function year():BelongsTo{
+        return $this->belongsTo(Year::class,"year_id","year_id");
     }
 
 

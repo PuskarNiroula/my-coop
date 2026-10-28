@@ -1,21 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
-
 use App\Exports\SavingAccountsTemplateExport;
-use App\Models\Member;
-use App\Models\Month;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Exception;
-use Saving\Dto\DepositCreateDto;
 use Saving\Dto\SavingAccountCreateDto;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Saving\Service\SavingService;
-use function Illuminate\Support\months;
 
 class SavingController extends Controller
 {
@@ -35,6 +29,10 @@ class SavingController extends Controller
     public function create():View{
         return view("saving.create_saving");
     }
+
+    /**
+     * @throws \Throwable
+     */
     public function storeSaving(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -74,47 +72,8 @@ class SavingController extends Controller
             'saving_accounts_import.xlsx'
         );
     }
-    public function deposit(): View
-    {
-        $members = Member::query()
-            ->where('is_active', true)
-            ->whereHas('savingAccount')
-            ->orderBy('name')
-            ->get(['member_id', 'name', 'phone']);
 
-        $monthArray = Month::query()
-            ->orderBy('month_id')
-            ->pluck('name', 'month_id')
-            ->toArray();
 
-        return view('saving.deposit', compact(['members',"monthArray"]));
-    }
-    public function storeDeposit(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'member_id' => 'required|exists:members,member_id',
-            'amount' => 'required|numeric|min:0',
-            'remarks' => 'nullable|string|max:255',
-        ]);
-
-        $dto = new DepositCreateDto();
-        $dto->memberId = $validated['member_id'];
-        $dto->amount = $validated['amount'];
-        $dto->remarks= $validated['remarks'];
-        $dto->transactionType=SavingTransactionsTypeEnum::SAVINGS_DEPOSIT->value;
-        try{
-            $this->savingService->submitDeposit($dto);
-            return redirect()->route('savings.deposit.create')->with('success', 'Deposit submitted successfully.');
-
-        }catch (Exception $e){
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
-        }
-    }
-    public function withdraw(): View{
-        //we will need to fetch the members with their regular savings
-        $members =Member::query()->where('is_active',true)->whereHas('savingAccount')->orderBy('name')->with('savingAccount')->get();
-        return view("saving.withdraw",compact('members'));
-    }
 
 
 }

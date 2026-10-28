@@ -135,7 +135,7 @@ class MemberService
 
                 SavingTransaction::create([
                     'account_id' => $account->member_account_id,
-                    'transaction_type'=>SavingTransactionsTypeEnum::INITIAL_DEPOSIT->value,
+                    'transaction_type'=>SavingTransactionsTypeEnum::OPENING_BALANCE->value,
                     'amount'=>$dto->opening_balance,
                     'transaction_date'=>$dayBook->date_english,
                     'transaction_date_nepali'=>$dayBook->date_nepali,
@@ -143,9 +143,12 @@ class MemberService
                     'created_by'=>auth()->id(),
                     "month_id"=>$month,
                     "amount_after_transaction"=>$dto->opening_balance,
+                    "year_id"=>getCurrentYear()->year_id,
+                    'fiscal_year_id'=>getCurrentFiscalYear()->fiscal_year_id,
                 ]);
 
             });
 
         }
+
 }

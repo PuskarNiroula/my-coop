@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static create(array $array)
  * @method static findOrFail(int $id)
  * @method static where(string $string, true $true)
+ * @property mixed $fiscal_year_id
  */
 class FiscalYear extends Model
 {

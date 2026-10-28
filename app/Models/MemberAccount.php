@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static create(array $array)
+ * @method static findOrFail(int $memberId)
+ * @method static where(string $string, int $memberId)
  */
 class MemberAccount extends Model
 {
