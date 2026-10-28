@@ -34,7 +34,7 @@ class Member extends Model
 
 
     public function savingAccount():hasOne{
-        return $this->hasOne(RegularSavingAccount::class,"member_id","member_id");
+        return $this->hasOne(MemberAccount::class,"member_id","member_id");
     }
 
 }

@@ -97,6 +97,8 @@ class MemberService
         {
             return DB::transaction(function () use ($dto) {
                $dayBook= DayBookHelper::getCurrentDaybook();
+
+
                if(!$dayBook) throw new NoOpenDayBookException();
                 $member= Member::create([
                     'name' => $dto->name,
@@ -122,7 +124,14 @@ class MemberService
                     'opened_at' => now(),
                     "closed_at" => null,
                     'status'=>"active",
+                   "balance"=>$dto->opening_balance,
                 ]);
+
+                $date = $dayBook->date_nepali;
+
+                $parts = explode('-', $date);
+                $month = (int) $parts[1];
+
 
                 SavingTransaction::create([
                     'account_id' => $account->member_account_id,
@@ -132,6 +141,8 @@ class MemberService
                     'transaction_date_nepali'=>$dayBook->date_nepali,
                     'status'=>"active",
                     'created_by'=>auth()->id(),
+                    "month_id"=>$month,
+                    "amount_after_transaction"=>$dto->opening_balance,
                 ]);
 
             });

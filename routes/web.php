@@ -87,7 +87,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create','create')->name('year.create');
         Route::post('/store','store')->name('year.store');
         Route::patch('{yearId}/activate','activate')->name('year.activate');
-        Route::patch('{yearId}/deactivate','deactivate')->name('year.deactivate');;
+        Route::patch('{yearId}/deactivate','deactivate')->name('year.deactivate');
+        Route::get('/{year}/edit','edit')->name('year.edit');
+        Route::put('/{year}/update','update')->name('year.update');
     });
 
 });

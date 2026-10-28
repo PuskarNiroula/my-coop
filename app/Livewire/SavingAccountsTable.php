@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\MemberAccount;
-use App\Models\RegularSavingAccount;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -40,7 +39,7 @@ class SavingAccountsTable extends Component
                 $search = trim($this->search);
 
                 $query->where(function ($query) use ($search) {
-                    $query->where('member', function ($memberQuery) use ($search) {
+                    $query->whereHas('member', function ($memberQuery) use ($search) {
                             $memberQuery->where('name', 'like', "%{$search}%")
                                 ->orWhere('phone', 'like', "%{$search}%");
                         });

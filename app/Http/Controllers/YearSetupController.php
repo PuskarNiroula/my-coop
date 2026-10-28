@@ -27,9 +27,15 @@ class YearSetupController extends Controller
             'name'=>'required|regex:/^[0-9]{4}$/',
         ]);
 
+        $lastSequence = Year::query()->max('sequence');
+        if(!$lastSequence){
+            $lastSequence = 0;
+        }
+
         Year::create([
             'name'=>$request->name,
-            'status'=>'active'
+            'status'=>'active',
+            "sequence"=>++$lastSequence,
         ]);
         return redirect()->route('year.index')->with('success','Year created successfully');
 
@@ -41,5 +47,21 @@ class YearSetupController extends Controller
     public function deactivate(int $yearId){
         Year::findOrFail($yearId)->update(['status'=>'inactive']);
         return redirect()->route('year.index')->with('success','Year deactivated successfully');
+    }
+    public function edit(int $yearId){
+        $year = Year::findOrFail($yearId);
+        return view('year.edit',compact('year'));
+    }
+    public function update(Request $request,int $yearId){
+        $year = Year::findOrFail($yearId);
+        $request->validate([
+            'name'=>'required|regex:/^[0-9]{4}$/',
+            'sequence'=>'numeric|nullable',
+        ]);
+        $year->update([
+            'name'=>$request->name,
+            'sequence'=>$request->sequence,
+        ]);
+        return redirect()->route('year.index')->with('success','Year updated successfully');
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Year extends Model
 {
     protected $table = 'years';
-    protected $fillable = ['name','status'];
+    protected $fillable = ['name','status','sequence'];
     protected $hidden = ['created_at','updated_at'];
     protected $primaryKey= "year_id";
 

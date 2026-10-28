@@ -45,6 +45,7 @@
                     <thead>
                     <tr>
                         <th>Financial Year</th>
+                        <th>Sequence Number</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -55,6 +56,9 @@
                         <tr>
                             <td class="member-name">
                                 {{ $year->name }}
+                            </td>
+                            <td class="member-name">
+                                {{$year->sequence}}
                             </td>
 
                             <td>
@@ -85,6 +89,7 @@
                                         <span>{{ $year->status == 'active' ? 'Deactivate' : 'Activate' }}</span>
                                     </button>
                                 </form>
+                                <a href="{{route('year.edit',$year->year_id)}}" class="btn btn-primary">edit</a>
                             </td>
 
                         </tr>

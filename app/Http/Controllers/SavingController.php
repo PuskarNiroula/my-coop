@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\SavingAccountsTemplateExport;
 use App\Models\Member;
+use App\Models\Month;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,6 +15,7 @@ use Saving\Dto\DepositCreateDto;
 use Saving\Dto\SavingAccountCreateDto;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Saving\Service\SavingService;
+use function Illuminate\Support\months;
 
 class SavingController extends Controller
 {
@@ -76,11 +78,16 @@ class SavingController extends Controller
     {
         $members = Member::query()
             ->where('is_active', true)
-            ->whereHas('savingAccounts')
+            ->whereHas('savingAccount')
             ->orderBy('name')
             ->get(['member_id', 'name', 'phone']);
 
-        return view('saving.deposit', compact('members'));
+        $monthArray = Month::query()
+            ->orderBy('month_id')
+            ->pluck('name', 'month_id')
+            ->toArray();
+
+        return view('saving.deposit', compact(['members',"monthArray"]));
     }
     public function storeDeposit(Request $request): RedirectResponse
     {
