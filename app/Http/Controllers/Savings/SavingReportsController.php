@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Savings;
 
 use App\Http\Controllers\Controller;
+use App\Models\CancelTransaction;
 use App\Models\FiscalYear;
 use App\Models\Member;
 use App\Models\MemberAccount;
@@ -82,11 +83,18 @@ class SavingReportsController extends Controller
     /**
      * @throws Throwable
      */
-    public function cancel(int $transactionId)
+    public function cancel(Request $request,int $transactionId)
     {
 
-        $dayBookDate = getCurrentDayBook()->date_english->toDateString();
-        DB::transaction(function () use ($transactionId, $dayBookDate) {
+       $request->validate([
+           'cancellation_reason'=>"required|string",
+       ]);
+       $cancellation_reason = $request->post('cancellation_reason');
+
+
+       $daybook = getCurrentDayBook();
+        $dayBookDate = $daybook->date_english->toDateString();
+        DB::transaction(function () use ($transactionId, $dayBookDate,$cancellation_reason,$daybook) {
             $transaction = SavingTransaction::query()
                 ->lockForUpdate()
                 ->findOrFail($transactionId);
@@ -125,6 +133,14 @@ class SavingReportsController extends Controller
 
             $transaction->status = SavingTransactionStatusEnum::INACTIVE->value;
             $transaction->save();
+
+            CancelTransaction::create([
+                'saving_transaction_id' => $transactionId,
+                'reason' => $cancellation_reason,
+                'cancellation_date' => $daybook->date_english,
+                'cancellation_date_nepali' => $daybook->date_nepali,
+                'cancelled_by'=>auth()->id(),
+            ]);
         });
 
         return redirect()

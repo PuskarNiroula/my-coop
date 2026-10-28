@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Savings & Withdrawals Report')
@@ -126,8 +127,8 @@
                     <small class="report-subtitle">Deposit transaction records</small>
                 </div>
                 <span class="report-count">
-                {{ $savings->total() }} records
-            </span>
+                    {{ $savings->total() }} records
+                </span>
             </div>
 
             <div class="report-card-body">
@@ -165,8 +166,8 @@
                                         <span class="report-status report-status-active">Active</span>
                                     @else
                                         <span class="report-status report-status-cancelled">
-                                            {{ $transaction->status }}
-                                        </span>
+                                                {{ $transaction->status }}
+                                            </span>
                                     @endif
                                 </td>
                                 <td>
@@ -180,6 +181,7 @@
                                         >
                                             @csrf
                                             @method('PATCH')
+                                            <input type="hidden" name="cancellation_reason" class="cancellation-reason">
                                             <button type="submit" class="report-btn report-btn-danger">
                                                 Cancel
                                             </button>
@@ -213,8 +215,8 @@
                     <small class="report-subtitle">Withdrawal transaction records</small>
                 </div>
                 <span class="report-count report-count-withdrawal">
-                {{ $withdrawals->total() }} records
-            </span>
+                    {{ $withdrawals->total() }} records
+                </span>
             </div>
 
             <div class="report-card-body">
@@ -252,8 +254,8 @@
                                         <span class="report-status report-status-active">Active</span>
                                     @else
                                         <span class="report-status report-status-cancelled">
-                                            {{ $transaction->status }}
-                                        </span>
+                                                {{ $transaction->status }}
+                                            </span>
                                     @endif
                                 </td>
                                 <td>
@@ -267,6 +269,7 @@
                                         >
                                             @csrf
                                             @method('PATCH')
+                                            <input type="hidden" name="cancellation_reason" class="cancellation-reason">
                                             <button type="submit" class="report-btn report-btn-danger">
                                                 Cancel
                                             </button>
@@ -306,25 +309,50 @@
 
                 event.preventDefault();
 
+                const reasonInput = form.querySelector('.cancellation-reason');
+
                 if (typeof Swal === 'undefined') {
-                    if (confirm('Are you sure you want to cancel this transaction?')) {
+                    const reason = prompt('Please enter the reason for cancellation:');
+
+                    if (reason && reason.trim()) {
+                        reasonInput.value = reason.trim();
                         form.dataset.confirmed = 'true';
                         form.submit();
+                    } else if (reason !== null) {
+                        alert('Cancellation reason is required.');
                     }
+
                     return;
                 }
 
                 Swal.fire({
                     title: 'Cancel transaction?',
                     text: `Cancel this ${form.dataset.type} of Rs. ${form.dataset.amount}?`,
-                    icon: 'warning',
+                    input: 'textarea',
+                    inputLabel: 'Reason for cancellation',
+                    inputPlaceholder: 'Enter the reason for cancelling this transaction...',
+                    inputAttributes: {
+                        'aria-label': 'Reason for cancellation',
+                        'maxlength': 1000
+                    },
                     showCancelButton: true,
                     confirmButtonText: 'Yes, cancel it',
                     cancelButtonText: 'Keep transaction',
                     confirmButtonColor: '#dc3545',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    icon: 'warning',
+                    inputValidator: (value) => {
+                        if (!value || !value.trim()) {
+                            return 'Please provide a reason for cancellation.';
+                        }
+
+                        if (value.trim().length > 1000) {
+                            return 'The reason cannot exceed 1000 characters.';
+                        }
+                    }
                 }).then((result) => {
-                    if (result.isConfirmed) {
+                    if (result.isConfirmed && result.value.trim()) {
+                        reasonInput.value = result.value.trim();
                         form.dataset.confirmed = 'true';
                         form.submit();
                     }
