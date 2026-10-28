@@ -35,6 +35,7 @@
             "DayBook\\": "core/DayBook",
             "Saving\\": "core/Saving",
             "AccountTypes\\": "core/AccountTypes",
+            "Deposit\\": "core/Deposit",
             "Common\\": "core/Common"
         }
     },

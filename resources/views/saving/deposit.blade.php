@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <form action="{{ url('/savings/deposit') }}" method="POST" id="depositForm" novalidate>
+            <form action="{{ url('/deposits/store') }}" method="POST" id="depositForm" novalidate>
                 @csrf
 
                 <div class="deposit-form-grid">
@@ -64,7 +64,7 @@
                                         type="radio"
                                         name="month_id"
                                         value="{{ $monthId }}"
-                                        {{ (string) old('month_id') === (string) $monthId ? 'checked' : '' }}
+                                        {{ (string) old('month_id', $month) === (string) $monthId ? 'checked' : '' }}
                                         required
                                     >
                                     <span class="month-radio"></span>

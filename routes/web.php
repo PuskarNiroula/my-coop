@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountSetupController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
+use App\Http\Controllers\DepositController;
 use App\Http\Controllers\FiscalYearSetupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberController;
@@ -45,10 +46,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/accounts/import','import')->name('savings.import');
         Route::post('/accounts/import','importBulk')->name('saving-accounts.import');;
         Route::get('/saving/accounts/import-template', "downloadTemplate")->name('saving-accounts.import-template');
-        Route::get('/deposit/create','deposit')->name('savings.deposit.create');
-        Route::post('/deposit/store','storeDeposit')->name('savings.deposit.store');
-        Route::get('/withdrawals/create','withdraw')->name('savings.withdrawal.create');
-        Route::post('/withdrawals/store','withdraw')->name('savings.withdrawal.store');
 
     });
 
@@ -90,6 +87,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{yearId}/deactivate','deactivate')->name('year.deactivate');
         Route::get('/{year}/edit','edit')->name('year.edit');
         Route::put('/{year}/update','update')->name('year.update');
+        Route::patch('/{yearId}/mark-as-current','markAsCurrent')->name('year.mark-current');
+    });
+
+    Route::controller(DepositController::class)->prefix('/deposits')->group(function () {
+        Route::get('/create','index')->name('savings.deposit.create');
+        Route::post('/store','makeDeposit')->name('savings.deposit.store');
     });
 
 });

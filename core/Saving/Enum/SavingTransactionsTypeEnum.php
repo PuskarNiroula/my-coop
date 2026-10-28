@@ -4,6 +4,7 @@ namespace Saving\Enum;
 
 enum SavingTransactionsTypeEnum:string
 {
+    case OPENING_BALANCE = "opening_balance";
     case INITIAL_DEPOSIT = 'initial_deposit';
     case SAVINGS_DEPOSIT = 'savings_deposit';
     case WITHDRAWAL = 'withdrawal';

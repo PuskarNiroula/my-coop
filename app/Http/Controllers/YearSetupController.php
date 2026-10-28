@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Year;
+use Common\Exceptions\CurrentFiscalYearNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
+use Throwable;
 
 class YearSetupController extends Controller
 {
@@ -63,5 +67,49 @@ class YearSetupController extends Controller
             'sequence'=>$request->sequence,
         ]);
         return redirect()->route('year.index')->with('success','Year updated successfully');
+    }
+
+    public function markAsCurrent(int $yearId)
+    {
+        try {
+            DB::transaction(function () use ($yearId) {
+                $year = Year::findOrFail($yearId);
+                $this->validateYear($year->name);
+                Year::query()->update([
+                    'is_current' => false,
+                ]);
+
+                $year->update([
+                    'is_current' => true,
+                ]);
+            });
+        } catch (Throwable $e) {
+            return redirect()->route('year.index')->with('error',$e->getMessage());
+        }
+
+        return redirect()
+            ->route('year.index')
+            ->with('success', 'Year marked as current successfully.');
+    }
+
+    /**
+     * @throws CurrentFiscalYearNotFoundException
+     */
+    private function validateYear(string $name): void
+    {
+        $fiscalYearName = getCurrentFiscalYear()->name;
+
+        [$startYear, $endYear] = explode('/', $fiscalYearName);
+
+        $allowedYears = [
+            $startYear,
+            substr($startYear, 0, 2) . $endYear,
+        ];
+
+        if (!in_array($name, $allowedYears, true)) {
+            throw new InvalidArgumentException(
+                "Year {$name} does not belong to the current fiscal year {$fiscalYearName}."
+            );
+        }
     }
 }
