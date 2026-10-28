@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Savings;
 
 
 
+use App\Http\Controllers\Controller;
 use App\Models\Member;
 use App\Models\Month;
 use Deposit\Dto\CreateDepositDto;

@@ -3,11 +3,13 @@
 use App\Http\Controllers\AccountSetupController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
-use App\Http\Controllers\DepositController;
 use App\Http\Controllers\FiscalYearSetupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberController;
-use App\Http\Controllers\SavingController;
+use App\Http\Controllers\Savings\DepositController;
+use App\Http\Controllers\Savings\SavingController;
+use App\Http\Controllers\Savings\SavingReportsController;
+use App\Http\Controllers\Savings\WithdrawalController;
 use App\Http\Controllers\YearSetupController;
 use Illuminate\Support\Facades\Route;
 
@@ -93,6 +95,18 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(DepositController::class)->prefix('/deposits')->group(function () {
         Route::get('/create','index')->name('savings.deposit.create');
         Route::post('/store','makeDeposit')->name('savings.deposit.store');
+    });
+
+    Route::controller(WithdrawalController::class)->prefix('/withdrawals')->group(function () {
+        Route::get('/create','index')->name('withdrawals.index');
+        Route::get('/{memberId}/get-balance','getMemberAmount')->name('withdrawals.get-balance');
+        Route::post('/store','store')->name('withdrawals.store');
+
+    });
+
+    Route::controller(SavingReportsController::class)->prefix('/savings/reports')->group(function () {
+        Route::get('/','index')->name('saving-reports.index');
+        Route::patch('{reportId}/cancel','cancel')->name('saving-reports.cancel');
     });
 
 });
