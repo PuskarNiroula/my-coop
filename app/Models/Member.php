@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static find(int $memberId)
  * @method static create(array $array)
  * @method static where(string $string, string $string1)
+ * @method static findOrFail(int $memberId)
  */
 class Member extends Model
 {

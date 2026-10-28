@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Savings;
+
 use App\Exports\SavingAccountsTemplateExport;
+use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
-use Exception;
 use Saving\Dto\SavingAccountCreateDto;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Saving\Service\SavingService;

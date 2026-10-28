@@ -16,8 +16,8 @@ class SavingTransaction extends Model
     protected $primaryKey = "id";
 
     public $guarded=[];
-    public function savingAccount():hasOne{
-        return $this->hasOne(RegularSavingAccount::class,"regular_saving_id","regular_saving_id");
+    public function account():hasOne{
+        return $this->hasOne(MemberAccount::class,"member_account_id","account_id");
     }
 
     public function dayBook():belongsTo{
@@ -25,6 +25,12 @@ class SavingTransaction extends Model
     }
     public function year():BelongsTo{
         return $this->belongsTo(Year::class,"year_id","year_id");
+    }
+    public function fiscalYear():BelongsTo{
+        return $this->belongsTo(FiscalYear::class,"fiscal_year_id","fiscal_year_id");
+    }
+    public function month():BelongsTo{
+        return $this->belongsTo(Month::class,"month_id","month_id");
     }
 
 
