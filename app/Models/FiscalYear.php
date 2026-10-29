@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class FiscalYear extends Model
 {
     protected $table = 'fiscal_years';
-    protected $fillable = ['name','status','is_closed','is_current'];
+    protected $fillable = ['name','status','is_closed','is_current','sequence'];
     protected $primaryKey="fiscal_year_id";
 
     public function getId(){

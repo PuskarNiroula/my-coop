@@ -161,6 +161,14 @@
                                             <span>{{ $isActive ? 'Deactivate' : 'Activate' }}</span>
                                         </button>
                                     </form>
+                                        <a
+                                            href="{{ route('fiscal-year.edit', $fiscalYear->fiscal_year_id) }}"
+                                            class="action-btn edit-btn"
+                                            aria-label="Edit {{ $fiscalYear->name }}"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                                            <span>Edit</span>
+                                        </a>
                                 </div>
                             </td>
                         </tr>
