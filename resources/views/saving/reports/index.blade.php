@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Savings & Withdrawals Report')
@@ -6,195 +5,295 @@
 @section('page-title', 'Savings & Withdrawals Report')
 
 @section('content')
-    <div class="container-fluid py-4 savings-report-page">
+    @php
+        $activeValue = \Saving\Enum\SavingTransactionStatusEnum::ACTIVE->value;
 
-        <div class="card report-card mb-4">
-            <div class="report-card-header">
-                <div>
-                    <h5 class="mb-0">Filter Transactions</h5>
-                    <small class="report-subtitle">Find transactions using the filters below</small>
+        $activeFilters = collect(request()->only([
+            'member_id',
+            'fiscal_year_id',
+            'year_id',
+            'month_id',
+            'transaction_date_nepali',
+        ]))->filter(fn ($value) => filled($value))->count();
+
+
+        $tables = [
+            [
+                'key' => 'savings',
+                'label' => 'Deposits',
+                'title' => 'Savings deposits',
+                'subtitle' => 'Money added to member accounts',
+                'type' => 'savings deposit',
+                'sign' => '+',
+                'tone' => 'in',
+                'paginator' => $savings,
+                'empty' => 'No savings deposits match these filters.',
+            ],
+            [
+                'key' => 'withdrawals',
+                'label' => 'Withdrawals',
+                'title' => 'Withdrawals',
+                'subtitle' => 'Money taken out of member accounts',
+                'type' => 'withdrawal',
+                'sign' => '-',
+                'tone' => 'out',
+                'paginator' => $withdrawals,
+                'empty' => 'No withdrawals match these filters.',
+            ],
+        ];
+    @endphp
+
+    <div class="sr-page">
+
+        <header class="sr-head">
+            <div class="sr-head-text">
+                <h1 class="sr-title">Savings &amp; withdrawals</h1>
+                <p class="sr-lead">Review every deposit and withdrawal, filter by member or period, and cancel mistakes with a recorded reason.</p>
+            </div>
+        </header>
+
+        <section class="sr-panel sr-filters">
+            <form method="GET" action="{{ route('saving-reports.index') }}">
+                <div class="sr-filters-head">
+                    <h2 class="sr-panel-title">
+                        <i class="bi bi-sliders2"></i>
+                        Filters
+                    </h2>
+                    @if($activeFilters > 0)
+                        <span class="sr-chip">{{ $activeFilters }} applied</span>
+                    @endif
                 </div>
-            </div>
 
-            <div class="report-card-body">
-                <form method="GET" action="{{ route('saving-reports.index') }}">
-                    <div class="report-filter-grid">
-
-                        <div class="report-field">
-                            <label for="member_id">Member</label>
-                            <select name="member_id" id="member_id" class="form-select">
-                                <option value="">All Members</option>
-                                @foreach($members as $member)
-                                    <option value="{{ $member->member_id }}"
-                                        @selected(request('member_id') == $member->member_id)>
-                                        {{ $member->name }}
-                                        @if(!empty($member->member_code))
-                                            ({{ $member->member_code }})
-                                        @endif
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="report-field">
-                            <label for="fiscal_year_id">Fiscal Year</label>
-                            <select name="fiscal_year_id" id="fiscal_year_id" class="form-select">
-                                <option value="">All Fiscal Years</option>
-                                @foreach($fiscalYears as $fiscalYear)
-                                    <option value="{{ $fiscalYear->fiscal_year_id }}"
-                                        @selected(request('fiscal_year_id') == $fiscalYear->fiscal_year_id)>
-                                        {{ $fiscalYear->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="report-field">
-                            <label for="year_id">Year</label>
-                            <select name="year_id" id="year_id" class="form-select">
-                                <option value="">All Years</option>
-                                @foreach($years as $year)
-                                    <option value="{{ $year->year_id }}"
-                                        @selected(request('year_id') == $year->year_id)>
-                                        {{ $year->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="report-field">
-                            <label for="month_id">Month</label>
-                            <select name="month_id" id="month_id" class="form-select">
-                                <option value="">All Months</option>
-                                @foreach($months as $month)
-                                    <option value="{{ $month->month_id }}"
-                                        @selected(request('month_id') == $month->month_id)>
-                                        {{ $month->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="report-field">
-                            <label for="transaction_date_nepali">Nepali Date</label>
-                            <input
-                                type="text"
-                                data-nepali-date
-                                name="transaction_date_nepali"
-                                id="transaction_date_nepali"
-                                class="form-control"
-                                value="{{ request('transaction_date_nepali') }}"
-                                placeholder="2083-07-12"
-                            >
-                        </div>
-
-                        <div class="report-filter-actions">
-                            <button type="submit" class="report-btn report-btn-primary">
-                                <i class="bi bi-funnel"></i>
-                                Filter
-                            </button>
-
-                            <a href="{{ route('saving-reports.index') }}"
-                               class="report-btn report-btn-reset">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                                Reset
-                            </a>
-                        </div>
-
+                <div class="sr-filter-grid">
+                    <div class="sr-field sr-field-wide">
+                        <label for="member_id">Member</label>
+                        <select name="member_id" id="member_id" class="sr-input">
+                            <option value="">All members</option>
+                            @foreach($members as $member)
+                                <option value="{{ $member->member_id }}"
+                                    @selected(request('member_id') == $member->member_id)>
+                                    {{ $member->name }}@if(!empty($member->member_code)) ({{ $member->member_code }})@endif
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                </form>
-            </div>
-        </div>
+
+                    <div class="sr-field">
+                        <label for="fiscal_year_id">Fiscal year</label>
+                        <select name="fiscal_year_id" id="fiscal_year_id" class="sr-input">
+                            <option value="">All fiscal years</option>
+                            @foreach($fiscalYears as $fiscalYear)
+                                <option value="{{ $fiscalYear->fiscal_year_id }}"
+                                    @selected(request('fiscal_year_id') == $fiscalYear->fiscal_year_id)>
+                                    {{ $fiscalYear->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="sr-field">
+                        <label for="year_id">Year</label>
+                        <select name="year_id" id="year_id" class="sr-input">
+                            <option value="">All years</option>
+                            @foreach($years as $year)
+                                <option value="{{ $year->year_id }}"
+                                    @selected(request('year_id') == $year->year_id)>
+                                    {{ $year->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="sr-field">
+                        <label for="month_id">Month</label>
+                        <select name="month_id" id="month_id" class="sr-input">
+                            <option value="">All months</option>
+                            @foreach($months as $month)
+                                <option value="{{ $month->month_id }}"
+                                    @selected(request('month_id') == $month->month_id)>
+                                    {{ $month->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="sr-field">
+                        <label for="transaction_date_nepali">Nepali date</label>
+                        <input
+                            type="text"
+                            data-nepali-date
+                            name="transaction_date_nepali"
+                            id="transaction_date_nepali"
+                            class="sr-input"
+                            value="{{ request('transaction_date_nepali') }}"
+                            placeholder="2083-07-12"
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="sr-filter-actions">
+                        <button type="submit" class="sr-btn sr-btn-primary">
+                            <i class="bi bi-funnel"></i>
+                            Apply filters
+                        </button>
+                        <a href="{{ route('saving-reports.index') }}" class="sr-btn sr-btn-ghost">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                            Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </section>
 
         @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="sr-alert sr-alert-success alert alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
         @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="sr-alert sr-alert-error alert alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon-fill"></i>
+                <span>{{ session('error') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
-        <div class="card report-card mb-4">
-            <div class="report-card-header">
-                <div>
-                    <h5 class="mb-0">Savings Deposits</h5>
-                    <small class="report-subtitle">Deposit transaction records</small>
-                </div>
-                <span class="report-count">
-                    {{ $savings->total() }} records
-                </span>
-            </div>
+        <div class="sr-tabs" role="tablist" aria-label="Transaction type">
+            @foreach($tables as $table)
+                <button
+                    type="button"
+                    class="sr-tab sr-tab-{{ $table['tone'] }} {{ $loop->first ? 'is-active' : '' }}"
+                    role="tab"
+                    id="tab-{{ $table['key'] }}"
+                    aria-controls="panel-{{ $table['key'] }}"
+                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                    data-tab="{{ $table['key'] }}"
+                >
+                    {{ $table['label'] }}
+                    <span class="sr-tab-count">{{ number_format($table['paginator']->total()) }}</span>
+                </button>
+            @endforeach
+        </div>
 
-            <div class="report-card-body">
-                <div class="report-table-wrap">
-                    <table class="report-table">
+        @foreach($tables as $table)
+            @php $paginator = $table['paginator']; @endphp
+
+            <section
+                class="sr-panel sr-table-panel {{ $loop->first ? '' : 'is-hidden' }}"
+                id="panel-{{ $table['key'] }}"
+                role="tabpanel"
+                aria-labelledby="tab-{{ $table['key'] }}"
+                data-panel="{{ $table['key'] }}"
+            >
+                <div class="sr-panel-head">
+                    <div>
+                        <h2 class="sr-panel-title">{{ $table['title'] }}</h2>
+                        <p class="sr-panel-sub">{{ $table['subtitle'] }}</p>
+                    </div>
+                    <span class="sr-chip sr-chip-{{ $table['tone'] }}">
+                        {{ number_format($paginator->total()) }} {{ \Illuminate\Support\Str::plural('record', $paginator->total()) }}
+                    </span>
+                </div>
+
+                <div class="sr-table-wrap">
+                    <table class="sr-table">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th class="sr-col-index">#</th>
                             <th>Member</th>
-                            <th>Amount</th>
-                            <th>Fiscal Year</th>
-                            <th>Year</th>
-                            <th>Month</th>
-                            <th>Transaction Date</th>
+                            <th class="sr-col-amount">Amount</th>
+                            <th>Period</th>
+                            <th>Date</th>
                             <th>Description</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th class="sr-col-action">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($savings as $transaction)
-                            <tr>
-                                <td>{{ $savings->firstItem() + $loop->index }}</td>
-                                <td>{{ $transaction->account?->member?->name ?? 'N/A' }}</td>
-                                <td class="report-amount">
-                                    {{ number_format((float) $transaction->amount, 2) }}
+                        @forelse($paginator as $transaction)
+                            @php
+                                $memberName = $transaction->account?->member?->name;
+                                $isActive = $transaction->status === $activeValue;
+                                $initials = $memberName
+                                    ? collect(preg_split('/\s+/', trim($memberName)))
+                                        ->filter()
+                                        ->take(2)
+                                        ->map(fn ($part) => mb_strtoupper(mb_substr($part, 0, 1)))
+                                        ->implode('')
+                                    : '?';
+                            @endphp
+
+                            <tr class="{{ $isActive ? '' : 'is-cancelled' }}">
+                                <td class="sr-col-index" data-label="#">{{ $paginator->firstItem() + $loop->index }}</td>
+
+                                <td data-label="Member">
+                                    <div class="sr-member">
+                                        <span class="sr-avatar sr-avatar-{{ $table['tone'] }}">{{ $initials }}</span>
+                                        <span class="sr-member-name">{{ $memberName ?? 'N/A' }}</span>
+                                    </div>
                                 </td>
-                                <td>{{ $transaction->fiscalYear->name }}</td>
-                                <td>{{ $transaction->year->name }}</td>
-                                <td>{{ $transaction->month->name }}</td>
-                                <td>{{ $transaction->transaction_date_nepali }}</td>
-                                <td>{{ $transaction->description ?? '-' }}</td>
-                                <td>
-                                    @if($transaction->status === \Saving\Enum\SavingTransactionStatusEnum::ACTIVE->value)
-                                        <span class="report-status report-status-active">Active</span>
-                                    @else
-                                        <span class="report-status report-status-cancelled">
-                                                {{ $transaction->status }}
-                                            </span>
-                                    @endif
+
+                                <td class="sr-col-amount" data-label="Amount">
+                                    <span class="sr-amount sr-amount-{{ $table['tone'] }}">
+                                        {{ $table['sign'] }} Rs. {{ number_format((float) $transaction->amount, 2) }}
+                                    </span>
                                 </td>
-                                <td>
-                                    @if($transaction->status === \Saving\Enum\SavingTransactionStatusEnum::ACTIVE->value)
+
+                                <td data-label="Period">
+                                    <div class="sr-period">
+                                        <span>{{ $transaction->month?->name ?? '-' }} {{ $transaction->year?->name }}</span>
+                                        <small>{{ $transaction->fiscalYear?->name ?? '-' }}</small>
+                                    </div>
+                                </td>
+
+                                <td data-label="Date" class="sr-nowrap">{{ $transaction->transaction_date_nepali ?: '-' }}</td>
+
+                                <td data-label="Description">
+                                    <span class="sr-desc" title="{{ $transaction->description }}">{{ $transaction->description ?: '-' }}</span>
+                                </td>
+
+                                <td data-label="Status">
+                                    <span class="sr-status {{ $isActive ? 'sr-status-active' : 'sr-status-cancelled' }}">
+                                        {{ $isActive ? 'Active' : ucfirst((string) $transaction->status) }}
+                                    </span>
+                                </td>
+
+                                <td class="sr-col-action" data-label="Action">
+                                    @if($isActive)
                                         <form
                                             method="POST"
                                             action="{{ route('saving-reports.cancel', $transaction->getKey()) }}"
                                             class="cancel-transaction-form"
-                                            data-type="savings deposit"
+                                            data-type="{{ $table['type'] }}"
                                             data-amount="{{ number_format((float) $transaction->amount, 2) }}"
                                         >
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="cancellation_reason" class="cancellation-reason">
-                                            <button type="submit" class="report-btn report-btn-danger">
+                                            <button type="submit" class="sr-btn sr-btn-danger sr-btn-sm">
+                                                <i class="bi bi-x-circle"></i>
                                                 Cancel
                                             </button>
                                         </form>
                                     @else
-                                        <span class="text-muted">No action</span>
+                                        <span class="sr-muted">No action</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="10" class="report-empty">
-                                    No savings deposits found.
+                            <tr class="sr-empty-row">
+                                <td colspan="8">
+                                    <div class="sr-empty">
+                                        <span class="sr-empty-icon"><i class="bi bi-inbox"></i></span>
+                                        <strong>{{ $table['empty'] }}</strong>
+                                        <span>Try changing the filters or reset them to see everything.</span>
+                                        @if($activeFilters > 0)
+                                            <a href="{{ route('saving-reports.index') }}" class="sr-btn sr-btn-ghost sr-btn-sm">Reset filters</a>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -202,105 +301,60 @@
                     </table>
                 </div>
 
-                <div class="report-pagination">
-                    {{ $savings->appends(request()->query())->links() }}
-                </div>
-            </div>
-        </div>
-
-        <div class="card report-card">
-            <div class="report-card-header">
-                <div>
-                    <h5 class="mb-0">Withdrawals</h5>
-                    <small class="report-subtitle">Withdrawal transaction records</small>
-                </div>
-                <span class="report-count report-count-withdrawal">
-                    {{ $withdrawals->total() }} records
-                </span>
-            </div>
-
-            <div class="report-card-body">
-                <div class="report-table-wrap">
-                    <table class="report-table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Member</th>
-                            <th>Amount</th>
-                            <th>Fiscal Year</th>
-                            <th>Year</th>
-                            <th>Month</th>
-                            <th>Transaction Date</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($withdrawals as $transaction)
-                            <tr>
-                                <td>{{ $withdrawals->firstItem() + $loop->index }}</td>
-                                <td>{{ $transaction->account?->member?->name ?? 'N/A' }}</td>
-                                <td class="report-amount">
-                                    {{ number_format((float) $transaction->amount, 2) }}
-                                </td>
-                                <td>{{ $transaction->fiscalYear->name }}</td>
-                                <td>{{ $transaction->year->name }}</td>
-                                <td>{{ $transaction->month->name }}</td>
-                                <td>{{ $transaction->transaction_date_nepali }}</td>
-                                <td>{{ $transaction->description ?? '-' }}</td>
-                                <td>
-                                    @if($transaction->status === \Saving\Enum\SavingTransactionStatusEnum::ACTIVE->value)
-                                        <span class="report-status report-status-active">Active</span>
-                                    @else
-                                        <span class="report-status report-status-cancelled">
-                                                {{ $transaction->status }}
-                                            </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($transaction->status === \Saving\Enum\SavingTransactionStatusEnum::ACTIVE->value)
-                                        <form
-                                            method="POST"
-                                            action="{{ route('saving-reports.cancel', $transaction->getKey()) }}"
-                                            class="cancel-transaction-form"
-                                            data-type="withdrawal"
-                                            data-amount="{{ number_format((float) $transaction->amount, 2) }}"
-                                        >
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="cancellation_reason" class="cancellation-reason">
-                                            <button type="submit" class="report-btn report-btn-danger">
-                                                Cancel
-                                            </button>
-                                        </form>
-                                    @else
-                                        <span class="text-muted">No action</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="report-empty">
-                                    No withdrawals found.
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="report-pagination">
-                    {{ $withdrawals->appends(request()->query())->links() }}
-                </div>
-            </div>
-        </div>
+                @if($paginator->hasPages())
+                    <div class="sr-pagination">
+                        <p class="sr-pagination-info">
+                            Showing {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} of {{ number_format($paginator->total()) }}
+                        </p>
+                        {{ $paginator->appends(request()->query())->links() }}
+                    </div>
+                @endif
+            </section>
+        @endforeach
 
     </div>
 @endsection
 
 @push('scripts')
     <script>
+        (() => {
+            const storageKey = 'saving-reports-tab';
+            const tabs = document.querySelectorAll('.sr-tab');
+            const panels = document.querySelectorAll('.sr-table-panel');
+
+            const activateTab = (key) => {
+                tabs.forEach((tab) => {
+                    const active = tab.dataset.tab === key;
+                    tab.classList.toggle('is-active', active);
+                    tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+
+                panels.forEach((panel) => {
+                    panel.classList.toggle('is-hidden', panel.dataset.panel !== key);
+                });
+
+                try {
+                    localStorage.setItem(storageKey, key);
+                } catch (error) {
+                }
+            };
+
+            tabs.forEach((tab) => {
+                tab.addEventListener('click', () => activateTab(tab.dataset.tab));
+            });
+
+            let saved = null;
+
+            try {
+                saved = localStorage.getItem(storageKey);
+            } catch (error) {
+            }
+
+            if (saved && document.querySelector(`.sr-tab[data-tab="${saved}"]`)) {
+                activateTab(saved);
+            }
+        })();
+
         document.querySelectorAll('.cancel-transaction-form').forEach((form) => {
             form.addEventListener('submit', function (event) {
                 if (form.dataset.confirmed === 'true') {
@@ -326,20 +380,22 @@
                 }
 
                 Swal.fire({
-                    title: 'Cancel transaction?',
-                    text: `Cancel this ${form.dataset.type} of Rs. ${form.dataset.amount}?`,
+                    title: 'Cancel this transaction?',
+                    text: `This will cancel the ${form.dataset.type} of Rs. ${form.dataset.amount}. This cannot be undone.`,
                     input: 'textarea',
                     inputLabel: 'Reason for cancellation',
-                    inputPlaceholder: 'Enter the reason for cancelling this transaction...',
+                    inputPlaceholder: 'Why is this transaction being cancelled?',
                     inputAttributes: {
                         'aria-label': 'Reason for cancellation',
                         'maxlength': 1000
                     },
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, cancel it',
-                    cancelButtonText: 'Keep transaction',
-                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'Cancel transaction',
+                    cancelButtonText: 'Keep it',
+                    confirmButtonColor: '#b42318',
+                    cancelButtonColor: '#5b6b60',
                     reverseButtons: true,
+                    focusCancel: false,
                     icon: 'warning',
                     inputValidator: (value) => {
                         if (!value || !value.trim()) {
