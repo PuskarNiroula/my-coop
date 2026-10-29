@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
 use App\Http\Controllers\FiscalYearSetupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InterestController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\Savings\DepositController;
 use App\Http\Controllers\Savings\SavingController;
@@ -111,4 +112,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{reportId}/cancel','cancel')->name('saving-reports.cancel');
     });
 
+    Route::controller(InterestController::class)->prefix('/savings/interest')->group(function () {
+        Route::get('/','index')->name('savings.interests.index');
+    });
 });
