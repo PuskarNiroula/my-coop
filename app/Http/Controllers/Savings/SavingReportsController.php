@@ -58,7 +58,7 @@ class SavingReportsController extends Controller
 
         $savings = $buildQuery(
             [SavingTransactionsTypeEnum::SAVINGS_DEPOSIT->value,SavingTransactionsTypeEnum::OPENING_BALANCE->value],
-        )->paginate(10, ['*'], 'savings_page')->withQueryString();
+        )->orderBy('transaction_date')->orderBy('created_at')->paginate(10, ['*'], 'savings_page')->withQueryString();
 
         $withdrawals = $buildQuery(
             [SavingTransactionsTypeEnum::WITHDRAWAL->value]

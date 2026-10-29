@@ -34,8 +34,10 @@ class FiscalYearSetupController extends Controller
         ]);
 
       try {
+          $sequence = FiscalYear::query()->max('sequence') + 1;
           FiscalYear::create([
               'name' => $request->name,
+              'sequence' => $sequence,
               'status' => 'active'
           ]);
           return redirect()->route('fiscal-year.index')->with('success', 'Fiscal Year created successfully.');
@@ -71,5 +73,35 @@ class FiscalYearSetupController extends Controller
             'is_closed' => true
         ]);
         return redirect()->route('fiscal-year.index')->with('success', 'Fiscal Year Marked as Current successfully.');
+    }
+    public function edit(int $id){
+        $fiscalYear = FiscalYear::findOrFail($id);
+        return view('fiscal-year.edit', compact('fiscalYear'));
+    }
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'regex:/^[0-9]{4}\/[0-9]{2}$/',
+                'unique:fiscal_years,name,' . $id . ',fiscal_year_id',
+            ],
+            'sequence_number' => [
+                'required',
+                'integer',
+                'unique:fiscal_years,sequence,' . $id . ',fiscal_year_id',
+            ],
+        ]);
+        try {
+            FiscalYear::findOrFail($id)->update([
+                'name' => $request->name,
+                'sequence' => $request->sequence_number,
+            ]);
+
+            return redirect()->route('fiscal-year.index')->with('success', 'Fiscal Year updated successfully.');
+        }catch (Exception $exception){
+            return redirect()->route('fiscal-year.index')->with('error', $exception->getMessage())->withInput();
+        }
     }
 }

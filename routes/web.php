@@ -79,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{yearId}/deactivate}','deactivate')->name('fiscal-year.deactivate');
         Route::patch('/{yearId}/mark-as-current','markCurrent')->name('fiscal-year.mark-current');
         Route::patch('/{yearId}/close','close')->name('fiscal-year.close');
+        Route::get('/{yearId}/edit','edit')->name('fiscal-year.edit');
+        Route::put('/{yearId}/update','update')->name('fiscal-year.update');
     });
 
     Route::controller(YearSetupController::class)->prefix('/year-setup')->group(function () {
