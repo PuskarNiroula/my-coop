@@ -26,7 +26,7 @@
                     </span>
 
                     <form
-                        action=""
+                        action="{{route('savings.get-statement')}}"
                         method="POST"
                         id="calculate-interest-form"
                     >
@@ -34,7 +34,7 @@
 
                         <button type="submit" class="member-add-btn">
                             <i class="fa-solid fa-calculator" aria-hidden="true"></i>
-                            <span>Calculate Interest</span>
+                            <span style="color:white">Generate Semi Annual Statement</span>
                         </button>
                     </form>
                 </div>
@@ -56,7 +56,7 @@
                 event.preventDefault();
 
                 Swal.fire({
-                    title: 'Calculate Interest?',
+                    title: 'Generate Statement?',
                     text: 'This is a resource-intensive process. Are you sure you want to calculate interest for {{ $month }}?',
                     icon: 'warning',
                     showCancelButton: true,

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static where(string $string, true $true)
  * @method static get(string $string, string $string1)
+ * @method static findOrFail(mixed $monthId)
  */
 class Month extends Model
 {
