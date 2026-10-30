@@ -37,6 +37,7 @@
                 ['label' => 'New Deposit', 'url' => '/deposits/create'],
                 ['label' => 'Withdrawals', 'url' => '/withdrawals/create'],
                 ['label' => 'Savings Reports', 'url' => '/savings/reports'],
+                ['label' => 'Interest Calculation', 'url' => '/savings/interest'],
             ],
         ],
         [

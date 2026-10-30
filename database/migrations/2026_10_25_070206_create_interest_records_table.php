@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('interest_distributions', function (Blueprint $table) {
+        Schema::create('interest_records', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('start_month_id')
@@ -31,6 +31,8 @@ return new class extends Migration
                 ->constrained('fiscal_years', 'fiscal_year_id')
                 ->restrictOnDelete();
 
+            $table->float('total_interest');
+
             $table->string('status', 20)->default('active');
 
             $table->timestamps();
@@ -44,6 +46,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('interest_distributions');
+        Schema::dropIfExists('interest_records');
     }
 };

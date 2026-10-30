@@ -36,7 +36,8 @@
             "Saving\\": "core/Saving",
             "AccountTypes\\": "core/AccountTypes",
             "Deposit\\": "core/Deposit",
-            "Common\\": "core/Common"
+            "Common\\": "core/Common",
+            "Interest\\": "core/Interest"
         }
     },
     "autoload-dev": {

@@ -29,8 +29,8 @@ class DayBookService
       if( $lastDayBookDate && $lastDayBookDate->date_english>=$engDate){
           throw new DateBeforeLastDayBookDateException($date,$lastDayBookDate->date_nepali);
       }
-      if($engDate > date('Y-m-d'))
-          throw new FutureDateException();
+//      if($engDate > date('Y-m-d'))
+//          throw new FutureDateException();
 
       DayBook::create([
           'date_english'=>$engDate,
