@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\MembersImport;
+use App\Models\AccountType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,15 +26,18 @@ class MemberController extends Controller
 
     public function createMember(): View
     {
-        return view("member.create");
+        $accountTypes = AccountType::where('status','active')
+            ->orderBy('account_type_id')
+            ->pluck('name','account_type_id');
+        return view("member.create",compact("accountTypes"));
     }
 
     public function storeMember(StoreMemberRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $dto = MemberCreateDto::fromArray($validated);
-
         try {
+            $validated = $request->validated();
+            $dto = MemberCreateDto::fromArray($validated);
+
             $this->memberService->create($dto);
 
             return redirect()
@@ -45,7 +49,7 @@ class MemberController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Unable to create member. Please check the details and try again.');
+                ->with('error', 'Unable to create member. Please try again.');
         }
     }
 

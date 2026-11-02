@@ -15,6 +15,10 @@ class MemberAccount extends Model
     protected $table = 'member_accounts';
     protected $primaryKey = 'member_account_id';
 
+    public function getId(){
+        return $this->member_account_id;
+    }
+
     protected $guarded = [];
 
     public function member(): BelongsTo{

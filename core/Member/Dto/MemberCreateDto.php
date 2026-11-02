@@ -22,6 +22,8 @@ class MemberCreateDto
         public ?UploadedFile $citizenship_front,
         public ?UploadedFile $citizenship_back,
         public ?UploadedFile $image,
+        public int $account_type,
+        public float $opening_balance,
     ) {}
 
     public static function fromArray(array $data): self
@@ -32,7 +34,7 @@ class MemberCreateDto
             father_name: $data['father_name'] ?? null,
             mother_name: $data['mother_name'] ?? null,
             address: $data['address'],
-            dob: $data['dob'] ?? null,
+            dob: $data['dob_nepali'] ?? null,
             gender: $data['gender'],
             citizenship_number: $data['citizenship_number'],
             legal_aid_type: $data['legal_aid_type'],
@@ -42,6 +44,8 @@ class MemberCreateDto
             citizenship_front: $data['citizenship_front'] ?? null,
             citizenship_back: $data['citizenship_back'] ?? null,
             image: $data['image'] ?? null,
+            account_type:(int)$data['account_type'],
+            opening_balance: $data['opening_balance'],
         );
     }
 }
