@@ -51,7 +51,7 @@
                 <thead>
                 <tr>
                     <th>SN</th>
-                    <th>Account Number</th>
+                    <th>Account Type</th>
                     <th>Member Name</th>
                     <th>Phone</th>
                     <th>Balance</th>
@@ -67,7 +67,7 @@
                         <td>{{ $savings->firstItem() + $loop->index }}</td>
 
                         <td class="member-name">
-                            {{ $saving->account_number }}
+                            {{ $saving->accountType->name }}
                         </td>
 
                         <td>
