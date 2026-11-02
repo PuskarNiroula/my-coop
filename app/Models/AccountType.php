@@ -17,6 +17,7 @@ class AccountType extends Model
     protected $primaryKey = "account_type_id";
     public $timestamps = false;
 
+
     protected $fillable = ['name','interest_rate','interest_payout_frequency','status'];
 
     public function activate():void{

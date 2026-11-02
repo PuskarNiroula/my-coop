@@ -24,16 +24,7 @@
             'key' => 'savings',
             'items' => [
                 ['label' => 'Savings Dashboard', 'url' => '/savings'],
-                [
-                    'label' => 'Saving Accounts',
-                    'url' => '/savings/accounts',
-                    'key' => 'saving-accounts',
-                    'children' => [
-                        ['label' => 'View Accounts', 'url' => '/savings/accounts'],
-                        ['label' => 'Create Account', 'url' => '/savings/accounts/create'],
-                        ['label' => 'Import Accounts', 'url' => '/savings/accounts/import'],
-                    ],
-                ],
+                ['label' => 'Accounts', 'url' => '/savings/accounts'],
                 ['label' => 'New Deposit', 'url' => '/deposits/create'],
                 ['label' => 'Withdrawals', 'url' => '/withdrawals/create'],
                 ['label' => 'Savings Reports', 'url' => '/savings/reports'],

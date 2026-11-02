@@ -29,11 +29,16 @@ class Member extends Model
         'legal_aid_name',
         'legal_aid_citizenship_number',
         "birth_date_nepali",
+        "birth_date_english",
         "profile_image"
     ];
     protected $table = 'members';
     protected $primaryKey = 'member_id';
 
+
+    public function getId():?int{
+        return $this->member_id;
+    }
 
     public function savingAccount():hasOne{
         return $this->hasOne(MemberAccount::class,"member_id","member_id");
