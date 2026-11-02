@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DayBook;
+use DayBook\Enum\DayBookStatusEnum;
 use DayBook\Exception\DateBeforeLastDayBookDateException;
 use DayBook\Exception\DayBookAlreadyOpenedException;
 use DayBook\Exception\FutureDateException;
@@ -45,4 +46,5 @@ class DayBookController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 }

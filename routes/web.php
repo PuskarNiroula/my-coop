@@ -114,6 +114,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(InterestController::class)->prefix('/savings/interest')->group(function () {
         Route::get('/','index')->name('savings.interests.index');
-        Route::post('get-statement','getStatement')->name('savings.get-statement');
+        Route::get('/get-statement','getStatement')->name('savings.get-statement');
+        Route::get('/calculate','calculateInterest')->name('savings.interest.calculate');
+        Route::get('{recordId}/get-transaction','getTransaction')->name('savings.interest.get-transaction');
     });
 });

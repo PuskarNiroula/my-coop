@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('year_id');
             $table->unsignedBigInteger('month_id');
             $table->unsignedBigInteger('member_account_id');
-            $table->unsignedBigInteger('interest_distribution_id')->nullable();
+            $table->unsignedBigInteger('interest_record_id')->nullable();
             $table->float('opening_balance');
             $table->float('closing_balance');
             $table->string('status');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreign('year_id')->references('year_id')->on('years');
             $table->foreign('month_id')->references('month_id')->on('months');
             $table->foreign('member_account_id')->references('member_account_id')->on('member_accounts');
-            $table->foreign('interest_distribution_id')->references('id')->on('interest_distributions');
+            $table->foreign('interest_record_id')->references('interest_record_id')->on('interest_records');
         });
     }
 
