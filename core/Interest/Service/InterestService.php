@@ -4,17 +4,20 @@ namespace Interest\Service;
 
 use App\Models\InterestDistribution;
 use App\Models\InterestRecord;
+use App\Models\MemberAccount;
 use App\Models\Month;
 use App\Models\SavingMonthlyStatement;
 use App\Models\SavingTransaction;
 use App\Models\Year;
 use App\ViewModel\InterestDistributionArrayViewModel;
 use App\ViewModel\InterestDistributionViewModel;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Interest\Dto\MonthlyStatementDto;
 use Interest\Dto\SemiAnnualReportDto;
 use Interest\Dto\SemiAnnualStatementCreateDto;
+use Interest\Enum\InterestRecordStatusEnum;
 use Interest\Enum\SavingStatementStatusEnum;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Exception;
@@ -58,6 +61,7 @@ class InterestService
     public function getYearIdAndMonthIdForInterestCalculation(): array
     {
         $lastDistribution = InterestRecord::query()
+            ->where('status',InterestRecordStatusEnum::ACTIVE->value)
             ->latest('created_at')
             ->first();
 
@@ -249,6 +253,20 @@ class InterestService
                 'status' => 'active',
             ]);
 
+            SavingMonthlyStatement::query()
+                ->where('status', SavingStatementStatusEnum::ACTIVE->value)
+                ->where(function ($query) use ($periods) {
+                    foreach ($periods as $period) {
+                        $query->orWhere(function ($subQuery) use ($period) {
+                            $subQuery->where('year_id', $period['year_id'])
+                                ->where('month_id', $period['month_id']);
+                        });
+                    }
+                })
+                ->update([
+                    'interest_record_id' => $interestRecord->interest_record_id,
+                ]);
+
             $totalInterest = 0;
 
             $nextMonthId = $dto->endMonthId == 12
@@ -274,6 +292,7 @@ class InterestService
                         / 12;
 
                     $accountInterest += round($monthlyInterest, 2);
+
                 }
 
                 $accountInterest = round($accountInterest, 2);
@@ -305,6 +324,7 @@ class InterestService
                         'transaction_date_nepali' => getCurrentDayBook()->date_nepali,
                         'fiscal_year_id' => getCurrentFiscalYear()->fiscal_year_id,
                         'status' => 'active',
+                        'interest_record_id' => $interestRecord->interest_record_id,
                     ]);
                 }
 
@@ -348,6 +368,9 @@ class InterestService
         return $vm;
     }
 
+    /**
+     * @throws Exception
+     */
     private function verifyDate(): void
     {
         $dayBook = getCurrentDayBook();
@@ -414,6 +437,9 @@ class InterestService
     }
 
 
+    /**
+     * @throws Exception
+     */
     private function getSemiAnnualStatementCreateDto(): SemiAnnualStatementCreateDto
     {
         $dates = $this->getYearIdAndMonthIdForInterestCalculation();
@@ -580,4 +606,63 @@ class InterestService
 
         return $reportDto;
     }
+
+
+    /**
+     * @throws Throwable
+     */
+    public function cancelTransaction(int $id): void
+    {
+        $record = InterestRecord::find($id);
+
+        if (!$record) {
+            throw new RecordNotFoundException();
+        }
+        if($record->status == InterestRecordStatusEnum::INACTIVE->value)
+            return;
+
+        DB::beginTransaction();
+
+        try {
+            $record->status = InterestRecordStatusEnum::INACTIVE->value;
+            $record->save();
+
+            InterestDistribution::query()
+                ->where('interest_record_id', $record->getId())
+                ->update([
+                    'status' => InterestRecordStatusEnum::INACTIVE->value,
+                ]);
+
+            SavingMonthlyStatement::query()
+                ->where('interest_record_id', $record->getId())
+                ->update([
+                    'status' => InterestRecordStatusEnum::INACTIVE->value,
+                ]);
+
+            $transactions = SavingTransaction::query()
+                ->where('interest_record_id', $record->getId())
+                ->where('status', 'active')
+                ->get();
+
+            foreach ($transactions as $transaction) {
+                $memberAccount = MemberAccount::query()
+                    ->where('member_account_id', $transaction->account_id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                $memberAccount->decrement('balance', $transaction->amount);
+
+                $transaction->update([
+                    'status' => InterestRecordStatusEnum::INACTIVE->value,
+                ]);
+            }
+
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+
 }

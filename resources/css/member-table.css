@@ -534,3 +534,34 @@
         transform: none;
     }
 }
+ .status-badge {
+     display: inline-block;
+     padding: 5px 12px;
+     border-radius: 20px;
+     font-size: 12px;
+     font-weight: 600;
+ }
+
+.status-active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-inactive {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.members-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .members-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

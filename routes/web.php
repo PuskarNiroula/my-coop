@@ -118,5 +118,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-statement','getStatement')->name('savings.get-statement');
         Route::get('/calculate','calculateInterest')->name('savings.interest.calculate');
         Route::get('{recordId}/get-transaction','getTransaction')->name('savings.interest.get-transaction');
+        Route::put('{recordId}/cancel','cancelInterestRecord')->name('interest.cancel');
     });
 });

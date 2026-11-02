@@ -65,10 +65,15 @@
 
                             <td>
                                 <a href="{{ route('savings.interest.get-transaction', $record->interest_record_id) }}"
-                                   class="member-action-btn">
+                                   class="btn-primary">
                                     <i class="fa-solid fa-eye" aria-hidden="true"></i>
                                     View Transactions
                                 </a>
+                                @if($record->status =="active")
+                                <a class="btn-danger" onclick="cancelTransaction({{$record->getId()}})">
+                                    Cancel Transaction
+                                </a>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -104,37 +109,56 @@
 @push('styles')
     @vite(['resources/css/member-table.css'])
 
-    <style>
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+@endpush
 
-        .status-active {
-            background: #dcfce7;
-            color: #15803d;
-        }
+@push('scripts')
 
-        .status-inactive {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
+    <script>
+            function cancelTransaction(id) {
+            Swal.fire({
+                title: 'Cancel Transaction?',
+                text: 'Are you sure you want to cancel this transaction?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, Cancel It',
+                cancelButtonText: 'No, Keep It'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/savings/interest/${id}/cancel`, {
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.data.message);
+                            }
 
-        .members-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
+                            return response.json();
+                        })
+                        .then(data => {
+                            Swal.fire({
+                                title: 'Cancelled!',
+                                text: data.message,
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.message,
+                                icon: 'error'
+                            });
+                        });
+                }
+            });
         }
+    </script>
 
-        @media (max-width: 600px) {
-            .members-heading {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
-    </style>
 @endpush

@@ -14,6 +14,10 @@ class InterestRecord extends Model
     protected $primaryKey = 'interest_record_id';
     protected $guarded = [];
 
+    public function getId():?int{
+        return $this->interest_record_id;
+    }
+
     public function startMonth():BelongsTo{
         return $this->belongsTo(Month::class, 'start_month_id', 'month_id','months');
     }
