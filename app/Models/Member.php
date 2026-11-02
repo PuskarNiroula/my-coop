@@ -44,4 +44,10 @@ class Member extends Model
         return $this->hasOne(MemberAccount::class,"member_id","member_id");
     }
 
+    public function getNepaliBirthDate():?string{
+        return $this->birth_date_nepali;
+    }
+    public function getEnglishBirthDate(){
+        return $this->birth_date_eng;
+    }
 }

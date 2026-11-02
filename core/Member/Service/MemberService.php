@@ -9,6 +9,7 @@ use DayBook\Exception\NoOpenDayBookException;
 use DayBook\Helper\DayBookHelper;
 use Exception;
 use Member\Dto\ImportMemberDto;
+use Member\Dto\UpdateMemberDto;
 use Member\Enum\GenderEnum;
 use Member\Dto\MemberCreateDto;
 use App\Models\Member;
@@ -175,7 +176,110 @@ class MemberService
 
         }
 
-        private function getCurrentNepaliMonth(string $date):int{
+
+    public function update( UpdateMemberDto $dto): Member
+    {
+        $storedFiles = [];
+        $oldFiles = [];
+
+
+        if (!in_array($dto->gender, GenderEnum::values())) {
+            throw new GenderNotAllowedException();
+        }
+
+
+        try {
+
+            $member = Member::findOrFail($dto->id);
+
+            $citizenshipFront = $member->citizenship_front;
+            $citizenshipBack = $member->citizenship_back;
+            $image = $member->image;
+
+            if ($dto->citizenship_front) {
+                $newFile = $dto->citizenship_front->store('members/citizenship', 'public');
+
+                $storedFiles[] = $newFile;
+
+                if ($citizenshipFront) {
+                    $oldFiles[] = $citizenshipFront;
+                }
+
+                $citizenshipFront = $newFile;
+            }
+
+            if ($dto->citizenship_back) {
+                $newFile = $dto->citizenship_back->store('members/citizenship', 'public');
+
+                $storedFiles[] = $newFile;
+
+                if ($citizenshipBack) {
+                    $oldFiles[] = $citizenshipBack;
+                }
+
+                $citizenshipBack = $newFile;
+            }
+
+            if ($dto->image) {
+                $newFile = $dto->image->store('members/photos', 'public');
+
+                $storedFiles[] = $newFile;
+
+                if ($image) {
+                    $oldFiles[] = $image;
+                }
+
+                $image = $newFile;
+            }
+
+            $updatedMember = DB::transaction(function () use (
+                $member,
+                $dto,
+                $citizenshipFront,
+                $citizenshipBack,
+                $image
+            ) {
+                $member->update([
+                    'name' => $dto->name,
+                    'phone' => $dto->phone,
+                    'father_name' => $dto->father_name,
+                    'mother_name' => $dto->mother_name,
+                    'address' => $dto->address,
+                    'birth_date_nepali' => $dto->dob,
+                    'birth_date_eng' => toEnglishDate($dto->dob),
+                    'gender' => $dto->gender,
+                    'citizenship_number' => $dto->citizenship_number,
+                    'legal_aid_type' => $dto->legal_aid_type,
+                    'legal_aid_name' => $dto->legal_aid_name,
+                    'legal_aid_relation' => $dto->legal_aid_relation,
+                    'legal_aid_citizenship_number' => $dto->legal_aid_citizenship_number,
+                    'citizenship_front' => $citizenshipFront,
+                    'citizenship_back' => $citizenshipBack,
+                    'image' => $image,
+                ]);
+
+                return $member->fresh();
+            });
+
+            foreach ($oldFiles as $file) {
+                Storage::disk('public')->delete($file);
+            }
+
+            return $updatedMember;
+
+        } catch (Throwable $exception) {
+
+            foreach ($storedFiles as $file) {
+                Storage::disk('public')->delete($file);
+            }
+
+            throw $exception;
+        }
+    }
+
+
+
+    private function getCurrentNepaliMonth(string $date):int{
             $parts = explode('-', $date);
             return (int) $parts[1];
         }

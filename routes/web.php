@@ -38,7 +38,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/import', 'import')->name('members.import');
         Route::post('/import', 'importMembers')->name('members.import.store');
         Route::get('/', 'index')->name('members.index');
-        Route::get('/edit/{member}', 'edit')->name('member.edit');
+        Route::get('/{member}/edit', 'edit')->name('member.edit');
+        Route::put('/{member}/update', 'update')->name('member.update');
     });
 
     Route::controller(SavingController::class)->prefix('/savings')->group(function () {Route::get('/','index')->name('savings.index');
