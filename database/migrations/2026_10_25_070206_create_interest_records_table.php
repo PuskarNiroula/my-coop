@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interest_records', function (Blueprint $table) {
-            $table->id();
+            $table->id('interest_record_id');
 
             $table->foreignId('start_month_id')
                 ->constrained('months', 'month_id')

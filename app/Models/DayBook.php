@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static create(array $array)
  * @method static orderByDesc(string $string)
  * @method static where(string $string, true $true)
+ * @method static findOrFail(int $id)
  * @property mixed $date_english
  * @property mixed $date_nepali
  * @property mixed $status

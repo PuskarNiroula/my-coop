@@ -140,22 +140,33 @@
         <div class="report-action-card">
             <div class="report-action-content">
                 <h3>Proceed to Interest Calculation</h3>
-                <p>Review the statement above carefully. Once confirmed, interest will be calculated based on these balances.</p>
+                <p>
+                    Review the statement above carefully. Once confirmed, interest will be calculated based on these balances.
+                </p>
             </div>
 
-            <form method="POST" action="" onsubmit="return confirm('Are you sure you want to proceed with interest calculation?');">
-                @csrf
+            <div class="report-action-buttons">
                 <button type="button"
-                        class="report-proceed-btn"
-                        onclick="confirmInterestCalculation()"
-                    @disabled(!$statements->count())>
-                    Proceed to Interest Calculation
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                        class="report-cancel-btn"
+                        onclick="confirmStatementCancellation()">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancel Statement
                 </button>
-            </form>
+
+                <form method="get" action="{{ route('savings.interest.calculate') }}" id="interestCalculationForm">
+                    <button type="button"
+                            class="report-proceed-btn"
+                            onclick="confirmInterestCalculation()"
+                        @disabled(!$statements->count())>
+                        Proceed to Interest Calculation
+
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 @endsection
@@ -166,6 +177,8 @@
 @push('scripts')
     <script>
         function confirmInterestCalculation() {
+            let form = document.getElementById('interestCalculationForm');
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'Do you want to proceed with interest calculation?',
@@ -177,7 +190,7 @@
                 cancelButtonColor: '#6c757d'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/savings/interest/calculate';
+                    form.submit();
                 }
             });
         }

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\DayBook;
+use DayBook\Enum\DayBookStatusEnum;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -56,5 +57,12 @@ class DayBooksTable extends Component
         return view('components.day-books-table', [
             'dayBooks' => $dayBooks,
         ]);
+    }
+    public function confirmClose(int $id)
+    {
+        $dayBook = DayBook::findOrFail($id);
+        $dayBook->status = DayBookStatusEnum::CLOSED->value;
+        $dayBook->save();
+        return view('components.day-books-table')->with('success','day book closed');
     }
 }
