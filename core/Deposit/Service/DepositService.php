@@ -4,7 +4,6 @@ namespace Deposit\Service;
 
 use App\Models\Member;
 use App\Models\MemberAccount;
-use App\Models\Month;
 use App\Models\SavingTransaction;
 use Deposit\Dto\CreateDepositDto;
 use Exception;
@@ -23,7 +22,7 @@ class DepositService
     public function createDeposit(CreateDepositDto $dto): void
     {
         $this->validateMember($dto->memberId);
-        $this->validateMonth($dto->monthId);
+        validateMonth($dto->monthId);
 
         $year = getCurrentYear();
         $fiscalYear = getCurrentFiscalYear();
@@ -67,12 +66,7 @@ class DepositService
     /**
      * @throws Exception
      */
-    private function validateMonth(int $monthId): void
-    {
-        if (!Month::query()->where('month_id', $monthId)->exists()) {
-            throw new Exception('Please select a valid month for deposit.');
-        }
-    }
+
 
     /**
      * @throws Exception

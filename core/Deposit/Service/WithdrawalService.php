@@ -27,7 +27,7 @@ class WithdrawalService
         }
 
         $this->validateMember($dto->memberId);
-        $this->validateMonth($dto->monthId);
+        validateMonth($dto->monthId);
 
         $year = getCurrentYear();
         $fiscalYear = getCurrentFiscalYear();
@@ -78,12 +78,7 @@ class WithdrawalService
     /**
      * @throws Exception
      */
-    private function validateMonth(int $monthId): void
-    {
-        if (!Month::query()->where('month_id', $monthId)->exists()) {
-            throw new Exception('Please select a valid month for deposit.');
-        }
-    }
+
 
     /**
      * @throws Exception
@@ -120,5 +115,6 @@ class WithdrawalService
             );
         }
     }
+
 
 }
