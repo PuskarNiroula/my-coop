@@ -1,8 +1,10 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -36,9 +38,29 @@ return new class extends Migration
             $table->string('status', 20)->default('active');
 
             $table->timestamps();
+        });
 
+        DB::statement("
+            ALTER TABLE interest_records
+            ADD active_unique TINYINT
+            GENERATED ALWAYS AS (
+                CASE
+                    WHEN status = 'active' THEN 1
+                    ELSE NULL
+                END
+            ) STORED
+        ");
+
+        Schema::table('interest_records', function (Blueprint $table) {
             $table->unique(
-                ['start_month_id', 'end_month_id', 'start_year_id', 'end_year_id', 'fiscal_year_id'],
+                [
+                    'start_month_id',
+                    'end_month_id',
+                    'start_year_id',
+                    'end_year_id',
+                    'fiscal_year_id',
+                    'active_unique'
+                ],
                 'interest_distribution_period_unique'
             );
         });
