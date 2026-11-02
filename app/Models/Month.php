@@ -14,4 +14,9 @@ class Month extends Model
     protected $table = 'months';
     protected $guarded = [];
     protected $primaryKey = 'month_id';
+
+    public function getId():?int{
+        return $this->month_id;
+    }
+
 }
