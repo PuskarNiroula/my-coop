@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(string[] $array)
  * @method static orderBy(string $string)
+ * @method static where(string $string, string $value)
  * @property mixed $name
  * @property mixed $status
  */

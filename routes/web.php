@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
 use App\Http\Controllers\Expense\ExpenseHeadController;
+use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\MemberController;
@@ -131,5 +132,16 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{recordId}/deactivate','deactivate')->name('expenses.deactivate');
         Route::get('{recordId}/edit','edit')->name('expenses.edit');
         Route::put('{recordId}/update','update')->name('expenses.update');
+    });
+
+    Route::controller(ExpenseRecordController::class)->prefix('/expenses/records')->group(function () {
+        Route::get('/','index')->name('expense.records.index');
+        Route::get('/create','create')->name('expense.records.create');
+        Route::post('/store','store')->name('expense.records.store');
+        Route::patch('{recordId}/activate','activate')->name('expense.records.activate');
+        Route::patch('{recordId}/deactivate','deactivate')->name('expense.records.deactivate');
+        Route::get('{recordId}/edit','edit')->name('expense.records.edit');
+        Route::put('{recordId}/update','update')->name('expense.records.update');
+        Route::get('/reports','report')->name('expense.records.reports');
     });
 });
