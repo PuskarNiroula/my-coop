@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setup;
 
+use App\Http\Controllers\Controller;
 use App\Models\Year;
 use Common\Exceptions\CurrentFiscalYearNotFoundException;
 use Illuminate\Http\Request;
