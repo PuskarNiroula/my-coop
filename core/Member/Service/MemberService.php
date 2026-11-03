@@ -2,6 +2,7 @@
 
 namespace Member\Service;
 
+use AccountTypes\Exception\AccountTypeNotFound;
 use App\Models\AccountType;
 use App\Models\MemberAccount;
 use App\Models\SavingTransaction;
@@ -105,7 +106,8 @@ class MemberService
                     'status'=>SavingTransactionStatusEnum::ACTIVE->value,
                     'year_id'=>getCurrentYear()->getId(),
                     'fiscal_year_id'=>getCurrentFiscalYear()->getId(),
-                    'month_id'=>$this->getCurrentNepaliMonth($date->date_nepali)
+                    'month_id'=>$this->getCurrentNepaliMonth($date->date_nepali),
+                    "day_book_id"=>getCurrentDayBook()->getId()
                 ]);
 
                 return $member;
@@ -148,10 +150,13 @@ class MemberService
                     'status'=>"active",
                 ]);
 
+                $accountType =AccountType::where('name',$dto->account_type)->first();
+                if(!$accountType) throw new AccountTypeNotFound();
+
 
                $account = MemberAccount::create([
                     'member_id' => $member->member_id,
-                    "account_type_id"=>$dto->account_type,
+                    "account_type_id"=>$accountType->getId(),
                     'opened_at' => now(),
                     "closed_at" => null,
                     'status'=>"active",
@@ -170,6 +175,7 @@ class MemberService
                     "amount_after_transaction"=>$dto->opening_balance,
                     "year_id"=>getCurrentYear()->year_id,
                     'fiscal_year_id'=>getCurrentFiscalYear()->fiscal_year_id,
+                    'day_book_id'=>getCurrentDayBook()->getId()
                 ]);
 
             });

@@ -23,6 +23,10 @@ class DayBook extends Model
         'status',
     ];
 
+    public function getId():?int{
+        return $this->day_book_id;
+    }
+
     protected function casts(): array
     {
         return [

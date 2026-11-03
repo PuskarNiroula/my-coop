@@ -25,11 +25,13 @@ return new class extends Migration
             $table->string('description', 255)->nullable();
 
             $table->string('status', 20)->default('PENDING');
+            $table->unsignedBigInteger('day_book_id');
 
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
+            $table->foreign('day_book_id')->references('day_book_id')->on('day_books');
 
             $table->timestamps();
 

@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/','index')->name('daybook.index');
         Route::get('/create','create')->name('daybook.create');
         Route::post('/store','store')->name('daybook.store');
+        Route::get('/{dayBook}/transactions','viewTransaction')->name('daybook.transaction');
         Route::get('/{dayBook}/close','close')->name('daybook.close');
     });
 
