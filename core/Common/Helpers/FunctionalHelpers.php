@@ -41,7 +41,7 @@ if (!function_exists('getCurrentMonth')) {
     /**
      * @throws Exception
      */
-    function getCurrentDayBook(){
+    function getCurrentDayBook():DayBook{
         $dayBook = DayBook::where('status', DayBookStatusEnum::OPEN->value)->first();
         if(!$dayBook) throw new Exception("No opened Day Book");
         return $dayBook;

@@ -70,10 +70,9 @@
             'icon' => 'receipt',
             'key' => 'expenses',
             'items' => [
-                ['label' => 'All Expenses', 'url' => '/expenses/index'],
-                ['label' => 'Add Expense', 'url' => '/expenses/create'],
-                ['label' => 'Expense Categories', 'url' => '/expense-categories'],
-                ['label' => 'Expense Reports', 'url' => '/expenses/reports'],
+                ['label' => 'All Expenses', 'url' => '/expenses/records'],
+                ['label' => 'Add Expense', 'url' => '/expenses/records/create'],
+                ['label' => 'Expense Reports', 'url' => '/expenses/records/reports'],
                 ['label' => 'Expense Heads', 'url' => '/expenses/expense-head'],
 
             ],
