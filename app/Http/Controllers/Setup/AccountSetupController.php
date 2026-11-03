@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setup;
 
 use AccountTypes\Dto\AccountTypeCreateDto;
 use AccountTypes\Dto\AccountTypeUpdateDto;
 use AccountTypes\Enum\InterestFrequencyEnum;
+use AccountTypes\Service\AccountTypeService;
+use App\Http\Controllers\Controller;
 use App\Models\AccountType;
 use Exception;
 use Illuminate\Http\Request;
-use AccountTypes\Service\AccountTypeService;
 use Illuminate\Validation\Rule;
 
 class AccountSetupController extends Controller

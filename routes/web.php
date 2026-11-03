@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AccountSetupController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
-use App\Http\Controllers\FiscalYearSetupController;
+use App\Http\Controllers\Expense\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\MemberController;
@@ -11,7 +10,9 @@ use App\Http\Controllers\Savings\DepositController;
 use App\Http\Controllers\Savings\SavingController;
 use App\Http\Controllers\Savings\SavingReportsController;
 use App\Http\Controllers\Savings\WithdrawalController;
-use App\Http\Controllers\YearSetupController;
+use App\Http\Controllers\Setup\AccountSetupController;
+use App\Http\Controllers\Setup\FiscalYearSetupController;
+use App\Http\Controllers\Setup\YearSetupController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -120,5 +121,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/calculate','calculateInterest')->name('savings.interest.calculate');
         Route::get('{recordId}/get-transaction','getTransaction')->name('savings.interest.get-transaction');
         Route::put('{recordId}/cancel','cancelInterestRecord')->name('interest.cancel');
+    });
+
+    Route::controller(ExpenseController::class)->prefix('/expenses')->group(function () {
+        Route::get('/','index')->name('expenses.index');
+        Route::get('/create','create')->name('expenses.create');
+        Route::post('/store','store')->name('expenses.store');
+        Route::patch('{recordId}/activate','activate')->name('expenses.activate');
+        Route::patch('{recordId}/deactivate','deactivate')->name('expenses.deactivate');
+        Route::get('{recordId}/edit','edit')->name('expenses.edit');
+        Route::put('{recordId}/update','update')->name('expenses.update');
     });
 });
