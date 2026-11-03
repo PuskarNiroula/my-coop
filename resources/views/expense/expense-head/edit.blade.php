@@ -1,26 +1,27 @@
 @extends('layouts.app')
 
 @section('title', 'Edit Expense Head')
-@section('page-title', "Edit Expense Head")
+@section('page-title', 'Edit Expense Head')
 
-@section("content")
+@section('content')
 
     <div class="member-page">
         <div class="page-heading">
             <div>
                 <span class="page-eyebrow">Expense management</span>
-                <h1>Add Expense Head</h1>
-                <p>Create a new expense category for your organization.</p>
+                <h1>Edit Expense Head</h1>
+                <p>Update the expense category details.</p>
             </div>
 
-            <a href="{{ url('/expense-head') }}" class="btn-secondary">
+            <a href="{{ route('expenses.index') }}" class="btn-secondary">
                 <i class="fa-solid fa-arrow-left"></i>
                 Back to Expense Heads
             </a>
         </div>
 
-        <form id="expenseHeadForm" action="{{ route('expenses.store') }}" method="POST" novalidate>
+        <form id="expenseHeadForm" action="{{ route('expenses.update', $expenseHead->getId()) }}" method="POST" novalidate>
             @csrf
+            @method('PUT')
 
             <div class="member-main-column">
 
@@ -31,7 +32,7 @@
                         </div>
                         <div>
                             <h2>Expense Head Information</h2>
-                            <p>Enter the name of the expense head.</p>
+                            <p>Update the name of the expense head.</p>
                         </div>
                     </div>
 
@@ -42,7 +43,7 @@
                                 type="text"
                                 id="name"
                                 name="name"
-                                value="{{ old('name') }}"
+                                value="{{ old('name', $expenseHead->name) }}"
                                 placeholder="Enter expense head name"
                                 required
                                 autofocus
@@ -58,13 +59,11 @@
             </div>
 
             <div class="form-actions">
-
                 <button type="submit" class="btn-primary" id="submitExpenseHead">
                     <i class="fa-solid fa-check"></i>
-                    Save Expense Head
+                    Update Expense Head
                 </button>
             </div>
-
 
         </form>
     </div>
@@ -90,12 +89,12 @@
 
             Swal.fire({
                 title: 'Are you sure?',
-                text: `Do you want to create "${name}" as an expense head?`,
+                text: `Do you want to update the expense head to "${name}"?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Create It',
+                confirmButtonText: 'Yes, Update It',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {

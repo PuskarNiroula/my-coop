@@ -8,7 +8,7 @@ use Exception;
 use Expense\Exception\ExpenseHeadNotFoundException;
 use Expense\Service\ExpenseHeadService;
 use Illuminate\Http\Request;
-class ExpenseController extends Controller
+class ExpenseHeadController extends Controller
 {
 
     public function __construct(
@@ -17,7 +17,8 @@ class ExpenseController extends Controller
 
     }
     public function index(){
-       return view('expense.expense-head.index');
+        $expenseHeads=ExpenseHead::orderBy('name')->paginate(10);
+       return view('expense.expense-head.index',compact('expenseHeads'));
 
     }
     public function create(){
@@ -54,7 +55,7 @@ class ExpenseController extends Controller
             'name'=>'required|string|max:255',
         ]);
 
-        $this->expenseHeadService->updateExpenseHead($id, $request->name);
+        $this->expenseHeadService->updateExpenseHead($request->name,$id);
         return redirect()->route('expenses.index')->with('success', 'Expense Head Updated Successfully');
 
         }catch (Exception $exception){

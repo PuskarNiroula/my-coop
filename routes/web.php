@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DayBookController;
-use App\Http\Controllers\Expense\ExpenseController;
+use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\MemberController;
@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('{recordId}/cancel','cancelInterestRecord')->name('interest.cancel');
     });
 
-    Route::controller(ExpenseController::class)->prefix('/expenses')->group(function () {
+    Route::controller(ExpenseHeadController::class)->prefix('/expenses/expense-head')->group(function () {
         Route::get('/','index')->name('expenses.index');
         Route::get('/create','create')->name('expenses.create');
         Route::post('/store','store')->name('expenses.store');
