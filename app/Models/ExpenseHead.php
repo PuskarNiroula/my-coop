@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static create(string[] $array)
+ * @method static orderBy(string $string)
  * @property mixed $name
  * @property mixed $status
  */
@@ -21,5 +22,9 @@ class ExpenseHead extends Model
         'status',
     ];
 
+
+    public function getId(){
+        return $this->expense_head_id;
+    }
 
 }

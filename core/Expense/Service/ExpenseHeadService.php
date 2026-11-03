@@ -27,11 +27,9 @@ class ExpenseHeadService
      */
     public function updateExpenseHead(string $name, int $id): void
     {
-        if( ExpenseHead::query()->where('id','!=', $id)->where('name', $name)->exists())
+      if(ExpenseHead::query()->where('expense_head_id', '!=', $id)->where('name', $name)->exists())
             throw new DuplicateExpenseHeadException($name);
-        ExpenseHead::query()->where('id', $id)->update([
-            'name' => $name
-        ]);
+      ExpenseHead::query()->where('expense_head_id', $id)->update(['name' => $name]);
     }
 
     /**
