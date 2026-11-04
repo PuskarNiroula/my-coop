@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\DayBook;
 use DayBook\Enum\DayBookStatusEnum;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -64,5 +65,49 @@ class DayBooksTable extends Component
         $dayBook->status = DayBookStatusEnum::CLOSED->value;
         $dayBook->save();
         return view('components.day-books-table')->with('success','day book closed');
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function reopenDayBook($id): void
+    {
+        $latestDayBook = DayBook::latest('day_book_id')->first();
+
+        if (!$latestDayBook || $latestDayBook->day_book_id != $id) {
+            $this->dispatch(
+                'day-book-updated',
+                title: 'Day Book Reopening Failed',
+                message: 'Only the latest day book can be reopened.',
+                icon: 'error'
+            );
+
+            return;
+        }
+
+        if ($latestDayBook->status !== 'closed') {
+            $this->dispatch(
+                'day-book-updated',
+                title: 'Already Open',
+                message: 'This day book is already open.',
+                icon: 'info'
+            );
+
+            return;
+        }
+
+        $latestDayBook->update([
+            'status' => 'open',
+        ]);
+
+        $this->dispatch(
+            'day-book-updated',
+            title: 'Day Book Reopened',
+            message: 'The day book has been reopened successfully.',
+            icon: 'success'
+        );
+
+        $this->resetPage();
     }
 }

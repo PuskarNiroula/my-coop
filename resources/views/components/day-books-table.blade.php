@@ -86,6 +86,7 @@
                         </td>
 
                         <td>
+                        <td>
                             <div class="member-actions">
                                 <a
                                     href="{{ url('/day-books/' . $dayBook->day_book_id . '/transactions') }}"
@@ -96,20 +97,31 @@
                                     <span>Transactions</span>
                                 </a>
 
-                                @if ($dayBook->status === 'open')
+                                @if (strtolower($dayBook->status) === 'open')
                                     <button
                                         type="button"
-                                        onclick =confirmClose({{ $dayBook->day_book_id }})
+                                        onclick="confirmDayBookAction({{ $dayBook->day_book_id }}, 'close')"
                                         wire:loading.attr="disabled"
-                                        wire:target="confirmClose"
                                         class="action-btn deactivate-btn"
                                         title="Close day book"
                                     >
                                         <i class="fa-solid fa-lock"></i>
                                         <span>Close Day</span>
                                     </button>
+                                @else
+                                    <button
+                                        type="button"
+                                        onclick="confirmDayBookAction({{ $dayBook->day_book_id }}, 'reopen')"
+                                        wire:loading.attr="disabled"
+                                        class="action-btn activate-btn"
+                                        title="Reopen day book"
+                                    >
+                                        <i class="fa-solid fa-lock-open"></i>
+                                        <span>Reopen Day</span>
+                                    </button>
                                 @endif
                             </div>
+                        </td>
                         </td>
                     </tr>
                 @empty
@@ -147,13 +159,17 @@
 
 @script
 <script>
-    function confirmClose(id) {
+    window.confirmDayBookAction = function (id, action) {
+        const isClosing = action === 'close';
+
         Swal.fire({
-            title: 'Close Day Book?',
-            text: 'Are you sure you want to close this business day? New transactions should no longer be allowed for this day.',
+            title: isClosing ? 'Close Day Book?' : 'Reopen Day Book?',
+            text: isClosing
+                ? 'Are you sure you want to close this business day? New transactions will no longer be allowed for this day.'
+                : 'Are you sure you want to reopen this business day? New transactions will be allowed again.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, Close Day',
+            confirmButtonText: isClosing ? 'Yes, Close Day' : 'Yes, Reopen Day',
             cancelButtonText: 'Cancel',
             reverseButtons: true,
             focusCancel: true,
@@ -162,21 +178,28 @@
                 popup: 'member-swal-popup',
                 title: 'member-swal-title',
                 htmlContainer: 'member-swal-text',
-                confirmButton: 'member-swal-confirm member-swal-deactivate',
+                confirmButton: isClosing
+                    ? 'member-swal-confirm member-swal-deactivate'
+                    : 'member-swal-confirm',
                 cancelButton: 'member-swal-cancel'
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                $wire.closeDayBook(id);
+                if (isClosing) {
+                    $wire.closeDayBook(id);
+                } else {
+                    $wire.reopenDayBook(id);
+                }
             }
         });
-    }
+    };
 
-    $wire.on('day-book-updated', () => {
+    $wire.on('day-book-updated', (event) => {
+        console.log(event);
         Swal.fire({
-            title: 'Day Book Closed',
-            text: 'The day book has been closed successfully.',
-            icon: 'success',
+            title: event?.title || 'Success!',
+            text: event?.message || 'Day book status updated successfully.',
+            icon: event?.icon || 'success',
             buttonsStyling: false,
             customClass: {
                 popup: 'member-swal-popup',
