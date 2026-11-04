@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class AuthenticationController extends Controller
 {
 
-    public function login():View
+    public function login()
     {
+        if(auth()->user())
+            return redirect()->route('home');
         return view('auth.login');
     }
 
