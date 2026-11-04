@@ -4,14 +4,17 @@ namespace DayBook\Service;
 
 use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Models\DayBook;
+use App\Models\ExpenseRecord;
 use App\Models\SavingTransaction;
 use App\ViewModel\DayBook\DayBookCloseResponseViewModel;
+use App\ViewModel\DayBook\ExpenseResponseViewModel;
 use App\ViewModel\DayBook\SavingViewModel;
 use DayBook\Enum\DayBookStatusEnum;
 use DayBook\Exception\DateBeforeLastDayBookDateException;
 use DayBook\Exception\DayBookAlreadyOpenedException;
 use DayBook\Exception\DayBookNotFoundException;
 use DayBook\Exception\FutureDateException;
+use Expense\Enum\ExpenseHeadStatusEnum;
 use Saving\Enum\SavingTransactionStatusEnum;
 use Saving\Enum\SavingTransactionsTypeEnum;
 
@@ -83,8 +86,25 @@ class DayBookService
                 $vm->savings[] = $dto;
             }
         }
+        $vm->expenses = $this->getExpenseTransaction($id);
 
         return $vm;
+    }
+
+    private function getExpenseTransaction(int $dayBookId):array{
+        $expenses = ExpenseRecord::where('day_book_id', $dayBookId)
+            ->where('status',ExpenseHeadStatusEnum::ACTIVE->value)
+            ->with('expenseHead')
+            ->get();
+        $arr=[];
+        foreach ($expenses as $expense) {
+            $vm = new ExpenseResponseViewModel();
+            $vm->name = $expense->expenseHead->name;
+            $vm->amount = $expense->amount;
+            $vm->description = $expense->description;
+            $arr[] = $vm;
+        }
+        return $arr;
     }
 
 }
