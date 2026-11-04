@@ -69,9 +69,7 @@ $expenses = $dto->expenses;
                             <thead>
                             <tr>
                                 <th>Member</th>
-                                <th>Account</th>
                                 <th>Amount</th>
-                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -80,17 +78,11 @@ $expenses = $dto->expenses;
                                     <td>
                                         <strong>{{ $saving->memberName ?? 'N/A' }}</strong>
                                     </td>
-                                    <td>{{ $saving->account_id ?? 'N/A' }}</td>
                                     <td class="amount-positive">
                                         Rs. {{ number_format($saving->amount, 2) }}
                                     </td>
 
-                                    <td>
-                                        <a href=""
-                                           class="closing-edit-link">
-                                            View / Edit
-                                        </a>
-                                    </td>
+
                                 </tr>
                             @empty
                                 <tr>
@@ -125,10 +117,7 @@ $expenses = $dto->expenses;
                             <thead>
                             <tr>
                                 <th>Member</th>
-                                <th>Account</th>
                                 <th>Amount</th>
-                                <th>Time</th>
-                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -137,19 +126,10 @@ $expenses = $dto->expenses;
                                     <td>
                                         <strong>{{ $withdrawal->memberName ?? 'N/A' }}</strong>
                                     </td>
-                                    <td>{{ $withdrawal->account_id ?? 'N/A' }}</td>
                                     <td class="amount-negative">
                                         Rs. {{ number_format($withdrawal->amount, 2) }}
                                     </td>
-                                    <td>
-                                        {{ $withdrawal->created_at?->format('h:i A') ?? 'N/A' }}
-                                    </td>
-                                    <td>
-                                        <a href="{{ $withdrawalEditUrl($withdrawal) }}"
-                                           class="closing-edit-link">
-                                            View / Edit
-                                        </a>
-                                    </td>
+
                                 </tr>
                             @empty
                                 <tr>

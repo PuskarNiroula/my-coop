@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static find(int $id)
  * @method static orderBy(string $string)
  * @method static whereNotNull(string $string)
+ * @method static where(string $string, int $dayBookId)
  */
 class ExpenseRecord extends Model
 {

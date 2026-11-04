@@ -4,7 +4,6 @@ namespace Deposit\Service;
 
 use App\Models\Member;
 use App\Models\MemberAccount;
-use App\Models\Month;
 use App\Models\SavingTransaction;
 use Deposit\Dto\WithdrawalCreateDto;
 use Exception;
@@ -60,6 +59,7 @@ class WithdrawalService
                 'transaction_date_nepali' => getCurrentDayBook()->date_nepali,
                 'fiscal_year_id' => $fiscalYear->fiscal_year_id,
                 'amount_after_transaction' => $memberAccount->balance,
+                'day_book_id'=>getCurrentDayBook()->getId(),
                 'status' => SavingTransactionStatusEnum::ACTIVE->value,
             ]);
         });
