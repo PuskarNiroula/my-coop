@@ -83,9 +83,7 @@
                                     <span class="status-dot"></span>
                                     {{ ucfirst($dayBook->status) }}
                                 </span>
-                        </td>
 
-                        <td>
                         <td>
                             <div class="member-actions">
                                 <a
@@ -97,23 +95,12 @@
                                     <span>Transactions</span>
                                 </a>
 
-                                @if (strtolower($dayBook->status) === 'open')
-                                    <button
-                                        type="button"
-                                        onclick="confirmDayBookAction({{ $dayBook->day_book_id }}, 'close')"
-                                        wire:loading.attr="disabled"
-                                        class="action-btn deactivate-btn"
-                                        title="Close day book"
-                                    >
-                                        <i class="fa-solid fa-lock"></i>
-                                        <span>Close Day</span>
-                                    </button>
-                                @else
+                                @if (strtolower($dayBook->status) === 'closed')
                                     <button
                                         type="button"
                                         onclick="confirmDayBookAction({{ $dayBook->day_book_id }}, 'reopen')"
                                         wire:loading.attr="disabled"
-                                        class="action-btn activate-btn"
+                                        class="action-btn btn-positive-sm"
                                         title="Reopen day book"
                                     >
                                         <i class="fa-solid fa-lock-open"></i>
@@ -121,7 +108,6 @@
                                     </button>
                                 @endif
                             </div>
-                        </td>
                         </td>
                     </tr>
                 @empty
@@ -159,17 +145,14 @@
 
 @script
 <script>
-    window.confirmDayBookAction = function (id, action) {
-        const isClosing = action === 'close';
+    window.confirmDayBookAction = function (id) {
 
         Swal.fire({
-            title: isClosing ? 'Close Day Book?' : 'Reopen Day Book?',
-            text: isClosing
-                ? 'Are you sure you want to close this business day? New transactions will no longer be allowed for this day.'
-                : 'Are you sure you want to reopen this business day? New transactions will be allowed again.',
+            title: 'Reopen Day Book?',
+            text:'Are you sure you want to reopen this business day? New transactions will be allowed again.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: isClosing ? 'Yes, Close Day' : 'Yes, Reopen Day',
+            confirmButtonText: 'Yes, Reopen Day',
             cancelButtonText: 'Cancel',
             reverseButtons: true,
             focusCancel: true,
@@ -178,9 +161,7 @@
                 popup: 'member-swal-popup',
                 title: 'member-swal-title',
                 htmlContainer: 'member-swal-text',
-                confirmButton: isClosing
-                    ? 'member-swal-confirm member-swal-deactivate'
-                    : 'member-swal-confirm',
+                confirmButton:  'member-swal-confirm',
                 cancelButton: 'member-swal-cancel'
             }
         }).then((result) => {
