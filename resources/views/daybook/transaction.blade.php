@@ -333,25 +333,20 @@ $expenses = $dto->expenses;
                             <tr>
                                 <th>Expense</th>
                                 <th>Amount</th>
-                                <th>Time</th>
-                                <th>Action</th>
+                                <th>Description</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($expenses as $expense)
                                 <tr>
                                     <td>
-                                        <strong>{{ $expense->expenseHead->name ?? $expense->description ?? 'N/A' }}</strong>
+                                        <strong>{{ $expense->name ?? 'N/A' }}</strong>
                                     </td>
                                     <td class="amount-negative">
                                         Rs. {{ number_format($expense->amount ?? 0, 2) }}
                                     </td>
-                                    <td>{{ $expense->created_at?->format('h:i A') ?? 'N/A' }}</td>
-                                    <td>
-                                        <a href="{{ $expenseEditUrl($expense) }}" class="closing-edit-link">
-                                            View / Edit
-                                        </a>
-                                    </td>
+                                    <td>{{ $expense->description ?? 'N/A' }}</td>
+
                                 </tr>
                             @empty
                                 <tr>
@@ -438,14 +433,17 @@ $expenses = $dto->expenses;
                 </div>
             </div>
 
-            <form action="{{ route('daybook.close',$dayBook->getId()) }}" method="POST" id="closeDaybookForm">
-                @csrf
+           @if($dayBook->status =="open")
+                <form action="{{ route('daybook.close',$dayBook->getId()) }}" method="POST" id="closeDaybookForm">
+                    @csrf
 
-                <button type="button" class="btn-primary" id="confirmCloseButton">
-                    <i class="fas fa-lock"></i>
-                    Confirm & Close Daybook
-                </button>
-            </form>
+                    <button type="button" class="btn-primary" id="confirmCloseButton">
+                        <i class="fas fa-lock"></i>
+                        Confirm & Close Daybook
+                    </button>
+                </form>
+
+            @endif
         </section>
 
     </section>

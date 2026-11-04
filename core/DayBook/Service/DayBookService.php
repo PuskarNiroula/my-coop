@@ -13,7 +13,6 @@ use DayBook\Enum\DayBookStatusEnum;
 use DayBook\Exception\DateBeforeLastDayBookDateException;
 use DayBook\Exception\DayBookAlreadyOpenedException;
 use DayBook\Exception\DayBookNotFoundException;
-use DayBook\Exception\FutureDateException;
 use Expense\Enum\ExpenseHeadStatusEnum;
 use Saving\Enum\SavingTransactionStatusEnum;
 use Saving\Enum\SavingTransactionsTypeEnum;
@@ -23,7 +22,6 @@ class DayBookService
 
     /**
      * @throws DateBeforeLastDayBookDateException
-     * @throws FutureDateException
      * @throws DayBookAlreadyOpenedException
      */
     public function createDayBook(string $date):void{

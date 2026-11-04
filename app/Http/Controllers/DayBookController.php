@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DayBook;
 use DayBook\Exception\DateBeforeLastDayBookDateException;
 use DayBook\Exception\DayBookAlreadyOpenedException;
+use DayBook\Exception\DayBookNotFoundException;
 use DayBook\Exception\FutureDateException;
 use DayBook\Service\DayBookService;
 use Illuminate\Http\RedirectResponse;
@@ -46,6 +47,9 @@ class DayBookController extends Controller
     }
 
 
+    /**
+     * @throws DayBookNotFoundException
+     */
     public function viewTransaction(int $bookId){
         try {
             $dayBook=DayBook::findOrFail($bookId);

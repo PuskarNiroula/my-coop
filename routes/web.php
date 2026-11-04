@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create','create')->name('daybook.create');
         Route::post('/store','store')->name('daybook.store');
         Route::get('/{dayBook}/transactions','viewTransaction')->name('daybook.transaction');
-        Route::get('/{dayBook}/close','close')->name('daybook.close');
+        Route::post('/{dayBook}/close','close')->name('daybook.close');
     });
 
     Route::controller(AccountSetupController::class)->prefix('/account-setup')->group(function () {
