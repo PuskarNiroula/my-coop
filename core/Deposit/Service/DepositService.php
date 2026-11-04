@@ -48,6 +48,7 @@ class DepositService
                 'transaction_date_nepali'=>getCurrentDayBook()->date_nepali,
                 'fiscal_year_id' => $fiscalYear->fiscal_year_id,
                 'amount_after_transaction' => $memberAccount->balance,
+                'day_book_id'=>getCurrentDayBook()->getId(),
                 'status'=>SavingTransactionStatusEnum::ACTIVE->value,
             ]);
         });
