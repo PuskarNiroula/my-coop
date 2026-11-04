@@ -99,7 +99,7 @@
                                 @if ($dayBook->status === 'open')
                                     <button
                                         type="button"
-                                        wire:click="confirmClose({{ $dayBook->day_book_id }})"
+                                        onclick =confirmClose({{ $dayBook->day_book_id }})
                                         wire:loading.attr="disabled"
                                         wire:target="confirmClose"
                                         class="action-btn deactivate-btn"
@@ -147,7 +147,7 @@
 
 @script
 <script>
-    $wire.on('confirm-close-day-book', (event) => {
+    function confirmClose(id) {
         Swal.fire({
             title: 'Close Day Book?',
             text: 'Are you sure you want to close this business day? New transactions should no longer be allowed for this day.',
@@ -167,10 +167,10 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                $wire.closeDayBook(event.dayBookId);
+                $wire.closeDayBook(id);
             }
         });
-    });
+    }
 
     $wire.on('day-book-updated', () => {
         Swal.fire({
