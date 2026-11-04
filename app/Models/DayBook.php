@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static orderByDesc(string $string)
  * @method static where(string $string, true $true)
  * @method static findOrFail(int $id)
+ * @method static latest(string $string)
  * @property mixed $date_english
  * @property mixed $date_nepali
  * @property mixed $status
