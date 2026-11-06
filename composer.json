@@ -38,7 +38,8 @@
             "Deposit\\": "core/Deposit",
             "Common\\": "core/Common",
             "Interest\\": "core/Interest",
-            "Expense\\": "core/Expense"
+            "Expense\\": "core/Expense",
+            "PaymentMethod\\": "core/PaymentMethod"
         }
     },
     "autoload-dev": {
