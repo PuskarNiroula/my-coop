@@ -13,6 +13,7 @@ use App\Http\Controllers\Savings\SavingReportsController;
 use App\Http\Controllers\Savings\WithdrawalController;
 use App\Http\Controllers\Setup\AccountSetupController;
 use App\Http\Controllers\Setup\FiscalYearSetupController;
+use App\Http\Controllers\Setup\PaymentSetupController;
 use App\Http\Controllers\Setup\YearSetupController;
 use Illuminate\Support\Facades\Route;
 
@@ -143,5 +144,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{recordId}/edit','edit')->name('expense.records.edit');
         Route::put('{recordId}/update','update')->name('expense.records.update');
         Route::get('/reports','report')->name('expense.records.reports');
+    });
+
+    Route::controller(PaymentSetupController::class)->prefix('/payment-setup')->group(function () {
+        Route::get('/','index')->name('payment-setup.index');
+        Route::get('/create','create')->name('payment-setup.create');
+        Route::post('/store','store')->name('payment-setup.store');
+        Route::patch('{recordId}/activate','activate')->name('payment-setup.activate');
+        Route::patch('{recordId}/deactivate','deactivate')->name('payment-setup.deactivate');
+        Route::get('{recordId}/edit','edit')->name('payment-setup.edit');
+        Route::put('{recordId}/update','update')->name('payment-setup.update');
+
     });
 });

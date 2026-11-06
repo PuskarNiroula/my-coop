@@ -92,6 +92,10 @@
             'label' => 'Year Setup',
             'url' => '/year-setup',
         ],
+        [
+            'label' => 'Payment Setup',
+            'url' => '/payment-setup',
+        ],
     ];
 
     $currentPath = '/' . trim(request()->path(), '/');
