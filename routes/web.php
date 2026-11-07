@@ -150,10 +150,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/','index')->name('payment-setup.index');
         Route::get('/create','create')->name('payment-setup.create');
         Route::post('/store','store')->name('payment-setup.store');
-        Route::patch('{recordId}/activate','activate')->name('payment-setup.activate');
-        Route::patch('{recordId}/deactivate','deactivate')->name('payment-setup.deactivate');
-        Route::get('{recordId}/edit','edit')->name('payment-setup.edit');
-        Route::put('{recordId}/update','update')->name('payment-setup.update');
+        Route::patch('{methodId}/activate','activate')->name('payment-setup.activate');
+        Route::patch('{methodId}/deactivate','deactivate')->name('payment-setup.deactivate');
+        Route::get('{methodId}/edit','edit')->name('payment-setup.edit');
+        Route::put('{methodId}/update','update')->name('payment-setup.update');
 
     });
 });
