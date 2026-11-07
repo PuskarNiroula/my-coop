@@ -1,7 +1,7 @@
 
 :root {
     --forest: #153d2c;
-    --danger: #e80a47;
+    --danger: #9eb315;
     --danger-dark: #450314;
     --forest-dark: #0d2b1e;
     --green: #246344;
@@ -14,12 +14,16 @@
     --topbar-height: 76px;
 }
 
+.activate-btn{
+
+}
 .btn-positive-sm{
+    color: #15803d;
     background-color: #16551a;
-    color: white;
     margin-left: 20px;
     border-radius: 10px;
     padding:3px;
+    box-sizing: border-box;
 }
 
 * {
@@ -640,6 +644,28 @@ svg {
 }
 
 .btn-danger:hover {
+    box-shadow: 0 8px 17px rgba(21, 61, 44, .17);
+    transform: translateY(-1px);
+}
+.btn-activate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 41px;
+    gap: 9px;
+    padding: 0 17px;
+    color: #fff !important;
+    border: 1px solid var(--danger) !important;
+    border-radius: 8px;
+    background: linear-gradient(115deg, #66e810, #5f9112) !important;
+    box-shadow: 0 5px 12px rgba(21, 61, 44, .1) !important;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.btn-activate:hover {
     box-shadow: 0 8px 17px rgba(21, 61, 44, .17);
     transform: translateY(-1px);
 }
