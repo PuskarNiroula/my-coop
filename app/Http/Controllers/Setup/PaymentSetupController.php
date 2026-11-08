@@ -108,8 +108,6 @@ class PaymentSetupController extends Controller
             return redirect()->back()->with('error',$exception->getMessage())->withInput();
         }
 
-
-
     }
 
 
