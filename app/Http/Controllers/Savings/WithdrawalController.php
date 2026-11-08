@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Member;
 use App\Models\MemberAccount;
 use App\Models\Month;
+use App\Models\PaymentMethod;
 use Deposit\Dto\WithdrawalCreateDto;
 use Deposit\Service\WithdrawalService;
 use Exception;
 use Illuminate\Http\Request;
+use PaymentMethod\Enum\PaymentMethodStatusEnum;
+use Throwable;
 
 class WithdrawalController extends Controller
 {
@@ -20,6 +23,7 @@ class WithdrawalController extends Controller
 
     public function index(){
         try{
+            $paymentMethods = PaymentMethod::where('status',PaymentMethodStatusEnum::ACTIVE->value)->get();
             $members = Member::query()
                 ->join('member_accounts as ma', 'members.member_id', '=', 'ma.member_id')
                 ->where('ma.status', 'active')
@@ -32,7 +36,7 @@ class WithdrawalController extends Controller
 
             $month = (int) explode('-', $nepaliDate)[1];
 
-            return view('saving.withdrawal', compact(['members', 'monthArray','month']));
+            return view('saving.withdrawal', compact(['members', 'monthArray','month', 'paymentMethods']));
         }catch (Exception $e){
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -44,7 +48,7 @@ class WithdrawalController extends Controller
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request){
         $request->validate([
@@ -52,6 +56,7 @@ class WithdrawalController extends Controller
             'member_id' => 'required|integer|exists:members,member_id',
             'amount' => 'required|numeric|min:1',
             'description'=>"string|nullable",
+            'payment_method_id' => 'required|integer|exists:payment_methods,payment_method_id',
         ]);
 
         $allowedAmount = $this->getAmount($request->member_id);
@@ -63,6 +68,7 @@ class WithdrawalController extends Controller
         $dto->monthId = $request->month_id;
         $dto->amount = $request->amount;
         $dto->description = $request->description;
+        $dto->paymentMethodId = $request->payment_method_id;
 
         try{
             $this->withdrawalService->createWithdrawal($dto);
@@ -76,7 +82,6 @@ class WithdrawalController extends Controller
     private function getAmount(int $memberId){
         $member = MemberAccount::findOrFail($memberId);
         return $member->balance;
-
     }
 
 }

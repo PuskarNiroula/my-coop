@@ -32,6 +32,9 @@ class SavingTransaction extends Model
     public function month():BelongsTo{
         return $this->belongsTo(Month::class,"month_id","month_id");
     }
+    public function paymentMethod():HasOne{
+        return $this->hasOne(PaymentMethod::class,"payment_method_id","payment_method_id");
+    }
 
 
 }

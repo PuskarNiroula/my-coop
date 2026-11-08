@@ -8,5 +8,6 @@ class CreateDepositDto
     public int $monthId;
     public int $amount;
     public ?string $description;
+    public ?int $paymentMethodId;
 
 }
