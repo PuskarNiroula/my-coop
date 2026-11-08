@@ -53,31 +53,37 @@
                 ['label' => 'Share Reports', 'url' => '/shares/reports'],
             ],
         ],
-        [
-            'label' => 'Inventory Management',
-            'icon' => 'package',
-            'key' => 'inventory',
-            'items' => [
-                ['label' => 'Inventory Overview', 'url' => '/inventory'],
-                ['label' => 'Products', 'url' => '/inventory/products'],
-                ['label' => 'Categories', 'url' => '/inventory/categories'],
-                ['label' => 'Stock Movements', 'url' => '/inventory/stock-movements'],
-                ['label' => 'Suppliers', 'url' => '/inventory/suppliers'],
-            ],
-        ],
-        [
-            'label' => 'Expense Tracking',
-            'icon' => 'receipt',
-            'key' => 'expenses',
-            'items' => [
-                ['label' => 'All Expenses', 'url' => '/expenses/records'],
-                ['label' => 'Add Expense', 'url' => '/expenses/records/create'],
-                ['label' => 'Expense Reports', 'url' => '/expenses/records/reports'],
-                ['label' => 'Expense Heads', 'url' => '/expenses/expense-head'],
 
+[
+    'label' => 'Inventory Management',
+    'icon' => 'package',
+    'key' => 'inventory',
+    'items' => [
+        ['label' => 'Inventory Overview', 'url' => '/inventory'],
+        ['label' => 'Products', 'url' => '/inventory/products'],
+        ['label' => 'Categories', 'url' => '/inventory/categories'],
+        ['label' => 'Stock Movements', 'url' => '/inventory/stock-movements'],
+        ['label' => 'Suppliers', 'url' => '/inventory/suppliers'],
+        [
+            'label' => 'Units',
+            'key' => 'units',
+            'url' => '/inventory/units',
+            'children' => [
+                [
+                    'label' => 'All Units',
+                    'url' => '/inventory/units',
+                ],
+                [
+                    'label' => 'Unit Categories',
+                    'url' => '/inventory/unit-categories',
+                ],
             ],
         ],
-    ];
+    ],
+]
+];
+
+
 
     $setupItems = [
         [
@@ -157,7 +163,9 @@
         <span class="brand-mark">
             <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
                 <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1.4"/>
-                <path d="M24 35V20M24 27C15 27 12 21 12 16C21 16 24 21 24 27ZM24 23C24 15 29 11 36 11C36 19 32 23 24 23Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                    d="M24 35V20M24 27C15 27 12 21 12 16C21 16 24 21 24 27ZM24 23C24 15 29 11 36 11C36 19 32 23 24 23Z"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M15 36H33" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
         </span>
@@ -174,7 +182,8 @@
 
     <nav class="sidebar-nav" aria-label="Main navigation">
         <a href="{{ url('/dashboard') }}" class="nav-link {{ $dashboardActive ? 'active' : '' }}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                 stroke-linejoin="round">
                 {!! $iconPaths['dashboard'] !!}
             </svg>
             <span>Dashboard</span>
@@ -193,13 +202,15 @@
                     aria-controls="submenu-{{ $menu['key'] }}"
                     data-menu-toggle
                 >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                         stroke-linejoin="round">
                         {!! $iconPaths[$menu['icon']] !!}
                     </svg>
 
                     <span>{{ $menu['label'] }}</span>
 
-                    <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
                         {!! $iconPaths['chevron'] !!}
                     </svg>
                 </button>
@@ -231,7 +242,9 @@
                                         <span class="submenu-dot"></span>
                                         <span>{{ $item['label'] }}</span>
 
-                                        <svg class="nested-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg class="nested-chevron" viewBox="0 0 24 24" fill="none"
+                                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                             stroke-linejoin="round">
                                             {!! $iconPaths['chevron'] !!}
                                         </svg>
                                     </button>
@@ -317,7 +330,8 @@
         <div class="sidebar-divider"></div>
 
         <a href="{{ url('/settings') }}" class="nav-link {{ $isPathActive('/settings') ? 'active' : '' }}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                 stroke-linejoin="round">
                 {!! $iconPaths['settings'] !!}
             </svg>
             <span>Settings</span>
@@ -338,7 +352,8 @@
                 aria-label="Open profile menu"
                 aria-expanded="false"
             >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round">
                     <circle cx="5" cy="12" r="1"/>
                     <circle cx="12" cy="12" r="1"/>
                     <circle cx="19" cy="12" r="1"/>
