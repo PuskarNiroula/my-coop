@@ -100,6 +100,25 @@
                         @enderror
                         <small class="deposit-error deposit-client-error" data-error-for="amount" role="alert" hidden></small>
                     </div>
+                    <div class="deposit-field">
+                        <label for="payment_method_id">Payment Method <span>*</span></label>
+                        <select name="payment_method_id" id="payment_method_id" required>
+                            @foreach($paymentMethods as $paymentMethod)
+                                <option
+                                    value="{{ $paymentMethod->getId() }}"
+                                    {{ (string) old('payment_method_id', $paymentMethods->first()?->getId()) === (string) $paymentMethod->getId() ? 'selected' : '' }}
+                                >
+                                    {{ $paymentMethod->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('payment_method_id')
+                        <small class="deposit-error" role="alert">{{ $message }}</small>
+                        @enderror
+
+                        <small class="deposit-error deposit-client-error" data-error-for="payment_method_id" role="alert" hidden></small>
+                    </div>
 
                     <div class="deposit-field deposit-field-full">
                         <label for="description">Description <span class="optional-label">(Optional)</span></label>

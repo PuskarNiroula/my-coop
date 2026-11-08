@@ -61,6 +61,7 @@ class WithdrawalService
                 'amount_after_transaction' => $memberAccount->balance,
                 'day_book_id'=>getCurrentDayBook()->getId(),
                 'status' => SavingTransactionStatusEnum::ACTIVE->value,
+                'payment_method_id' => $dto->paymentMethodId,
             ]);
         });
     }
