@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method static create(array $array)
+ * @method static findOrFail(int $id)
+ * @method static find(int $id)
+ */
 class UnitCategory extends Model
 {
     protected $table = 'unit_categories';
