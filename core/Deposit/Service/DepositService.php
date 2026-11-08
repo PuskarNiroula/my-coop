@@ -4,6 +4,7 @@ namespace Deposit\Service;
 
 use App\Models\Member;
 use App\Models\MemberAccount;
+use App\Models\PaymentMethod;
 use App\Models\SavingTransaction;
 use Deposit\Dto\CreateDepositDto;
 use Exception;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Saving\Enum\SavingTransactionStatusEnum;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Saving\Exception\MemberNotFoundException;
+use Saving\Exception\PaymentMethodNotFoundException;
 use Throwable;
 
 class DepositService
@@ -31,6 +33,12 @@ class DepositService
         $Account = MemberAccount::where('member_id', $dto->memberId)->first();
 
         DB::transaction(function () use ($dto, $year, $fiscalYear,$Account): void {
+
+            $pm = PaymentMethod::find($dto->paymentMethodId);
+            if(!$pm) throw new PaymentMethodNotFoundException();
+            $pm->balance += $dto->amount;
+            $pm->save();
+
             $memberAccount = MemberAccount::query()
                 ->findOrFail($dto->memberId);
 

@@ -4,6 +4,7 @@ namespace Deposit\Service;
 
 use App\Models\Member;
 use App\Models\MemberAccount;
+use App\Models\PaymentMethod;
 use App\Models\SavingTransaction;
 use Deposit\Dto\WithdrawalCreateDto;
 use Exception;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Saving\Enum\SavingTransactionStatusEnum;
 use Saving\Enum\SavingTransactionsTypeEnum;
 use Saving\Exception\MemberNotFoundException;
+use Saving\Exception\NotEnoughBalanceException;
 use Throwable;
 
 class WithdrawalService
@@ -34,6 +36,13 @@ class WithdrawalService
         $this->validateDepositDate($dto->monthId, $year);
 
         DB::transaction(function () use ($dto, $year, $fiscalYear): void {
+
+            $pm = PaymentMethod::find($dto->paymentMethodId);
+            if($pm->balance < $dto->amount) throw new NotEnoughBalanceException($pm->name);
+
+            $pm->balance -= $dto->amount;
+            $pm->save();
+
             $memberAccount = MemberAccount::query()
                 ->where('member_id', $dto->memberId)
                 ->lockForUpdate()
