@@ -154,6 +154,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{methodId}/deactivate','deactivate')->name('payment-setup.deactivate');
         Route::get('{methodId}/edit','edit')->name('payment-setup.edit');
         Route::put('{methodId}/update','update')->name('payment-setup.update');
+        Route::get('/transfer','transfer')->name('payment-setup.transfer');
+        Route::post('/transfer/store','transferStore')->name('payment-setup.transfer.store');
 
     });
 });

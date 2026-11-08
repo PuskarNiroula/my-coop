@@ -2,10 +2,13 @@
 
 namespace PaymentMethod\Service;
 use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\DB;
 use PaymentMethod\Dto\PaymentMethodCreateDto;
 use PaymentMethod\Dto\PaymentMethodUpdateDto;
 use Exception;
 use PaymentMethod\Enum\PaymentMethodStatusEnum;
+use PaymentMethod\Exception\PaymentMethodNotFoundException;
+use Saving\Exception\NotEnoughBalanceException;
 
 class PaymentMethodService
 {
@@ -61,6 +64,28 @@ class PaymentMethodService
     }
 
     /**
+     * @throws PaymentMethodNotFoundException
+     * @throws NotEnoughBalanceException
+     * @throws \Throwable
+     */
+    public function transferBalance(int $fromPaymentMethodId, int $toPaymentMethodId, float $amount):void{
+        $from = $this->getActivePaymentMethodById($fromPaymentMethodId);
+        $to = $this->getActivePaymentMethodById($toPaymentMethodId);
+        if($from->balance < $amount)
+            throw new NotEnoughBalanceException();
+
+
+        DB::transaction(function () use ($from,$to,$amount) {
+            $from->balance -=$amount;
+            $from->save();
+
+            $to->balance+=$amount;
+            $to->save();
+
+        });
+    }
+
+    /**
      * @throws Exception
      */
     private function getDuplicatePaymentMethod(string $name,?int $id=null):void{
@@ -72,7 +97,14 @@ class PaymentMethodService
         if($query->where('name', $name)->exists()){
             throw new Exception('Payment Method already exists');
         }
+    }
 
-
+    /**
+     * @throws PaymentMethodNotFoundException
+     */
+    private function getActivePaymentMethodById(int $id):PaymentMethod{
+        $pm = PaymentMethod::where('payment_method_id',$id)->where('status',PaymentMethodStatusEnum::ACTIVE->value)->first();
+        if(!$pm) throw new PaymentMethodNotFoundException($id);
+        return $pm;
     }
 }

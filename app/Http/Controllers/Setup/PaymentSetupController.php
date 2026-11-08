@@ -8,8 +8,10 @@ use Exception;
 use Illuminate\Http\Request;
 use PaymentMethod\Dto\PaymentMethodCreateDto;
 use PaymentMethod\Dto\PaymentMethodUpdateDto;
+use PaymentMethod\Enum\PaymentMethodStatusEnum;
 use PaymentMethod\Exception\PaymentMethodNotFoundException;
 use PaymentMethod\Service\PaymentMethodService;
+use Throwable;
 
 class PaymentSetupController extends Controller
 {
@@ -83,7 +85,32 @@ class PaymentSetupController extends Controller
             return redirect()->back()->with('error',$exception->getMessage())->withInput();
         }
     }
+    public function transfer(){
+        $paymentMethods=PaymentMethod::where('status',PaymentMethodStatusEnum::ACTIVE->value)->get();
+        return view('payment-setup.transfer',compact('paymentMethods'));
+    }
 
+    /**
+     * @throws Throwable
+     */
+    public function transferStore(Request $request){
+
+        try {
+            $request->validate([
+                'from_payment_method' => 'required|integer|exists:payment_methods,payment_method_id',
+                'to_payment_method' => 'required|integer|exists:payment_methods,payment_method_id',
+                'amount' => 'required|numeric|min:0',
+            ]);
+            $this->paymentMethodService->transferBalance($request->from_payment_method,$request->to_payment_method,$request->amount);
+            return redirect()->route('payment-setup.index')->with('success','Payment Method Transfered Successfully');
+
+        }catch (Exception $exception){
+            return redirect()->back()->with('error',$exception->getMessage())->withInput();
+        }
+
+
+
+    }
 
 
 }
