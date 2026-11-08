@@ -14,16 +14,19 @@ class UnitCategorySeeder extends Seeder
                 'unit_category_id' => 1,
                 'name' => 'Weight',
                 'status' => 'active',
+                'is_fixed'=>true
             ],
             [
                 'unit_category_id' => 2,
                 'name' => 'Liquid',
                 'status' => 'active',
+                'is_fixed'=>true
             ],
             [
                 'unit_category_id' => 3,
                 'name' => 'Item',
                 'status' => 'active',
+                'is_fixed'=>true
             ],
         ]);
     }

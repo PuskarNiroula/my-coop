@@ -35,7 +35,7 @@ class UnitSeeder extends Seeder
                 'status' => "active",
             ],
             [
-                'unit_id' => 5,
+                'unit_id' => 3,
                 'name' => 'Milliliter',
                 'symbol' => 'ml',
                 'conversion_rate' => 1,
@@ -43,7 +43,7 @@ class UnitSeeder extends Seeder
                 'status' => "active",
             ],
             [
-                'unit_id' => 6,
+                'unit_id' => 5,
                 'name' => 'Piece',
                 'symbol' => 'pcs',
                 'conversion_rate' => 1,
@@ -51,7 +51,7 @@ class UnitSeeder extends Seeder
                 'status' => "active",
             ],
             [
-                'unit_id' => 7,
+                'unit_id' => 6,
                 'name' => 'Dozen',
                 'symbol' => 'doz',
                 'conversion_rate' => 12,

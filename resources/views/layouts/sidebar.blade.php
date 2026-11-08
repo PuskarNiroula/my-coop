@@ -64,21 +64,25 @@
         ['label' => 'Categories', 'url' => '/inventory/categories'],
         ['label' => 'Stock Movements', 'url' => '/inventory/stock-movements'],
         ['label' => 'Suppliers', 'url' => '/inventory/suppliers'],
+       [
+    'label' => 'Units',
+    'key' => 'units',
+    'url' => '/inventory/units',
+    'active_urls' => [
+        '/inventory/units',
+        '/inventory/category',
+    ],
+    'children' => [
         [
-            'label' => 'Units',
-            'key' => 'units',
+            'label' => 'All Units',
             'url' => '/inventory/units',
-            'children' => [
-                [
-                    'label' => 'All Units',
-                    'url' => '/inventory/units',
-                ],
-                [
-                    'label' => 'Unit Categories',
-                    'url' => '/inventory/unit-categories',
-                ],
-            ],
         ],
+        [
+            'label' => 'Unit Categories',
+            'url' => '/inventory/category',
+        ],
+    ],
+],
     ],
 ]
 ];
@@ -121,21 +125,27 @@
             || str_starts_with($currentPath, $normalizedUrl . '/');
     };
 
-    $isMenuExpanded = function ($menu) use ($isPathActive) {
-        foreach ($menu['items'] as $item) {
-            if ($isPathActive($item['url'])) {
-                return true;
-            }
+$isMenuExpanded = function ($menu) use ($isPathActive) {
+    foreach ($menu['items'] as $item) {
+        if ($isPathActive($item['url'])) {
+            return true;
+        }
 
-            foreach ($item['children'] ?? [] as $child) {
-                if ($isPathActive($child['url'])) {
-                    return true;
-                }
+        foreach ($item['active_urls'] ?? [] as $url) {
+            if ($isPathActive($url)) {
+                return true;
             }
         }
 
-        return false;
-    };
+        foreach ($item['children'] ?? [] as $child) {
+            if ($isPathActive($child['url'])) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
 
     $setupActive = collect($setupItems)->contains(
         fn ($item) => $isPathActive($item['url'])
@@ -221,9 +231,14 @@
                             @php
                                 $hasChildren = !empty($item['children']);
 
-                                $childActive = $hasChildren && collect($item['children'])->contains(
-                                    fn ($child) => $isPathActive($child['url'])
-                                );
+                            $childActive = $hasChildren && (
+    collect($item['children'])->contains(
+        fn ($child) => $isPathActive($child['url'])
+    )
+    || collect($item['active_urls'] ?? [])->contains(
+        fn ($url) => $isPathActive($url)
+    )
+);
 
                                 $itemExpanded = $childActive;
 

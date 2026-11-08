@@ -6,6 +6,7 @@ use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
+use App\Http\Controllers\InventoryManagement\UnitCategoryController;
 use App\Http\Controllers\InventoryManagement\UnitController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\Savings\DepositController;
@@ -169,6 +170,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store','store')->name('inventory.units.store');
             Route::patch('/{unitId}/deactivate','deactivate')->name('inventory.units.deactivate');
             Route::patch('/{unitId}/activate','activate')->name('inventory.units.activate');
+        });
+        Route::controller(UnitCategoryController::class)->prefix('/category')->group(function () {
+            Route::get('/','index')->name('inventory.category.index');
         });
 
     });

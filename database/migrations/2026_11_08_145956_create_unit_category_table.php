@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('unit_category_id');
             $table->string('name');
             $table->string('status')->default('active');
+            $table->boolean('is_fixed')->default(false);
             $table->foreignId('base_unit_id')->nullable()->constrained('units','unit_id');
         });
     }
