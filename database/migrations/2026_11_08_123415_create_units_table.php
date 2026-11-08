@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id('unit_id');
             $table->string('name');
             $table->string('symbol', 20)->unique();
-            $table->string('unit_type', 50);
+            $table->float('conversion_rate');
             $table->string('status')->default("active");
         });
 

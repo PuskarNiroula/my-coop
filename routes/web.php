@@ -6,6 +6,7 @@ use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
+use App\Http\Controllers\InventoryManagement\UnitController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\Savings\DepositController;
 use App\Http\Controllers\Savings\SavingController;
@@ -158,4 +159,20 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/transfer/store','transferStore')->name('payment-setup.transfer.store');
 
     });
+
+    Route::prefix('inventory')->group(function () {
+        Route::controller(UnitController::class)->prefix('/units')->group(function () {
+            Route::get('/','index')->name('inventory.units.index');
+            Route::get('/create','create')->name('inventory.units.create');
+            Route::get('/{unitId}/edit','edit')->name('inventory.units.edit');
+            Route::put('/{unitId}/update','update')->name('inventory.units.update');
+            Route::post('/store','store')->name('inventory.units.store');
+            Route::patch('/{unitId}/deactivate','deactivate')->name('inventory.units.deactivate');
+            Route::patch('/{unitId}/activate','activate')->name('inventory.units.activate');
+        });
+
+    });
+
+
+
 });
