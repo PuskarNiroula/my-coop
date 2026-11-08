@@ -32,6 +32,7 @@ class PaymentMethodService
         PaymentMethod::where('payment_method_id', $paymentMethodUpdateDto->id)
         ->update([
             'name' => $paymentMethodUpdateDto->name,
+            'balance'=>$paymentMethodUpdateDto->initialBalance,
         ]);
     }
 

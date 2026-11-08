@@ -53,10 +53,12 @@ class PaymentSetupController extends Controller
     public function update(Request $request,int $id){
         try{
             $request->validate([
-                'name'=>'required'
+                'name'=>'required',
+                'balance'=>'required|numeric|min:0',
             ]);
             $dto = new PaymentMethodUpdateDto();
             $dto->name = $request->name;
+            $dto->initialBalance = $request->balance;
             $dto->id = $id;
             $this->paymentMethodService->update($dto);
             return redirect()->route('payment-setup.index')->with('success','Payment Method Updated Successfully');
