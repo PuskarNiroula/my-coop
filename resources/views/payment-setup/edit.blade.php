@@ -46,7 +46,31 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+
+
+                    <div class="form-group">
+                        <label for="balance"> Balance <span>*</span></label>
+
+                        <input
+                            type="number"
+                            name="balance"
+                            id="balance"
+                            class="form-control"
+                            value="{{ old('balance', $paymentMethod->balance) }}"
+                            placeholder="Enter initial balance"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                        @error('balance')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
                 </div>
+
 
                 <div class="members-toolbar">
                     <a href="{{ route('payment-setup.index') }}" class="btn-secondary">
