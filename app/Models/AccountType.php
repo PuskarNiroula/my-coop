@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static where(string $string, string $name)
  * @method static create(array $array)
  * @method static find(int $id)
+ * @method static findOrFail(int $account_type)
  */
 class AccountType extends Model
 {

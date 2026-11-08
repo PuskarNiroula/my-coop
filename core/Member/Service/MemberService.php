@@ -5,6 +5,7 @@ namespace Member\Service;
 use AccountTypes\Exception\AccountTypeNotFound;
 use App\Models\AccountType;
 use App\Models\MemberAccount;
+use App\Models\PaymentMethod;
 use App\Models\SavingTransaction;
 use DayBook\Exception\NoOpenDayBookException;
 use DayBook\Helper\DayBookHelper;
@@ -96,6 +97,7 @@ class MemberService
                      'status'=>"active",
                  ]);
                 $date = getCurrentDayBook();
+
                 SavingTransaction::create([
                     "account_id"=>$account->getId(),
                     'transaction_type'=>SavingTransactionsTypeEnum::OPENING_BALANCE->value,
@@ -109,6 +111,10 @@ class MemberService
                     'month_id'=>$this->getCurrentNepaliMonth($date->date_nepali),
                     "day_book_id"=>getCurrentDayBook()->getId()
                 ]);
+
+                $pm=PaymentMethod::find(1);
+                $pm->balance+=$dto->opening_balance;
+                $pm->save();
 
                 return $member;
 
@@ -178,12 +184,22 @@ class MemberService
                     'day_book_id'=>getCurrentDayBook()->getId()
                 ]);
 
+                $pm=PaymentMethod::find(1);
+                $pm->balance+=$dto->opening_balance;
+                $pm->save();
+
+
             });
+
 
         }
 
 
-    public function update( UpdateMemberDto $dto): Member
+    /**
+     * @throws Throwable
+     * @throws GenderNotAllowedException
+     */
+    public function update(UpdateMemberDto $dto): Member
     {
         $storedFiles = [];
         $oldFiles = [];
