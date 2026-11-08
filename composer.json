@@ -39,7 +39,8 @@
             "Common\\": "core/Common",
             "Interest\\": "core/Interest",
             "Expense\\": "core/Expense",
-            "PaymentMethod\\": "core/PaymentMethod"
+            "PaymentMethod\\": "core/PaymentMethod",
+            "Inventory\\": "core/Inventory"
         }
     },
     "autoload-dev": {
