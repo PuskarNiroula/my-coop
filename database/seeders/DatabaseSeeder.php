@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
            MonthSeeder::class,
            AccountTypeSeeder::class,
            PaymentMethodSeeder::class,
+           UnitCategorySeeder::class,
+           UnitSeeder::class,
        ]);
     }
 }
