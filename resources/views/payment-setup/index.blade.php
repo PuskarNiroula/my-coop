@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Payment Methods')
@@ -11,10 +12,17 @@
                 <p>Manage payment methods and their active status.</p>
             </div>
 
-            <a href="{{ route('payment-setup.create') }}" class="member-add-btn">
-                <i class="fa-solid fa-plus" aria-hidden="true"></i>
-                <span>Add Payment Method</span>
-            </a>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="{{ route('payment-setup.transfer') }}" class="member-add-btn">
+                    <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+                    <span>Transfer Balance</span>
+                </a>
+
+                <a href="{{ route('payment-setup.create') }}" class="member-add-btn">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    <span>Add Payment Method</span>
+                </a>
+            </div>
         </div>
 
         <div class="members-card">
@@ -70,7 +78,7 @@
                             <td>{{ $pm->name }}</td>
                             <td>{{ $pm->balance }}</td>
                             <td>
-                                @if($pm->status=="active")
+                                @if($pm->status == "active")
                                     <span class="status-active">Active</span>
                                 @else
                                     <span class="status-inactive">Inactive</span>
@@ -88,15 +96,15 @@
 
                                     <button
                                         type="button"
-                                        class="{{ $pm->status=='active'? 'btn-danger' : 'btn-activate' }}"
+                                        class="{{ $pm->status == 'active' ? 'btn-danger' : 'btn-activate' }}"
                                         onclick="confirmStatusChange(
-                                                {{ $pm->getId() }},
-                                                {{ $pm->status=='active' ? 'true' : 'false' }},
-                                                @js($pm->name)
-                                            )"
+                                            {{ $pm->getId() }},
+                                            {{ $pm->status == 'active' ? 'true' : 'false' }},
+                                            @js($pm->name)
+                                        )"
                                     >
-                                        <i class="fa-solid {{ $pm->status ? 'fa-ban' : 'fa-check' }}" aria-hidden="true"></i>
-                                        {{ $pm->status=='active' ? 'Deactivate' : 'Activate' }}
+                                        <i class="fa-solid {{ $pm->status == 'active' ? 'fa-ban' : 'fa-check' }}" aria-hidden="true"></i>
+                                        {{ $pm->status == 'active' ? 'Deactivate' : 'Activate' }}
                                     </button>
                                 </div>
                             </td>
