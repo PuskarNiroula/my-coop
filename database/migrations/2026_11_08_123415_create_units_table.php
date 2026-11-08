@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('symbol', 20)->unique();
             $table->string('unit_type', 50);
-            $table->boolean('status')->default(true);
+            $table->string('status')->default("active");
         });
 
     }
