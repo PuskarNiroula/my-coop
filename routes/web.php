@@ -173,6 +173,12 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::controller(UnitCategoryController::class)->prefix('/category')->group(function () {
             Route::get('/','index')->name('inventory.category.index');
+            Route::get('/create','create')->name('inventory.category.create');
+            Route::post('/store','store')->name('inventory.category.store');
+            Route::patch('{categoryId}/activate','activate')->name('inventory.category.activate');
+            Route::patch('{categoryId}/deactivate','deactivate')->name('inventory.category.deactivate');
+            Route::get('{categoryId}/edit','edit')->name('inventory.category.edit');
+            Route::put('{categoryId}/update','update')->name('inventory.category.update');
         });
 
     });
