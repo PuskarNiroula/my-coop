@@ -17,6 +17,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 1000,
                 'unit_category_id' => 1,
                 'status' => "active",
+                'is_fixed'=>true
             ],
             [
                 'unit_id' => 2,
@@ -25,6 +26,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 1,
                 'unit_category_id' => 1,
                 'status' => "active",
+                'is_fixed'=>true
             ],
             [
                 'unit_id' => 4,
@@ -33,6 +35,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 1000,
                 'unit_category_id' => 2,
                 'status' => "active",
+                'is_fixed'=>true
             ],
             [
                 'unit_id' => 3,
@@ -41,6 +44,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 1,
                 'unit_category_id' => 2,
                 'status' => "active",
+                'is_fixed'=>true
             ],
             [
                 'unit_id' => 5,
@@ -49,6 +53,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 1,
                 'unit_category_id' => 3,
                 'status' => "active",
+                'is_fixed'=>true
             ],
             [
                 'unit_id' => 6,
@@ -57,6 +62,7 @@ class UnitSeeder extends Seeder
                 'conversion_rate' => 12,
                 'unit_category_id' => 3,
                 'status' => "active",
+                'is_fixed'=>true
             ],
         ]);
     }

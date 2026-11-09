@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('symbol', 20)->unique();
             $table->float('conversion_rate');
+            $table->boolean('is_fixed')->default(false);
             $table->string('status')->default("active");
         });
 

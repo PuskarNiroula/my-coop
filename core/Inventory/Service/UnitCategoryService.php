@@ -31,9 +31,9 @@ class UnitCategoryService
      * @throws UnitCategoryDoesNotExistException
      *
      */
-    public function update(int $id, UnitCategoryUpdateDto $dto): void
+    public function update( UnitCategoryUpdateDto $dto): void
     {
-        $this->ensureCategoryNameIsUnique($dto->name, $id);
+        $this->ensureCategoryNameIsUnique($dto->name, $dto->id);
         $category=$this->validateIfFixed($dto->id);
         $category->update([
             'name' => $dto->name,
@@ -70,7 +70,7 @@ class UnitCategoryService
     {
         $exists = UnitCategory::query()
             ->where('name', $name)
-            ->when($id !== null, fn ($query) => $query->where('id', '!=', $id))
+            ->when($id !== null, fn ($query) => $query->where('unit_category_id', '!=', $id))
             ->exists();
 
         if ($exists)
