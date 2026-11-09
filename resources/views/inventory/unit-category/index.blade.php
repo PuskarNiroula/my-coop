@@ -12,7 +12,7 @@
             </div>
 
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <a class="member-add-btn">
+                <a href="{{route('inventory.category.create')}}" class="member-add-btn">
                     <i class="fa-solid fa-plus" aria-hidden="true"></i>
                     <span>Add Category</span>
                 </a>
@@ -70,7 +70,7 @@
                         <tr>
                             <td>{{ ++$loop->index }}</td>
                             <td>{{ $category->name }}</td>
-                            <td>{{ $category->unit->name }} ({{ $category->unit->symbol }})</td>
+                            <td>{{ $category->unit?->name }} ({{ $category->unit?->symbol }})</td>
                             <td>
                                 @if($category->status)
                                     <span class="status-active">Active</span>
@@ -80,7 +80,7 @@
                             </td>
                             <td>
                                 <div class="member-actions">
-                                    <a
+                                    <a href="{{route('inventory.category.edit',$category->getId())}}"
                                         class="member-edit-btn btn-primary"
                                     >
                                         <i class="fa-solid fa-pen" aria-hidden="true"></i>

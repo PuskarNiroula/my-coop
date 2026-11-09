@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static create(array $array)
  * @method static findOrFail(int $id)
  * @method static find(int $id)
+ * @method static where(string $string, int $id)
  */
 class UnitCategory extends Model
 {
