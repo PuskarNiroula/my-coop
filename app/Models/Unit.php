@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static where(string $string, string $string1)
+ * @method static create(array $array)
+ * @method static find(int $unitId)
  */
 class Unit extends Model
 {
@@ -14,6 +16,7 @@ class Unit extends Model
     protected $primaryKey = 'unit_id';
     protected $table='units';
 
+    protected $guarded = [];
 
     public function getId(){
         return $this->unit_id;
