@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\InventoryManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Unit;
-use App\Models\UnitCategory;
+use App\Models\Inventory\Unit;
+use App\Models\Inventory\UnitCategory;
+use Exception;
 use Illuminate\Http\Request;
 use Inventory\Dto\UnitCategoryCreateDto;
 use Inventory\Dto\UnitCategoryUpdateDto;
 use Inventory\Service\UnitCategoryService;
-use Exception;
 
 class UnitCategoryController extends Controller
 {

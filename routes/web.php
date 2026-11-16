@@ -6,6 +6,7 @@ use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
+use App\Http\Controllers\InventoryManagement\SupplierController;
 use App\Http\Controllers\InventoryManagement\UnitCategoryController;
 use App\Http\Controllers\InventoryManagement\UnitController;
 use App\Http\Controllers\MemberController;
@@ -179,6 +180,15 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('{categoryId}/deactivate','deactivate')->name('inventory.category.deactivate');
             Route::get('{categoryId}/edit','edit')->name('inventory.category.edit');
             Route::put('{categoryId}/update','update')->name('inventory.category.update');
+        });
+        Route::controller(SupplierController::class)->prefix('/suppliers')->group(function () {
+            Route::get('/','index')->name('suppliers.index');
+            Route::get('/create','create')->name('suppliers.create');
+            Route::post('/store','store')->name('suppliers.store');
+            Route::patch('{supplierId}/activate','activate')->name('suppliers.activate');
+            Route::patch('{supplierId}/deactivate','deactivate')->name('suppliers.deactivate');
+            Route::get('{supplierId}/edit','edit')->name('suppliers.edit');
+            Route::put('{supplierId}/update','update')->name('suppliers.update');
         });
 
     });

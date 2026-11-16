@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\UnitCategory;
+use App\Models\Inventory\UnitCategory;
 use Illuminate\Database\Seeder;
 
 class BaseUnitSeeder extends Seeder

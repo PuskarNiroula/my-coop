@@ -2,7 +2,7 @@
 
 namespace Inventory\Service;
 
-use App\Models\UnitCategory;
+use App\Models\Inventory\UnitCategory;
 use Inventory\Dto\UnitCategoryCreateDto;
 use Inventory\Dto\UnitCategoryUpdateDto;
 use Inventory\Enum\UnitCategoryStatusEnum;
