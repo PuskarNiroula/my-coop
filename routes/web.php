@@ -6,6 +6,7 @@ use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
+use App\Http\Controllers\InventoryManagement\CustomerController;
 use App\Http\Controllers\InventoryManagement\ProductController;
 use App\Http\Controllers\InventoryManagement\SupplierController;
 use App\Http\Controllers\InventoryManagement\UnitCategoryController;
@@ -200,6 +201,16 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('{productId}/deactivate','deactivate')->name('products.deactivate');
             Route::get('{productId}/edit','edit')->name('products.edit');
             Route::put('{productId}/update','update')->name('products.update');
+
+        });
+        Route::controller(CustomerController::class)->prefix('/customers')->group(function () {
+            Route::get('/','index')->name('customers.index');
+            Route::get('/create','create')->name('customers.create');
+            Route::post('/store','store')->name('customers.store');
+            Route::patch('{customerId}/activate','activate')->name('customers.activate');
+            Route::patch('{customerId}/deactivate','deactivate')->name('customers.deactivate');
+            Route::get('{customerId}/edit','edit')->name('customers.edit');
+            Route::put('{customerId}/update','update')->name('customers.update');
 
         });
 

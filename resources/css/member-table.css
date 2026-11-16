@@ -1,3 +1,4 @@
+
 .members-page {
     --members-primary: #15803d;
     --members-primary-hover: #166534;
@@ -314,6 +315,14 @@
     white-space: nowrap;
 }
 
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .status-dot {
     width: 7px;
     height: 7px;
@@ -322,7 +331,7 @@
 
 .status-active {
     background: #dcfce7;
-    color: #166534;
+    color: #15803d;
 }
 
 .status-active .status-dot {
@@ -331,7 +340,7 @@
 
 .status-inactive {
     background: #fee2e2;
-    color: #991b1b;
+    color: #b91c1c;
 }
 
 .status-inactive .status-dot {
@@ -468,14 +477,70 @@
 .members-pagination {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     padding: 17px 21px;
     border-top: 1px solid var(--members-border);
 }
 
 .members-pagination nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     width: 100%;
+}
+
+.members-pagination nav p {
+    margin: 0;
+    color: var(--members-muted);
+    font-size: 13px;
+}
+
+.members-pagination nav a,
+.members-pagination nav span[aria-current="page"] span,
+.members-pagination nav span[aria-disabled="true"] span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    min-height: 35px;
+    padding: 6px 11px;
+    border: 1px solid var(--members-border);
+    border-radius: 7px;
+    background: #fff;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.members-pagination nav span[aria-current="page"] span {
+    border-color: var(--members-primary);
+    background: var(--members-primary);
+    color: #fff;
+}
+
+.members-pagination nav a:hover {
+    border-color: var(--members-primary-border);
+    background: var(--members-primary-soft);
+    color: var(--members-primary);
+}
+
+.members-pagination nav span[aria-disabled="true"] span {
+    background: #f8fafc;
+    color: #a5afba;
+    cursor: not-allowed;
+}
+
+.members-pagination nav svg {
+    width: 16px;
+    height: 16px;
+}
+
+.members-pagination nav a:focus-visible {
+    outline: 3px solid var(--members-primary-ring);
+    outline-offset: 2px;
 }
 
 @media (max-width: 640px) {
@@ -515,8 +580,13 @@
     }
 
     .members-pagination {
-        padding: 14px;
+        justify-content: flex-start;
         overflow-x: auto;
+        padding: 14px;
+    }
+
+    .members-pagination nav {
+        min-width: max-content;
     }
 }
 
@@ -532,36 +602,5 @@
     .member-add-btn:hover,
     .action-btn:hover {
         transform: none;
-    }
-}
- .status-badge {
-     display: inline-block;
-     padding: 5px 12px;
-     border-radius: 20px;
-     font-size: 12px;
-     font-weight: 600;
- }
-
-.status-active {
-    background: #dcfce7;
-    color: #15803d;
-}
-
-.status-inactive {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.members-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-}
-
-@media (max-width: 600px) {
-    .members-heading {
-        align-items: flex-start;
-        flex-direction: column;
     }
 }
