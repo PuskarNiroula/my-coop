@@ -70,26 +70,22 @@
             'url' => '/inventory/products',
             'active_urls' => [
                 '/inventory/products',
-                '/inventory/categories',
+                '/inventory/category',
                 '/inventory/units',
-                '/inventory/unit-categories',
             ],
             'children' => [
                 [
                     'label' => 'All Products',
                     'url' => '/inventory/products',
                 ],
-                [
-                    'label' => 'Categories',
-                    'url' => '/inventory/categories',
-                ],
+
                 [
                     'label' => 'Units',
                     'url' => '/inventory/units',
                 ],
                 [
                     'label' => 'Unit Categories',
-                    'url' => '/inventory/unit-categories',
+                    'url' => '/inventory/category',
                 ],
             ],
         ],
