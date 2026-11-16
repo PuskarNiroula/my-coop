@@ -6,6 +6,7 @@ use App\Http\Controllers\Expense\ExpenseHeadController;
 use App\Http\Controllers\Expense\ExpenseRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
+use App\Http\Controllers\InventoryManagement\ProductController;
 use App\Http\Controllers\InventoryManagement\SupplierController;
 use App\Http\Controllers\InventoryManagement\UnitCategoryController;
 use App\Http\Controllers\InventoryManagement\UnitController;
@@ -171,6 +172,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store','store')->name('inventory.units.store');
             Route::patch('/{unitId}/deactivate','deactivate')->name('inventory.units.deactivate');
             Route::patch('/{unitId}/activate','activate')->name('inventory.units.activate');
+            Route::get('{unitCategoryId}/get-units','getUnitByCategory')->name('inventory.units.get-units');
         });
         Route::controller(UnitCategoryController::class)->prefix('/category')->group(function () {
             Route::get('/','index')->name('inventory.category.index');
@@ -189,6 +191,16 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('{supplierId}/deactivate','deactivate')->name('suppliers.deactivate');
             Route::get('{supplierId}/edit','edit')->name('suppliers.edit');
             Route::put('{supplierId}/update','update')->name('suppliers.update');
+        });
+        Route::controller(ProductController::class)->prefix('/products')->group(function () {
+            Route::get('/','index')->name('products.index');
+            Route::get('/create','create')->name('products.create');
+            Route::post('/store','store')->name('products.store');
+            Route::patch('{productId}/activate','activate')->name('products.activate');
+            Route::patch('{productId}/deactivate','deactivate')->name('products.deactivate');
+            Route::get('{productId}/edit','edit')->name('products.edit');
+            Route::put('{productId}/update','update')->name('products.update');
+
         });
 
     });
