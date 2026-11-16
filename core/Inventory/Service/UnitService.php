@@ -2,7 +2,7 @@
 
 namespace Inventory\Service;
 
-use App\Models\Unit;
+use App\Models\Inventory\Unit;
 use Exception;
 use Inventory\Dto\UnitCreateDto;
 use Inventory\Dto\UnitUpdateDto;

@@ -16,7 +16,15 @@ return new class extends Migration
             $table->id('product_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->UnsignedBigInteger('product_type');
+            $table->UnsignedBigInteger('base_unit_id');
             $table->boolean('status')->default(true);
+
+            $table->foreign('product_type')->references('unit_category_id')->on('unit_categories');
+            $table->foreign('base_unit_id')->references('unit_id')->on('units');
+
+
         });
     }
 
