@@ -4,6 +4,7 @@ namespace Member\Service;
 
 use AccountTypes\Exception\AccountTypeNotFound;
 use App\Models\AccountType;
+use App\Models\Inventory\Customer;
 use App\Models\MemberAccount;
 use App\Models\PaymentMethod;
 use App\Models\SavingTransaction;
@@ -112,6 +113,13 @@ class MemberService
                     "day_book_id"=>getCurrentDayBook()->getId()
                 ]);
 
+                Customer::create([
+                    'member_id' => $member->member_id,
+                    'name' => $dto->name,
+                    'phone' => $dto->phone,
+                    'address' => $dto->address,
+                ]);
+
                 $pm=PaymentMethod::find(1);
                 $pm->balance+=$dto->opening_balance;
                 $pm->save();
@@ -183,6 +191,14 @@ class MemberService
                     'fiscal_year_id'=>getCurrentFiscalYear()->fiscal_year_id,
                     'day_book_id'=>getCurrentDayBook()->getId()
                 ]);
+
+                Customer::create([
+                    'member_id' => $member->member_id,
+                    'name' => $dto->name,
+                    'phone' => $dto->phone,
+                    'address' => $dto->address,
+                ]);
+
 
                 $pm=PaymentMethod::find(1);
                 $pm->balance+=$dto->opening_balance;
