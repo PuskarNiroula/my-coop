@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Inventory\Unit;
 use App\Models\Inventory\UnitCategory;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inventory\Dto\UnitCreateDto;
 use Inventory\Dto\UnitUpdateDto;
@@ -91,6 +92,14 @@ class UnitController extends Controller
             return redirect()->back()->withErrors(['error' => $exception->getMessage()])->withInput();
         }
 
+    }
+    public function getUnitByCategory(int $unitCategoryId): JsonResponse
+    {
+        $units = Unit::where('unit_category_id', $unitCategoryId)
+            ->where('status', 'active')
+            ->get(['unit_id', 'name']);
+
+        return response()->json($units);
     }
 
 }

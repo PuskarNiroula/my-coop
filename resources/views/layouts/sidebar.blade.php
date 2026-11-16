@@ -54,37 +54,185 @@
             ],
         ],
 
+
 [
     'label' => 'Inventory Management',
     'icon' => 'package',
     'key' => 'inventory',
     'items' => [
-        ['label' => 'Inventory Overview', 'url' => '/inventory'],
-        ['label' => 'Products', 'url' => '/inventory/products'],
-        ['label' => 'Categories', 'url' => '/inventory/categories'],
-        ['label' => 'Stock Movements', 'url' => '/inventory/stock-movements'],
-        ['label' => 'Suppliers', 'url' => '/inventory/suppliers'],
-       [
-    'label' => 'Units',
-    'key' => 'units',
-    'url' => '/inventory/units',
-    'active_urls' => [
-        '/inventory/units',
-        '/inventory/category',
-    ],
-    'children' => [
         [
-            'label' => 'All Units',
-            'url' => '/inventory/units',
+            'label' => 'Dashboard',
+            'url' => '/inventory',
         ],
         [
-            'label' => 'Unit Categories',
-            'url' => '/inventory/category',
+            'label' => 'Products & Categories',
+            'key' => 'products',
+            'url' => '/inventory/products',
+            'active_urls' => [
+                '/inventory/products',
+                '/inventory/categories',
+                '/inventory/units',
+                '/inventory/unit-categories',
+            ],
+            'children' => [
+                [
+                    'label' => 'All Products',
+                    'url' => '/inventory/products',
+                ],
+                [
+                    'label' => 'Categories',
+                    'url' => '/inventory/categories',
+                ],
+                [
+                    'label' => 'Units',
+                    'url' => '/inventory/units',
+                ],
+                [
+                    'label' => 'Unit Categories',
+                    'url' => '/inventory/unit-categories',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Purchases',
+            'key' => 'purchases',
+            'url' => '/inventory/purchases',
+            'active_urls' => [
+                '/inventory/purchases',
+                '/inventory/purchase-returns',
+            ],
+            'children' => [
+                [
+                    'label' => 'All Purchases',
+                    'url' => '/inventory/purchases',
+                ],
+                [
+                    'label' => 'New Purchase',
+                    'url' => '/inventory/purchases/create',
+                ],
+                [
+                    'label' => 'Purchase Returns',
+                    'url' => '/inventory/purchase-returns',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Sales',
+            'key' => 'sales',
+            'url' => '/inventory/sales',
+            'active_urls' => [
+                '/inventory/sales',
+                '/inventory/sales-returns',
+            ],
+            'children' => [
+                [
+                    'label' => 'All Sales',
+                    'url' => '/inventory/sales',
+                ],
+                [
+                    'label' => 'New Sale',
+                    'url' => '/inventory/sales/create',
+                ],
+                [
+                    'label' => 'Sales Returns',
+                    'url' => '/inventory/sales-returns',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Payments',
+            'key' => 'payments',
+            'url' => '/inventory/payments',
+            'active_urls' => [
+                '/inventory/payments',
+                '/inventory/receipts',
+            ],
+            'children' => [
+                [
+                    'label' => 'Payment History',
+                    'url' => '/inventory/payments',
+                ],
+                [
+                    'label' => 'Received Payments',
+                    'url' => '/inventory/receipts',
+                ],
+                [
+                    'label' => 'Paid Payments',
+                    'url' => '/inventory/payments/paid',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Parties',
+            'key' => 'parties',
+            'url' => '/inventory/suppliers',
+            'active_urls' => [
+                '/inventory/suppliers',
+                '/inventory/customers',
+            ],
+            'children' => [
+                [
+                    'label' => 'Suppliers',
+                    'url' => '/inventory/suppliers',
+                ],
+                [
+                    'label' => 'Customers',
+                    'url' => '/inventory/customers',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Stock Management',
+            'key' => 'stock',
+            'url' => '/inventory/stock-movements',
+            'active_urls' => [
+                '/inventory/stock-movements',
+                '/inventory/stock-adjustments',
+            ],
+            'children' => [
+                [
+                    'label' => 'Stock Overview',
+                    'url' => '/inventory/stock',
+                ],
+                [
+                    'label' => 'Stock Movements',
+                    'url' => '/inventory/stock-movements',
+                ],
+                [
+                    'label' => 'Stock Adjustments',
+                    'url' => '/inventory/stock-adjustments',
+                ],
+            ],
+        ],
+        [
+            'label' => 'Reports',
+            'key' => 'reports',
+            'url' => '/inventory/reports',
+            'active_urls' => [
+                '/inventory/reports',
+            ],
+            'children' => [
+                [
+                    'label' => 'Purchase Report',
+                    'url' => '/inventory/reports/purchases',
+                ],
+                [
+                    'label' => 'Sales Report',
+                    'url' => '/inventory/reports/sales',
+                ],
+                [
+                    'label' => 'Stock Report',
+                    'url' => '/inventory/reports/stock',
+                ],
+                [
+                    'label' => 'Payment Report',
+                    'url' => '/inventory/reports/payments',
+                ],
+            ],
         ],
     ],
 ],
-    ],
-]
+
 ];
 
 

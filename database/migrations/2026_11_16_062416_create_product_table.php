@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->UnsignedBigInteger('product_type');
             $table->UnsignedBigInteger('base_unit_id');
-            $table->boolean('status')->default(true);
+            $table->string('status')->default('active');
 
             $table->foreign('product_type')->references('unit_category_id')->on('unit_categories');
             $table->foreign('base_unit_id')->references('unit_id')->on('units');
