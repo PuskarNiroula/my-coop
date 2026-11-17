@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\InventoryManagement\CustomerController;
 use App\Http\Controllers\InventoryManagement\ProductController;
+use App\Http\Controllers\InventoryManagement\PurchaseController;
 use App\Http\Controllers\InventoryManagement\SupplierController;
 use App\Http\Controllers\InventoryManagement\UnitCategoryController;
 use App\Http\Controllers\InventoryManagement\UnitController;
@@ -212,6 +213,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{customerId}/edit','edit')->name('customers.edit');
             Route::put('{customerId}/update','update')->name('customers.update');
 
+        });
+        Route::controller(PurchaseController::class)->prefix('/purchases')->group(function () {
+            Route::get('/','index')->name('purchases.index');
+        });
+        Route::controller(PurchaseController::class)->prefix('/purchases')->group(function () {
+            Route::get('/','index')->name('purchases.index');
+            Route::get('/create','create')->name('purchases.create');
+            Route::post('/store','store')->name('purchases.store');
+            Route::patch('{purchaseId}/activate','activate')->name('purchases.activate');
+            Route::patch('{purchaseId}/deactivate','deactivate')->name('purchases.deactivate');
+            Route::get('{purchaseId}/edit','edit')->name('purchases.edit');
+            Route::put('{purchaseId}/update','update')->name('purchases.update');
         });
 
     });
